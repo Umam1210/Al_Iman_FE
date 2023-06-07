@@ -1,13 +1,6 @@
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
-import React, { Fragment, useState } from 'react'
+import React from 'react'
 
-import {
-    Bars3Icon,
-} from '@heroicons/react/24/outline'
-
-
-export default function Header() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+export default function Header({ href }) {
     return (
         <header className="bg-[#000000] ">
             <nav className="mx-auto h-[85px] flex max-w-full items-center justify-between lg:px-8 md:px-4 sm:px-10 xs:px-6" aria-label="Global">
@@ -17,7 +10,7 @@ export default function Header() {
                 </div>
                 <div className="flex flex-1 justify-end">
                     <p className="text-[26px] font-normal text-[#FFFFFF]">
-                        Login
+                        {href}
                     </p>
                 </div>
             </nav>
