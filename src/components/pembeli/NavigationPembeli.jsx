@@ -5,7 +5,7 @@ export default function NavigationPembeli() {
     const navigate = [
         { name: 'Katalog', href: 'katalog' },
         { name: 'Dashboard', href: 'dashboard' },
-        { name: 'Daftar Pelapak', href: 'list-pelapal' },
+        { name: 'Daftar Pelapak', href: 'list-pelapak' },
         { name: 'Pesanan Saya', href: 'pesanan-saya' },
         { name: 'Voucher Saya', href: 'voucher-saya' },
     ]

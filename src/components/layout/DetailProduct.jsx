@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function DetailHomePage() {
+export default function DetailProduct() {
     return (
         <>
             <div className='flex items-center justify-center'>

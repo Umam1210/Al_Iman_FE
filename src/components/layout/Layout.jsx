@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import CardLogin from '../navigation/CardLogin'
 import { useLocation } from 'react-router-dom'
-import NavigationAdmin from '../navigation/NavigationAdmin'
-import NavigationPembeli from '../navigation/NavigationPembeli'
+import NavigationAdmin from '../admin/NavigationAdmin'
+import NavigationPembeli from '../pembeli/NavigationPembeli'
+import NavigationPelapak from '../pelapak/NavigationPelapak'
 
 export default function Layout({ children }) {
     const location = useLocation()
@@ -19,6 +20,10 @@ export default function Layout({ children }) {
             setLogin(true)
             setHref('Pembeli')
             setUser('pembeli')
+        } else if (location.pathname.substring(1, 8) === 'pelapak') {
+            setLogin(true)
+            setHref('pelapak')
+            setUser('pelapak')
         }
     }, [location])
 
@@ -26,7 +31,9 @@ export default function Layout({ children }) {
     // console.log("user", user);
     return (
         <>
-            <Header href={href} />
+            <div className='sticky top-0 z-20'>
+                <Header href={href} />
+            </div>
             <main className='col-span-12 bg-[#FFFFFF]'>
                 <div className='xxl:grid xxl:grid-cols-12 xl:grid xl:grid-cols-12 lg:grid lg:grid-cols-12 md:flex md:flex-col-reverse sm:flex sm:flex-col-reverse xs:flex xs:flex-col-reverse s:flex s:flex-col-reverse gap-0'>
                     <div className='col-span-9'>
@@ -34,7 +41,10 @@ export default function Layout({ children }) {
                     </div>
                     <div className='col-span-3 h-full mt-14'>
                         <div className='sm:flex sm:justify-center sm:items-center xs:flex xs:justify-center xs:items-center s:flex s:justify-center s:items-center'>
-                            {login === false ? <CardLogin /> : user === 'admin' ? <NavigationAdmin /> : user === 'pembeli' ? <NavigationPembeli /> : ''}
+                            {login === false ? <CardLogin /> :
+                                user === 'admin' ? <NavigationAdmin /> :
+                                    user === 'pembeli' ? <NavigationPembeli /> :
+                                        user === 'pelapak' ? <NavigationPelapak /> : ''}
 
                         </div>
                     </div>
