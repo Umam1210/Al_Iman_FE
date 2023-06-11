@@ -7,15 +7,37 @@ export default function CardLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+    const [error, setError] = useState(false)
 
-    const Auth = (e) => {
+    // const Auth = (e) => {
+    //     e.preventDefault();
+    //     dispatch(login({ email, password }));
+    // };
+
+    const Auth = async (e) => {
         e.preventDefault();
-        dispatch(login({ email, password }));
-        // window.location.reload()
+
+        try {
+            const response = await dispatch(login({ email, password }));
+            if (response.success) {
+                // Login berhasil
+            } else {
+                setError(true)
+            }
+        } catch (error) {
+            // console.log(error);
+        }
     };
+
+    // console.log("error", error);
 
     return (
         <form action="" onSubmit={Auth}>
+            {/* error response */}
+            {error ? <div className='bg-red-500 h-20 w-[344px]'>
+
+            </div> : ''}
+
             <div className='h-[471px] w-[344px] border-2 border-[#8181813D] '>
                 <div className='h-[82px] bg-[#E9E9E9] flex items-center pl-7'>
                     <p className='text-2xl text-[#000000]'>Masuk</p>

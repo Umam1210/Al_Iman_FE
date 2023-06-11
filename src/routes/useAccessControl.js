@@ -3,9 +3,20 @@ import { useEffect } from 'react';
 export const useAccessControl = (user, data, cookies, navigate, location, dispatch) => {
   useEffect(() => {
     if (!user.isLogin) {
-      navigate('/');
+      const currentPath = location.pathname;
+      const allowedPaths = ['/', '/detail/:title'];
+
+      const isAllowedPath = allowedPaths.some((path) => {
+        const regex = new RegExp(
+          '^' + path.replace(/:[\w\s]+/g, '\\S+').replace(/\//g, '\\/') + '$'
+        );
+        return regex.test(currentPath);
+      });
+
+      if (!isAllowedPath) {
+        navigate('/');
+      }
     } else {
-      // Pengguna sudah login
       if (data === 'user') {
         const currentPath = location.pathname;
         const allowedPaths = [
@@ -20,7 +31,9 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
         ];
 
         const isAllowedPath = allowedPaths.some((path) => {
-          const regex = new RegExp('^' + path.replace(/:\w+/g, '\\w+').replace(/\//g, '\\/') + '$');
+          const regex = new RegExp(
+            '^' + path.replace(/:[\w\s]+/g, '\\S+').replace(/\//g, '\\/') + '$'
+          );
           return regex.test(currentPath);
         });
 
@@ -49,7 +62,9 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
         ];
 
         const isAllowedPath = allowedPaths.some((path) => {
-          const regex = new RegExp('^' + path.replace(/:\w+/g, '\\w+').replace(/\//g, '\\/') + '$');
+          const regex = new RegExp(
+            '^' + path.replace(/:[\w\s]+/g, '\\S+').replace(/\//g, '\\/') + '$'
+          );
           return regex.test(currentPath);
         });
 
@@ -59,7 +74,6 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
           localStorage.setItem('lastVisitedPage', currentPath);
         }
       } else if (data === 'pelapak') {
-        // Logika untuk pengguna dengan peran "pelapak"
         const currentPath = location.pathname;
         const allowedPaths = [
           '/pelapak/product-saya',
@@ -79,7 +93,7 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
           localStorage.setItem('lastVisitedPage', currentPath);
         }
       } else {
-        navigate('/'); // Pengalihan halaman default jika peran tidak dikenali
+        navigate('/');
       }
     }
   }, [cookies.refreshToken, navigate, data, user.isLogin, location.pathname, dispatch]);
