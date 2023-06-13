@@ -31,11 +31,8 @@ import TambahProductPelapak from './pages/Pelapak/TambahProductPelapak';
 import PesananPelapak from './pages/Pelapak/PesananPelapak';
 import DetailPesananPelapak from './pages/Pelapak/DetailPesananPelapak';
 import DaftarProductByIdPelapak from './pages/pembeli/DaftarProductByIdPelapak';
-// import { setAuthToken } from './services/API';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-// import { getMe } from './services/login';
-// import { setLoginStatus } from './store/authSlice';
 import { useAuthEffect } from './routes/useAuthEffect';
 import { useAccessControl } from './routes/useAccessControl';
 
@@ -48,7 +45,8 @@ function App() {
   const refresh = useSelector((state) => state.me)
   const navigate = useNavigate();
   const location = useLocation();
-  const data = localStorage.getItem('userRole');
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const data = userData?.[0]?.role;
   const lastVisitedPage = localStorage.getItem('lastVisitedPage');
 
   useAuthEffect(user, id, cookies, refresh);
@@ -56,20 +54,9 @@ function App() {
 
   useEffect(() => {
     if (lastVisitedPage && !user.isLogin) {
-      navigate(lastVisitedPage); // Kembalikan pengguna ke halaman terakhir setelah refresh jika tidak login
+      navigate(lastVisitedPage);
     }
   }, [lastVisitedPage, user.isLogin, navigate]);
-
-
-
-
-
-  // console.log("data", data.token);
-  // console.log("coooke", cookies.refreshToken);
-  // console.log("login", user.isLogin);
-  // console.log("data", lastVisitedPage)
-  // console.log("roleeee", data);
-  // console.log("token", refresh.token);
 
 
   return (
@@ -118,8 +105,6 @@ function App() {
 
 export default App;
 
-
- // useEffect(() => {
   //   if (user.isSuccess) {
   //     dispatch(setLoginStatus(true));
   //   }

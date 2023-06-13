@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { login } from '../../services/login';
+import { login } from '../../services/login'; import { getUserById } from '../../services/user';
+;
 ;
 
 export default function CardLogin() {
@@ -8,19 +9,17 @@ export default function CardLogin() {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const [error, setError] = useState(false)
-
-    // const Auth = (e) => {
-    //     e.preventDefault();
-    //     dispatch(login({ email, password }));
-    // };
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userId = userData?.[1]?.role;
+    // const userId = userData?.[1]?.access;
 
     const Auth = async (e) => {
         e.preventDefault();
 
         try {
             const response = await dispatch(login({ email, password }));
-            if (response.success) {
-                // Login berhasil
+            if (response && response.success) {
+                await dispatch(getUserById(userId));
             } else {
                 setError(true)
             }
@@ -29,7 +28,8 @@ export default function CardLogin() {
         }
     };
 
-    // console.log("error", error);
+
+
 
     return (
         <form action="" onSubmit={Auth}>

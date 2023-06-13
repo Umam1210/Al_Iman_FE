@@ -17,7 +17,7 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
         navigate('/');
       }
     } else {
-      if (data === 'user') {
+      if (data === 'pembeli') {
         const currentPath = location.pathname;
         const allowedPaths = [
           '/pembeli/katalog',
@@ -88,7 +88,7 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
         });
 
         if (!isAllowedPath) {
-          navigate('/');
+          navigate('/pelapak/product-saya');
         } else {
           localStorage.setItem('lastVisitedPage', currentPath);
         }
