@@ -30,3 +30,15 @@ export const editProduct = createAsyncThunk('editProduct', async ({ productId, u
   const response = await API.put(`editProduct/${productId}`, updatedProduct);
   return response.data;
 });
+
+export const searchProduct = createAsyncThunk(
+  'product/searchProduct',
+  async (searchTerm) => {
+    try {
+      const response = await API.get(`searchProduct?productName=${searchTerm}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Terjadi kesalahan pada server');
+    }
+  }
+);

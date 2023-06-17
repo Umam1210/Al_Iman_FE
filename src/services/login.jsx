@@ -40,8 +40,7 @@ export const logout = createAsyncThunk("user/logout", async (_, { rejectWithValu
         const response = await API.post("logout");
         response.statusText
         // Hapus data dari localStorage atau cookie yang relevan
-        localStorage.removeItem("userData");
-        localStorage.removeItem("lastVisitedPage");
+        localStorage.clear()
         window.location.reload()
         return null;
     } catch (error) {

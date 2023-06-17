@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import DaftarPengguna from '../../components/admin/DaftarPengguna'
 
 export default function ListPengguna() {
     return (
@@ -12,7 +13,9 @@ export default function ListPengguna() {
                     </button>
                 </Link>
                 <div className='mt-6'>
-                    <div className='h-[478px] bg-red-500 w-full'></div>
+                    <div className='h-[478px] w-full'>
+                        <DaftarPengguna />
+                    </div>
                 </div>
             </div>
         </>

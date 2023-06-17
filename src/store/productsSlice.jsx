@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, deleteProduct, editProduct, getAllProducts, getProductById, getProductByIdUser } from "../services/product";
+import { addProduct, deleteProduct, editProduct, getAllProducts, getProductById, getProductByIdUser, searchProduct } from "../services/product";
 
 const initialState = {
     products: [],
     selectedProduct: null,
     userProducts: [],
+    searchProduct: [],
     isLoading: false,
     error: null,
 };
@@ -90,7 +91,19 @@ const productsSlice = createSlice({
             .addCase(editProduct.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
-            });
+            })
+            .addCase(searchProduct.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(searchProduct.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.searchProduct = action.payload;
+            })
+            .addCase(searchProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+            })
     },
 });
 

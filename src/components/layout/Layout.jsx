@@ -23,7 +23,7 @@ export default function Layout({ children }) {
                         {children}
                     </div>
                     <div className='col-span-3 h-full mt-14'>
-                        <div className='sm:flex sm:justify-center sm:items-center xs:flex xs:justify-center xs:items-center s:flex s:justify-center s:items-center md:flex md:justify-center md:items-center lg:flex lg:justify-center lg:items-center'>
+                        <div className='sticky top-32 sm:flex sm:justify-center sm:items-center xs:flex xs:justify-center xs:items-center s:flex s:justify-center s:items-center md:flex md:justify-center md:items-center lg:flex lg:justify-center lg:items-center'>
                             {auth.isLogin === false ? <CardLogin /> :
                                 guest === 'admin' ? <NavigationAdmin /> :
                                     guest === 'pembeli' ? <NavigationPembeli /> :

@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteUserById, editUserById, getAllUsers, getUserById, registerUser } from "../services/user";
+import { deleteUserById, editUserById, getAllUsers, getUserById, registerUser, searchUser } from "../services/user";
 
 
 const initialState = {
     users: [],
     user: null,
+    searchUser: [],
     loading: false,
     error: null
 };
@@ -73,6 +74,18 @@ const userSlice = createSlice({
                 state.user = action.payload;
             })
             .addCase(registerUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(searchUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(searchUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.searchUser = action.payload;
+            })
+            .addCase(searchUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

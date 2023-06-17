@@ -25,3 +25,15 @@ export const registerUser = createAsyncThunk("user/registerUser", async (userDat
     const response = await API.post("user/register", userData);
     return response.data;
 });
+
+export const searchUser = createAsyncThunk(
+    'user/searchUser',
+    async (searchTerm) => {
+        try {
+            const response = await API.get(`/searchUser?userName=${searchTerm}`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Terjadi kesalahan pada server');
+        }
+    }
+);
