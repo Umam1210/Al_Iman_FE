@@ -1,14 +1,15 @@
+
 import React from 'react'
 import { Link } from 'react-router-dom'
 
 export default function TambahProduct() {
+
     return (
         <>
             <div className='px-[98px] '>
                 <p className='text-[32px] font-bold mt-12'>Tambah Produk</p>
                 <div className='mt-8'>
                     <form action="" method="post">
-
                         <div className='h-auto w-[892px] pb-5 border border-[#E9E9E9]'>
                             <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
                                 <p>Data Produk</p>
@@ -56,13 +57,14 @@ export default function TambahProduct() {
                                 </div>
                                 <div className='flex flex-col gap-3 pr-[70px]'>
                                     <p>Pilih Pelapak</p>
-                                    <input
+                                    {/* <input
                                         type="password"
                                         name=""
                                         id=""
                                         className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
                                         required
-                                    />
+                                    /> */}
+
                                 </div>
                                 <div className="flex flex-col gap-3 pr-[70px]">
                                     <p>Upload Gambar</p>

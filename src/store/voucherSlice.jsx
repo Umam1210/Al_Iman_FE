@@ -5,6 +5,7 @@ import { addVoucher, deleteVoucher, editVoucher, getAllVouchers, getVoucherById,
 const initialState = {
     vouchers: [],
     voucher: null,
+    searchVoucher: [],
     loading: false,
     error: null
 };
@@ -86,7 +87,7 @@ const voucherSlice = createSlice({
             })
             .addCase(searchVoucher.fulfilled, (state, action) => {
                 state.loading = false;
-                state.vouchers = action.payload;
+                state.searchVoucher = action.payload;
             })
             .addCase(searchVoucher.rejected, (state, action) => {
                 state.loading = false;

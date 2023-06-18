@@ -17,7 +17,7 @@ export const getProductByIdUser = createAsyncThunk('productUser/getProductByIdUs
 });
 
 export const deleteProduct = createAsyncThunk('delete/deleteProduct', async (productId) => {
-  await API.delete(`products/${productId}`);
+  await API.delete(`product/${productId}`);
   return productId;
 });
 

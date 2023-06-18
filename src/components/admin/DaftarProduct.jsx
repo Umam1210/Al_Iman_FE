@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, searchProduct } from '../../services/product';
+import { Link } from 'react-router-dom';
+import ModalDeleteProduct from './ModalDeleteProduct';
+import formatRupiah from '../../helper/formatRupiah';
 
 export default function DaftarProduct() {
     const [value,] = useState(5);
@@ -41,11 +44,11 @@ export default function DaftarProduct() {
     };
     const filteredData = searchResults.length != 0 ? searchResults : Product;
     const tHead = [
-        { name: 'Nama Produk' },
-        { name: 'Harga' },
-        { name: 'Stock' },
-        { name: 'Visibilitas' },
-        { name: 'Aksi' },
+        { name: 'Nama Produk', span: 2, },
+        { name: 'Harga', span: 2, },
+        { name: 'Stock', span: 2, },
+        { name: 'Visibilitas', span: 2, },
+        { name: 'Aksi', span: 2, },
     ]
     return (
         <>
@@ -57,7 +60,7 @@ export default function DaftarProduct() {
                             type="text"
                             name=""
                             id=""
-                            placeholder='Cari Pengguna...'
+                            placeholder='Cari Produk...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -76,20 +79,40 @@ export default function DaftarProduct() {
                                 <div className="w-full overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
-                                            <tr className="text-left h-[57px] text-[#000000BF] text-[20px] ">
+                                            <tr className="text-left grid grid-cols-10 h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (
-                                                    <th key={idx} className="border pl-4 border-[#00000040]">{item?.name}</th>
+                                                    <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                                 ))}
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
                                             {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
-                                                <tr key={idx} className="text-gray-700 h-[48px]">
-                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.name}</td>
-                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.harga}</td>
-                                                    <td className="px-4 text-sm border border-[#00000040]">{item?.stock}</td>
-                                                    <td className="px-4 text-sm border border-[#00000040]">Testing</td>
-                                                    <td className="px-4 text-sm border border-[#00000040]">Testing</td>
+                                                <tr key={idx} className="grid grid-cols-10 text-gray-700 h-[48px]">
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{formatRupiah(item?.harga)}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.stock}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.stock}</p>
+                                                    </td>
+                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                        <div className='flex flex-row justify-center items-center gap-4'>
+                                                            <Link to={`/admin/sunting/${item?.name}/${item?.id}`} >
+                                                                <button
+                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                >
+
+                                                                    <p>Edit</p>
+                                                                </button>
+                                                            </Link>
+                                                            <ModalDeleteProduct productId={item?.id} />
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -98,7 +121,7 @@ export default function DaftarProduct() {
                             </div>
                         </section>
                     </div>
-                    {filteredData.length >= 5 ? <div className='w-full flex justify-center mt-6'>
+                    {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
                         <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                             <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

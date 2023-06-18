@@ -1,44 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUsers, searchUser } from '../../services/user';
-import { Link } from 'react-router-dom';
-import ModalDeleteDataUser from './ModalDeleteDataUser';
+import { getAllVouchers, searchVoucher } from '../../services/voucher';
+import formatRupiah from '../../helper/formatRupiah';
 
-export default function DaftarPengguna() {
+export default function DaftarVoucher() {
     const [value,] = useState(5);
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
     const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.user.searchUser)
-    const User = useSelector((state) => state.user.users)
-
+    const searchResults = useSelector((state) => state.voucher.searchVoucher)
+    const voucher = useSelector((state) => state.voucher.vouchers)
     const handleSearch = () => {
-        dispatch(searchUser(searchValue));
+        dispatch(searchVoucher(searchValue));
     };
-
     const selectedData = (item) => {
         setCount(item)
     }
-
     useEffect(() => {
-        dispatch(getAllUsers());
+        dispatch(getAllVouchers());
     }, [dispatch]);
 
-    const tHead = [
-        { name: 'Name', span: 1 },
-        { name: 'Email', span: 2 },
-        { name: 'Role', span: 1 },
-        { name: 'Aksi', span: 1 },
-    ]
-
-    const length = Math.ceil(User?.length / value);
+    const length = Math.ceil(voucher?.length / value);
     let pages = [];
-
     for (var z = 0; z <= length; z++) {
         pages.push(z);
     }
-
     const btnRight = () => {
         if (number + 1 > length) {
             setNumber(length);
@@ -46,7 +33,6 @@ export default function DaftarPengguna() {
             setNumber(number + 1);
         }
     };
-
     const btnLeft = () => {
         if (number - 1 < 1) {
             setNumber(1);
@@ -54,19 +40,24 @@ export default function DaftarPengguna() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : User;
+    const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    const tHead = [
+        { name: 'Nama' },
+        { name: 'Jumlah' },
+        { name: 'Aksi' },
+    ]
 
     return (
         <>
             <div className='w-full h-full border border-[#00000040] px-[35px]'>
                 <div className='mt-7 flex flex-row justify-between'>
-                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Pengguna</p>
+                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Voucher</p>
                     <div className='flex flex-row'>
                         <input
                             type="text"
                             name=""
                             id=""
-                            placeholder='Cari Pengguna...'
+                            placeholder='Cari voucher...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -76,7 +67,7 @@ export default function DaftarPengguna() {
                         </button>
                     </div>
                 </div>
-                {User?.length === 0 ? <div>
+                {voucher?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
                     <div className='w-full h-full pt-6'>
@@ -85,39 +76,18 @@ export default function DaftarPengguna() {
                                 <div className="w-full overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
-                                            <tr className="grid grid-cols-5 text-left h-[57px] text-[#000000BF] text-[20px] ">
+                                            <tr className="text-left h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (
-                                                    <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}>
-                                                        <p>{item?.name}</p>
-                                                    </th>
+                                                    <th key={idx} className="border pl-4 border-[#00000040]">{item?.name}</th>
                                                 ))}
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-5 text-gray-700 h-[48px]">
-                                                    <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
-                                                    </td>
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.email}</p>
-                                                    </td>
-                                                    <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.role}</p>
-                                                    </td>
-                                                    <td className="col-span-1 flex items-center justify-center px-4  border border-[#00000040]">
-                                                        <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-pengguna/${item?.id}`} state={{ id: item?.id }} >
-                                                                <button
-                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                                >
-
-                                                                    <p>Edit</p>
-                                                                </button>
-                                                            </Link>
-                                                            <ModalDeleteDataUser userId={item?.id} />
-                                                        </div>
-                                                    </td>
+                                            {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
+                                                <tr key={idx} className="text-gray-700 h-[48px]">
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.name}</td>
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{formatRupiah(item?.jumlah)}</td>
+                                                    <td className="px-4 text-sm border border-[#00000040]">{item?.stock}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -126,7 +96,7 @@ export default function DaftarPengguna() {
                             </div>
                         </section>
                     </div>
-                    {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
+                    {filteredData.length >= 5 ? <div className='w-full flex justify-center mt-6'>
                         <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                             <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -140,7 +110,6 @@ export default function DaftarPengguna() {
                                     <button>{number}</button>
                                 </div>
                             ) : null}
-
                             {number + 1 <= length ? (
                                 <div onClick={() => {
                                     selectedData(number + 1)
@@ -160,3 +129,5 @@ export default function DaftarPengguna() {
         </>
     )
 }
+
+

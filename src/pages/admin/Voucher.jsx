@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import DaftarVoucher from '../../components/admin/DaftarVoucher'
 
 export default function Voucher() {
     return (
@@ -12,7 +13,9 @@ export default function Voucher() {
                     </button>
                 </Link>
                 <div className='mt-6'>
-                    <div className='h-[478px] bg-red-500 w-full'></div>
+                    <div className='h-[478px] w-full'>
+                        <DaftarVoucher />
+                    </div>
                 </div>
             </div>
         </>

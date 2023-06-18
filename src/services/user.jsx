@@ -11,10 +11,14 @@ export const getUserById = createAsyncThunk("user/getUserById", async (userId) =
     return response.data;
 });
 
-export const editUserById = createAsyncThunk("user/editUserById", async ({ userId, updatedUserData }) => {
-    const response = await API.put(`editUser/${userId}`, updatedUserData);
-    return response.data;
-});
+export const editUserById = createAsyncThunk(
+    "user/editUserById",
+    async ({ userId, updatedUserData }) => {
+        const response = await API.put(`editUser/${userId}`, updatedUserData);
+        return response.data;
+    }
+);
+
 
 export const deleteUserById = createAsyncThunk("user/deleteUserById", async (userId) => {
     await API.delete(`deleteUser/${userId}`);
