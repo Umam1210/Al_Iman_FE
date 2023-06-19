@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { Dialog, Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronUpDownIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Fragment } from 'react'
 import { useDispatch } from 'react-redux'
 import { registerUser } from '../../services/user'
@@ -16,6 +16,8 @@ export default function TambahPengguna() {
     const [role, setRole] = useState(Role[0])
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const [isOpen, setIsOpen] = useState(false)
+    const [error, setError] = useState('')
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -36,27 +38,99 @@ export default function TambahPengguna() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user = {
-            ...formData,
-            role: role.name,
+            name: formData.name,
+            email: formData.email,
+            no_kk: formData.no_kk,
+            kontak: formData.kontak,
+            alamat: formData.alamat,
+            password: formData.password,
         };
+
         try {
-            await dispatch(registerUser(user));
-            setFormData({
-                name: '',
-                email: '',
-                no_kk: '',
-                kontak: '',
-                alamat: '',
-                password: '',
-            });
-            navigate('/admin/list-pengguna');
+            const response = await dispatch(registerUser(user));
+            if (response.payload && response.payload.success) {
+                setFormData({
+                    name: '',
+                    email: '',
+                    no_kk: '',
+                    kontak: '',
+                    alamat: '',
+                    password: '',
+                });
+                navigate('/admin/list-pengguna');
+                // console.log("berhasil");
+            } else {
+                // console.log("Gagal melakukan register:", response.payload.error);
+                setError(response.payload.error)
+                setIsOpen(true)
+            }
         } catch (error) {
-            // console.log(error);
+            // console.log('General Error:', error);
         }
     };
+
+
+    function closeModal() {
+        setIsOpen(false)
+    }
+
     return (
         <>
             <div className='px-[98px] '>
+                <Transition appear show={isOpen} as={Fragment}>
+                    <Dialog as="div" className="relative z-10" onClose={closeModal}>
+                        <Transition.Child
+                            as={Fragment}
+                            enter="ease-out duration-300"
+                            enterFrom="opacity-0"
+                            enterTo="opacity-100"
+                            leave="ease-in duration-200"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <div className="fixed inset-0 bg-black bg-opacity-25" />
+                        </Transition.Child>
+                        <div className="fixed inset-0 overflow-y-auto">
+                            <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                <Transition.Child
+                                    as={Fragment}
+                                    enter="ease-out duration-300"
+                                    enterFrom="opacity-0 scale-95"
+                                    enterTo="opacity-100 scale-100"
+                                    leave="ease-in duration-200"
+                                    leaveFrom="opacity-100 scale-100"
+                                    leaveTo="opacity-0 scale-95"
+                                >
+                                    <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-md bg-white px-6 py-3 text-left align-middle shadow-xl flex flex-row justify-between transition-all">
+                                        <div>
+                                            <Dialog.Title
+                                                as="h3"
+                                                className="text-lg font-medium leading-6 text-gray-900"
+                                            >
+                                                Register Gagal
+                                            </Dialog.Title>
+                                            <div className="mt-2">
+                                                <p className="text-sm text-gray-500">
+                                                    {error}
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                        <div className="">
+                                            <button
+                                                type="button"
+                                                className=""
+                                                onClick={closeModal}
+                                            >
+                                                <XMarkIcon className='h-10 w-10 text-red-500' />
+                                            </button>
+                                        </div>
+                                    </Dialog.Panel>
+                                </Transition.Child>
+                            </div>
+                        </div>
+                    </Dialog>
+                </Transition>
                 <p className='text-[32px] font-bold mt-12'>Tambah Pengguna</p>
                 <div className='mt-8'>
                     <form action="" onSubmit={handleSubmit} method="post">

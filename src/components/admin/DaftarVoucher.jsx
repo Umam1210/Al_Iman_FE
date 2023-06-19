@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllVouchers, searchVoucher } from '../../services/voucher';
 import formatRupiah from '../../helper/formatRupiah';
+import { Link } from 'react-router-dom';
+import ModalDeleteVoucher from './ModalDeleteVoucher';
 
 export default function DaftarVoucher() {
     const [value,] = useState(5);
@@ -42,10 +44,21 @@ export default function DaftarVoucher() {
     };
     const filteredData = searchResults.length != 0 ? searchResults : voucher;
     const tHead = [
-        { name: 'Nama' },
-        { name: 'Jumlah' },
-        { name: 'Aksi' },
+        { name: 'Nama', span: 2 },
+        { name: 'Jumlah', span: 2 },
+        { name: 'Aksi', span: 2 },
     ]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(searchVoucher(searchValue));
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+    };
 
     return (
         <>
@@ -61,8 +74,9 @@ export default function DaftarVoucher() {
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
+                            onKeyPress={handleKeyPress}
                         />
-                        <button onClick={handleSearch} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
+                        <button onClick={handleSubmit} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
                             Cari
                         </button>
                     </div>
@@ -76,18 +90,34 @@ export default function DaftarVoucher() {
                                 <div className="w-full overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
-                                            <tr className="text-left h-[57px] text-[#000000BF] text-[20px] ">
+                                            <tr className="text-left grid grid-cols-6 h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (
-                                                    <th key={idx} className="border pl-4 border-[#00000040]">{item?.name}</th>
+                                                    <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                                 ))}
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
                                             {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
-                                                <tr key={idx} className="text-gray-700 h-[48px]">
-                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.name}</td>
-                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{formatRupiah(item?.jumlah)}</td>
-                                                    <td className="px-4 text-sm border border-[#00000040]">{item?.stock}</td>
+                                                <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{formatRupiah(item?.jumlah)}</p>
+                                                    </td>
+                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                        <div className='flex flex-row justify-center items-center gap-4'>
+                                                            <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
+                                                                <button
+                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                >
+
+                                                                    <p>Edit</p>
+                                                                </button>
+                                                            </Link>
+                                                            <ModalDeleteVoucher voucherId={item?.id} />
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>

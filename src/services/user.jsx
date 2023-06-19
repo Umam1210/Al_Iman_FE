@@ -25,9 +25,14 @@ export const deleteUserById = createAsyncThunk("user/deleteUserById", async (use
     return userId;
 });
 
-export const registerUser = createAsyncThunk("user/registerUser", async (userData) => {
-    const response = await API.post("user/register", userData);
-    return response.data;
+export const registerUser = createAsyncThunk("user/registerUser", async (userData, { rejectWithValue }) => {
+    try {
+        const response = await API.post("user/register", userData);
+        return response.data;
+    } catch (error) {
+        // Jika terjadi error, tangani error dan kembalikan pesan dari server
+        return rejectWithValue(error.response.data);
+    }
 });
 
 export const searchUser = createAsyncThunk(
