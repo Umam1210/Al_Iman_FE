@@ -21,9 +21,14 @@ export const deleteProduct = createAsyncThunk('delete/deleteProduct', async (pro
   return productId;
 });
 
-export const addProduct = createAsyncThunk('addProduct', async (product) => {
-  const response = await API.post('addProduct', product);
-  return response.data;
+
+export const addProduct = createAsyncThunk('product/addProduct', async (product) => {
+  try {
+    const response = await API.post('addProduct', product);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to add product');
+  }
 });
 
 export const editProduct = createAsyncThunk('editProduct', async ({ productId, updatedProduct }) => {

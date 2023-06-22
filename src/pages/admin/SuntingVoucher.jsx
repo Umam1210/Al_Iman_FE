@@ -39,7 +39,7 @@ export default function SuntingVoucher() {
             // Menampilkan modal popup
             setShowModal(true);
         } catch (error) {
-            console.log('Error:', error);
+            // console.log('Error:', error);
         }
     };
 
@@ -61,7 +61,7 @@ export default function SuntingVoucher() {
             const timeout = setTimeout(() => {
                 setShowModal(false);
                 navigate('/admin/voucher');
-            }, 3000);
+            }, 300);
 
             return () => clearTimeout(timeout);
         }
