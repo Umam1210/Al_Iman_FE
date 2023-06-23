@@ -4,6 +4,7 @@ import tokenSlice from './tokenSlice';
 import productsSlice from './productsSlice';
 import userSlice from './userSlice';
 import voucherSlice from './voucherSlice';
+import orderSlice from './orderSlice';
 
 
 
@@ -13,6 +14,7 @@ export const store = configureStore({
     me: tokenSlice,
     product: productsSlice,
     user: userSlice,
-    voucher: voucherSlice
+    voucher: voucherSlice,
+    orders: orderSlice
   }
 });

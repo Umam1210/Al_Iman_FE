@@ -35,6 +35,10 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthEffect } from './routes/useAuthEffect';
 import { useAccessControl } from './routes/useAccessControl';
+import Dikonfirmasi from './pages/admin/Dikonfirmasi';
+import MenungguKonfirmasi from './pages/admin/MenungguKonfirmasi';
+import Dibatalkan from './pages/admin/Dibatalkan';
+import Selesai from './pages/admin/Selesai';
 
 
 function App() {
@@ -83,8 +87,12 @@ function App() {
           <Route path='/admin/tambah-pengguna' element={<TambahPengguna />} />
           <Route path='/admin/sunting-pengguna/:id' element={<SuntingPengguna />} />
           <Route path='/admin/products' element={<Product />} />
-          <Route path='/admin/pesanan' element={<Pesanan />}
-          />
+          <Route path='/admin/pesanan/' element={<Pesanan />}>
+            <Route path='dikonfirmasi' element={<Dikonfirmasi />} />
+            <Route path='menunggu-konfirmasi' element={<MenungguKonfirmasi />} />
+            <Route path='dibatalkan' element={<Dibatalkan />} />
+            <Route path='selesai' element={<Selesai />} />
+          </Route>
           <Route path='/admin/detail-pesanan/:id' element={<DetailPesanan />} />
           <Route path='/admin/voucher' element={<Voucher />} />
           <Route path='/admin/tambah-voucher' element={<TambahVoucher />} />

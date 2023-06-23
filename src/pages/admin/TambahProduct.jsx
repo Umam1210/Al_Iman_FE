@@ -10,33 +10,63 @@ export default function TambahProduct() {
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
     const [description, setDescription] = useState('');
-    const [pelapak, setPelapak] = useState('')
-    // const [selectedImage, setSelectedImage] = useState(null);
-    // const [selectedImage1, setSelectedImage1] = useState(null);
-    // const [selectedImage2, setSelectedImage2] = useState(null);
-    // const [selectedImage3, setSelectedImage3] = useState(null);
-    // const [selectedImage4, setSelectedImage4] = useState(null);
+    const [pelapak, setPelapak] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage1, setSelectedImage1] = useState(null);
+    const [selectedImage2, setSelectedImage2] = useState(null);
+    const [selectedImage3, setSelectedImage3] = useState(null);
+    const [selectedImage4, setSelectedImage4] = useState(null);
+    const [openImage, setOpenImage] = useState(false)
+    const [openImage1, setOpenImage1] = useState(false)
+    const [openImage2, setOpenImage2] = useState(false)
+    const [openImage3, setOpenImage3] = useState(false)
 
-    const [selectedImages, setSelectedImages] = useState([]);
+    const handleFileUpload = (event, index) => {
+        const file = event.target.files[0];
 
-    const handleFileUpload = (event) => {
-        const files = event.target.files;
-        const updatedSelectedImages = [...selectedImages];
-
-        // Batasi jumlah gambar maksimal menjadi 5
-        const remainingSlots = 5 - selectedImages.length;
-        const newImages = Array.from(files).slice(0, remainingSlots);
-        updatedSelectedImages.push(...newImages);
-
-        setSelectedImages(updatedSelectedImages);
+        // Setel gambar terpilih sesuai dengan indeks yang tersedia
+        switch (index) {
+            case 0:
+                setSelectedImage(file);
+                break;
+            case 1:
+                setSelectedImage1(file);
+                break;
+            case 2:
+                setSelectedImage2(file);
+                break;
+            case 3:
+                setSelectedImage3(file);
+                break;
+            case 4:
+                setSelectedImage4(file);
+                break;
+            default:
+                break;
+        }
     };
+
     const handleImageRemove = (index) => {
-        const updatedSelectedImages = [...selectedImages];
-        updatedSelectedImages.splice(index, 1);
-        setSelectedImages(updatedSelectedImages);
-    };
-    const handleAddImage = () => {
-        setSelectedImages([...selectedImages, null]);
+        // Hapus gambar terpilih sesuai dengan indeks yang tersedia
+        switch (index) {
+            case 0:
+                setSelectedImage(null);
+                break;
+            case 1:
+                setSelectedImage1(null);
+                break;
+            case 2:
+                setSelectedImage2(null);
+                break;
+            case 3:
+                setSelectedImage3(null);
+                break;
+            case 4:
+                setSelectedImage4(null);
+                break;
+            default:
+                break;
+        }
     };
 
     const handleSubmit = (event) => {
@@ -50,10 +80,22 @@ export default function TambahProduct() {
         product.append('deskripsi', description);
         product.append('pelapakId', pelapak);
 
-        // Tambahkan semua gambar ke FormData
-        selectedImages.forEach((image) => {
-            product.append('image', image);
-        });
+        // Tambahkan gambar yang dipilih ke FormData
+        if (selectedImage) {
+            product.append('image', selectedImage);
+        }
+        if (selectedImage1) {
+            product.append('image', selectedImage1);
+        }
+        if (selectedImage2) {
+            product.append('image', selectedImage2);
+        }
+        if (selectedImage3) {
+            product.append('image', selectedImage3);
+        }
+        if (selectedImage4) {
+            product.append('image', selectedImage4);
+        }
 
         // Kirim aksi addProduct menggunakan Redux Toolkit
         dispatch(addProduct(product))
@@ -65,14 +107,17 @@ export default function TambahProduct() {
                 setStock('');
                 setDescription('');
                 setPelapak('');
-                setSelectedImages([]);
+                setSelectedImage(null);
+                setSelectedImage1(null);
+                setSelectedImage2(null);
+                setSelectedImage3(null);
+                setSelectedImage4(null);
             })
-            .catch(() => {
-                // console.log('Error:', error.message); // Tampilkan pesan error
+            .catch((error) => {
+                console.log('Error:', error.message); 
             });
     };
-    // console.log("name", productName);
-    // console.log("name", selectedImage);
+
     return (
         <>
             <div className='px-[98px] '>
@@ -148,7 +193,6 @@ export default function TambahProduct() {
                                 </div>
                                 <div>
                                     <div className='flex flex-row'>
-                                        {/* Input Gambar Pertama */}
                                         <div className="flex flex-col gap-3 pr-[70px]">
                                             <p>Upload Gambar</p>
                                             <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
@@ -158,91 +202,225 @@ export default function TambahProduct() {
                                                         type="file"
                                                         id="uploadInput"
                                                         className="hidden"
+                                                        name='image'
                                                         onChange={(event) => handleFileUpload(event, 0)}
                                                     />
                                                 </div>
                                             </label>
-                                            {selectedImages[0] && (
-                                                <button
-                                                    type="button"
-                                                    className="text-[#DD3434] text-[18px] ml-4"
-                                                    onClick={() => handleImageRemove(0)}
-                                                >
-                                                    Hapus
-                                                </button>
-                                            )}
+                                            <button
+                                                type="button"
+                                                className="text-[#DD3434] text-[18px] ml-4"
+                                                onClick={() => handleImageRemove(0)}
+                                            >
+                                                Hapus
+                                            </button>
                                         </div>
-                                        <div className="flex flex-row">
-                                            {selectedImages.map((image, index) => (
-                                                <div key={index}>
-                                                    {image && (
-                                                        <div>
-                                                            <p>Preview Gambar {index + 1}:</p>
-                                                            <img
-                                                                src={URL.createObjectURL(image)}
-                                                                alt={`Preview ${index + 1}`}
-                                                                className="h-40 w-40"
-                                                            />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    {/* Input Gambar-gambar Berikutnya */}
-                                    {/* <div className="flex flex-row">
-                                        {selectedImages.slice(1).map((image, index) => (
-                                            <div key={index} className="flex flex-col gap-3 pr-[70px]">
-                                                <p>Upload Gambar</p>
-                                                <label htmlFor={`uploadInput${index + 1}`} className="cursor-pointer h-[47px] w-[211px]">
-                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                        <p>Pilih File</p>
-                                                        <input
-                                                            type="file"
-                                                            id={`uploadInput${index + 1}`}
-                                                            className="hidden"
-                                                            onChange={(event) => handleFileUpload(event, index + 1)}
-                                                        />
-                                                    </div>
-                                                    {selectedImages[index + 1] && (
-                                                        <button
-                                                            type="button"
-                                                            className="text-[#DD3434] text-[18px] ml-4"
-                                                            onClick={() => handleImageRemove(index + 1)}
-                                                        >
-                                                            Hapus
-                                                        </button>
-                                                    )}
-                                                </label>
+                                        {selectedImage && (
+                                            <div>
+                                                <p>Preview Gambar 1:</p>
+                                                <img
+                                                    src={URL.createObjectURL(selectedImage)}
+                                                    alt="Preview Gambar 1"
+                                                    className="h-40 w-40"
+                                                />
                                             </div>
-                                        ))}
-                                    </div> */}
-
-                                    {/* Tombol Tambah Gambar */}
-                                    <div className="w-full flex justify-end pr-[70px] text-[21px]">
-                                        <button
-                                            type="button"
-                                            className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
-                                            onClick={handleAddImage}
-                                        >
-                                            Tambah Gambar
-                                        </button>
+                                        )}
+                                        <div className={`${openImage ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
                                     </div>
-
-                                    {/* Preview Gambar-gambar */}
-
-                                    <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
-                                        <Link to={'/admin/products'}>
-                                            <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
-                                        </Link>
-                                        <button type='submit' className='h-[47px] w-[211px] border border-[#0089FF] bg-[#2D9CDB] rounded-md text-[#FFFFFF]'>Simpan</button>
+                                    <div className={`${openImage ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className="flex flex-col gap-3 pr-[70px]">
+                                            <p>Upload Gambar</p>
+                                            <label htmlFor="uploadInput1" className="cursor-pointer h-[47px] w-[211px]">
+                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                    <p>Pilih File</p>
+                                                    <input
+                                                        type="file"
+                                                        id="uploadInput1"
+                                                        className="hidden"
+                                                        name='image1'
+                                                        onChange={(event) => handleFileUpload(event, 1)}
+                                                    />
+                                                </div>
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="text-[#DD3434] text-[18px] ml-4"
+                                                onClick={() => handleImageRemove(1)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                        {selectedImage1 && (
+                                            <div>
+                                                <p>Preview Gambar 2:</p>
+                                                <img
+                                                    src={URL.createObjectURL(selectedImage1)}
+                                                    alt="Preview Gambar 1"
+                                                    className="h-40 w-40"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className={`${openImage1 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage1(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
                                     </div>
+                                    <div className={`${openImage1 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className="flex flex-col gap-3 pr-[70px]">
+                                            <p>Upload Gambar</p>
+                                            <label htmlFor="uploadInput2" className="cursor-pointer h-[47px] w-[211px]">
+                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                    <p>Pilih File</p>
+                                                    <input
+                                                        type="file"
+                                                        id="uploadInput2"
+                                                        className="hidden"
+                                                        name='image2'
+                                                        onChange={(event) => handleFileUpload(event, 2)}
+                                                    />
+                                                </div>
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="text-[#DD3434] text-[18px] ml-4"
+                                                onClick={() => handleImageRemove(2)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                        {selectedImage2 && (
+                                            <div>
+                                                <p>Preview Gambar 3:</p>
+                                                <img
+                                                    src={URL.createObjectURL(selectedImage2)}
+                                                    alt="Preview Gambar 1"
+                                                    className="h-40 w-40"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className={`${openImage2 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage2(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={`${openImage2 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className="flex flex-col gap-3 pr-[70px]">
+                                            <p>Upload Gambar</p>
+                                            <label htmlFor="uploadInput3" className="cursor-pointer h-[47px] w-[211px]">
+                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                    <p>Pilih File</p>
+                                                    <input
+                                                        type="file"
+                                                        id="uploadInput3"
+                                                        className="hidden"
+                                                        name='image3'
+                                                        onChange={(event) => handleFileUpload(event, 3)}
+                                                    />
+                                                </div>
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="text-[#DD3434] text-[18px] ml-4"
+                                                onClick={() => handleImageRemove(3)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                        {selectedImage3 && (
+                                            <div>
+                                                <p>Preview Gambar 4:</p>
+                                                <img
+                                                    src={URL.createObjectURL(selectedImage3)}
+                                                    alt="Preview Gambar 1"
+                                                    className="h-40 w-40"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className={`${openImage3 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage3(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={`${openImage3 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className="flex flex-col gap-3 pr-[70px]">
+                                            <p>Upload Gambar</p>
+                                            <label htmlFor="uploadInput4" className="cursor-pointer h-[47px] w-[211px]">
+                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                    <p>Pilih File</p>
+                                                    <input
+                                                        type="file"
+                                                        id="uploadInput4"
+                                                        className="hidden"
+                                                        name='image4'
+                                                        onChange={(event) => handleFileUpload(event, 4)}
+                                                    />
+                                                </div>
+                                            </label>
+                                            <button
+                                                type="button"
+                                                className="text-[#DD3434] text-[18px] ml-4"
+                                                onClick={() => handleImageRemove(4)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                        {selectedImage4 && (
+                                            <div>
+                                                <p>Preview Gambar 5:</p>
+                                                <img
+                                                    src={URL.createObjectURL(selectedImage4)}
+                                                    alt="Preview Gambar 1"
+                                                    className="h-40 w-40"
+                                                />
+                                            </div>
+                                        )}
+                                        <div className={`w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage2(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div className='w-full flex justify-end gap-[30px] pr-[70px] text-[21px]'>
+                                    <Link to={'/admin/products'}>
+                                        <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
+                                    </Link>
+                                    <button type='submit' className='h-[47px] w-[211px] border border-[#0089FF] bg-[#2D9CDB] rounded-md text-[#FFFFFF]'>Simpan</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }
