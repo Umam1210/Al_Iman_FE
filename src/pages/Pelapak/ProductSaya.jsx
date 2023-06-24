@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import DaftarProductPelapak from '../../components/pelapak/DaftarProductPelapak'
 
 export default function ProductSaya() {
     return (
@@ -12,7 +13,9 @@ export default function ProductSaya() {
                     </button>
                 </Link>
                 <div className='mt-6'>
-                    <div className='h-[478px] bg-red-500 w-full'></div>
+                    <div className='h-[478px] w-full'>
+                        <DaftarProductPelapak />
+                    </div>
                 </div>
             </div>
         </>

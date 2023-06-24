@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ModalDeleteProduct from '../../components/admin/ModalDeleteProduct';
 import { Link } from 'react-router-dom';
-import formatRupiah from '../../helper/formatRupiah';
 import { getAllOrders } from '../../services/orders';
 import { getAllProducts } from '../../services/product';
 import { useDispatch, useSelector } from 'react-redux';
@@ -73,36 +71,37 @@ export default function MenungguKonfirmasi() {
                                     </thead>
                                     {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
-                                            {item?.status === 'menunggu konfirmasi' ? <tr className="grid grid-cols-12 text-gray-700 h-[48px]">
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.jam_ambil}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.product?.name}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.banyak}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.user?.name}</p>
-                                                </td>
-                                                <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
-                                                    <div className='flex flex-row justify-center items-center gap-4'>
-                                                        <Link to={`/admin/sunting/${item?.name}/${item?.id}`} >
-                                                            <button
-                                                                className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                            >
+                                            {item?.status === 'menunggu konfirmasi' ?
+                                                <tr className="grid grid-cols-12 text-gray-700 ">
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex flex-col items-start">
+                                                        <p>{item?.tanggal_ambil}</p>
+                                                        <p>{item?.jam_ambil}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.product?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.banyak}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.user?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                        <div className='flex flex-row justify-center items-center gap-4'>
+                                                            <Link to={`/admin/detail-pesanan/${item?.id}`} >
+                                                                <button
+                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                >
 
-                                                                <p>Edit</p>
-                                                            </button>
-                                                        </Link>
-                                                        <ModalDeleteProduct productId={item?.id} />
-                                                    </div>
-                                                </td>
-                                            </tr> : ''}
+                                                                    <p>Detail</p>
+                                                                </button>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr> : ''}
 
                                         </tbody>
                                     ))}

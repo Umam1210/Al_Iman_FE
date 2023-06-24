@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addVoucher, deleteVoucher, editVoucher, getAllVouchers, getVoucherById, searchVoucher } from "../services/voucher";
+import { addVoucher, deleteVoucher, editVoucher, getAllVouchers, getVoucherById, getVoucherByIdUser, giveVoucher, searchVoucher } from "../services/voucher";
 
 
 const initialState = {
     vouchers: [],
     voucher: null,
+    voucherUser: [],
     searchVoucher: [],
     loading: false,
     error: null
@@ -90,6 +91,30 @@ const voucherSlice = createSlice({
                 state.searchVoucher = action.payload;
             })
             .addCase(searchVoucher.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(getVoucherByIdUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getVoucherByIdUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.voucherUser = action.payload;
+            })
+            .addCase(getVoucherByIdUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(giveVoucher.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(giveVoucher.fulfilled, (state, action) => {
+                state.loading = false;
+                state.vouchers.push(action.payload);
+            })
+            .addCase(giveVoucher.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

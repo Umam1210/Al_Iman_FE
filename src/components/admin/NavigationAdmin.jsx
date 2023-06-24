@@ -7,7 +7,7 @@ export default function NavigationAdmin() {
         { name: 'Dashboard', href: 'dashboard' },
         { name: 'Pengguna', href: 'list-pengguna' },
         { name: 'Produk', href: 'products' },
-        { name: 'Pesanan', href: 'pesanan' },
+        { name: 'Pesanan', href: 'pesanan/menunggu-konfirmasi' },
         { name: 'Voucher', href: 'voucher' },
     ]
 

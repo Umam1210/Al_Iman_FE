@@ -13,16 +13,17 @@ const Role = [
     { name: 'admin' },
 ]
 export default function TambahPengguna() {
-    const [role, setRole] = useState(Role[0])
+    const [role, setRole] = useState(Role[0]);
     const dispatch = useDispatch();
-    const navigate = useNavigate()
-    const [isOpen, setIsOpen] = useState(false)
-    const [error, setError] = useState('')
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+    const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         no_kk: '',
         kontak: '',
+        role: '',
         alamat: '',
         password: '',
     });
@@ -44,11 +45,12 @@ export default function TambahPengguna() {
             kontak: formData.kontak,
             alamat: formData.alamat,
             password: formData.password,
+            role: role.name
         };
 
         try {
             const response = await dispatch(registerUser(user));
-            if (response.payload && response.payload.success) {
+            if (response.payload.message == 'Registrasi berhasil') {
                 setFormData({
                     name: '',
                     email: '',
@@ -56,23 +58,24 @@ export default function TambahPengguna() {
                     kontak: '',
                     alamat: '',
                     password: '',
+                    role: ''
                 });
                 navigate('/admin/list-pengguna');
-                // console.log("berhasil");
             } else {
-                // console.log("Gagal melakukan register:", response.payload.error);
-                setError(response.payload.error)
-                setIsOpen(true)
+                console.log("Gagal melakukan register:", response.payload.error);
+                setError(response.payload.error);
+                setIsOpen(true);
             }
         } catch (error) {
-            // console.log('General Error:', error);
+            console.log('General Error:', error);
         }
     };
 
+    const closeModal = () => {
+        setIsOpen(false);
+    };
 
-    function closeModal() {
-        setIsOpen(false)
-    }
+    console.log(formData);
 
     return (
         <>

@@ -1,15 +1,16 @@
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { getAllOrders } from '../../services/orders';
 import { getAllProducts } from '../../services/product';
 import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
 
-export default function Selesai() {
+export default function PemebeliDibatalkan() {
     const [value,] = useState(5);
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
+    // const [searchValue, setSearchValue] = useState('');
     const searchResults = useSelector((state) => state.product.searchProduct)
     const Product = useSelector((state) => state.product.products)
     const order = useSelector((state) => state.orders.orders)
@@ -70,8 +71,8 @@ export default function Selesai() {
                                     </thead>
                                     {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
-                                            {item?.status === 'selesai' ?
-                                                <tr className="grid grid-cols-12 text-gray-700 ">
+                                            {item?.status === 'dikonfirmasi' ?
+                                                <tr className="grid grid-cols-12 text-gray-700">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
                                                         <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
                                                     </td>
@@ -142,3 +143,4 @@ export default function Selesai() {
         </div>
     )
 }
+

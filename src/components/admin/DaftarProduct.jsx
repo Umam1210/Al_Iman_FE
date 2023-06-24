@@ -102,7 +102,7 @@ export default function DaftarProduct() {
                                                     </td>
                                                     <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting/${item?.name}/${item?.id}`} >
+                                                            <Link to={`/admin/sunting/${item?.name}/${item?.id}`} state={{ id: item?.id }} >
                                                                 <button
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >

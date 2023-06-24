@@ -1,4 +1,5 @@
 import React from 'react'
+import DaftarPelapak from '../../components/pembeli/DaftarPelapak'
 
 export default function Pelapak() {
     return (
@@ -6,7 +7,9 @@ export default function Pelapak() {
             <div className='pl-[98px]'>
                 <p className='text-[32px] font-bold mt-12'>List Pelapak</p>
                 <div className='mt-4'>
-                    <div className='h-[436px]  w-full bg-red-500'></div>
+                    <div className=' w-full '>
+                        <DaftarPelapak />
+                    </div>
                 </div>
             </div>
         </>

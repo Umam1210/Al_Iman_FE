@@ -1,28 +1,23 @@
 import React, { useEffect, useState } from 'react'
+import { getVoucherByIdUser, } from '../../services/voucher';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllVouchers, searchVoucher } from '../../services/voucher';
-import formatRupiah from '../../helper/formatRupiah';
-import { Link } from 'react-router-dom';
-import ModalDeleteVoucher from './ModalDeleteVoucher';
+import ModalDeleteVoucherUser from './ModalDeleteVoucherUser';
 
-export default function DaftarVoucher() {
+export default function CardVoucherUser({ userId }) {
     const [value,] = useState(5);
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-    const [searchValue, setSearchValue] = useState('');
     const searchResults = useSelector((state) => state.voucher.searchVoucher)
-    const voucher = useSelector((state) => state.voucher.vouchers)
-    // const handleSearch = () => {
-    //     dispatch(searchVoucher(searchValue));
-    // };
+    const voucher = useSelector((state) => state.voucher.voucherUser)
+    const user = userId
+    useEffect(() => {
+        dispatch(getVoucherByIdUser(user));
+    }, [dispatch]);
+
     const selectedData = (item) => {
         setCount(item)
     }
-    useEffect(() => {
-        dispatch(getAllVouchers());
-    }, [dispatch]);
-
     const length = Math.ceil(voucher?.length / value);
     let pages = [];
     for (var z = 0; z <= length; z++) {
@@ -45,42 +40,14 @@ export default function DaftarVoucher() {
     const filteredData = searchResults.length != 0 ? searchResults : voucher;
     const tHead = [
         { name: 'Nama', span: 2 },
-        { name: 'Jumlah', span: 2 },
+        { name: 'Status', span: 2 },
         { name: 'Aksi', span: 2 },
     ]
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(searchVoucher(searchValue));
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSubmit(e);
-        }
-    };
-
+    console.log("vvv", voucher);
     return (
         <>
-            <div className='w-full h-full border border-[#00000040] px-[35px]'>
-                <div className='mt-7 flex flex-row justify-between'>
-                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Voucher</p>
-                    <div className='flex flex-row'>
-                        <input
-                            type="text"
-                            name=""
-                            id=""
-                            placeholder='Cari voucher...'
-                            className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
-                            onKeyPress={handleKeyPress}
-                        />
-                        <button onClick={handleSubmit} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
-                            Cari
-                        </button>
-                    </div>
-                </div>
+            <div className='px-16'>
                 {voucher?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
@@ -103,21 +70,16 @@ export default function DaftarVoucher() {
                                                         <p>{item?.name}</p>
                                                     </td>
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{formatRupiah(item?.jumlah)}</p>
+                                                        {item?.voucher_usages[0]?.isUsed === true ? 'Digunakan' : 'Belum digunakan'}
                                                     </td>
-                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
-                                                        <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
-                                                                <button
-                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                                >
+                                                    {item?.voucher_usages[0]?.isUsed === true ?
+                                                        <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
 
-                                                                    <p>Edit</p>
-                                                                </button>
-                                                            </Link>
-                                                            <ModalDeleteVoucher voucherId={item?.id} />
-                                                        </div>
-                                                    </td>
+                                                        </td> : <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                            <div className='flex flex-row justify-center items-center gap-4'>
+                                                                <ModalDeleteVoucherUser voucherId={item?.voucher_usages?.[0].id} />
+                                                            </div>
+                                                        </td>}
                                                 </tr>
                                             ))}
                                         </tbody>
@@ -159,5 +121,6 @@ export default function DaftarVoucher() {
         </>
     )
 }
+
 
 

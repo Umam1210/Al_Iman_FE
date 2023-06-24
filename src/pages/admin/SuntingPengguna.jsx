@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { editUserById, getUserById } from '../../services/user'
+import CardAddVoucherToUser from '../../components/admin/CardAddVoucherToUser'
 const Role = [
     { name: 'pembeli' },
     { name: 'pelapak' },
@@ -224,6 +225,10 @@ export default function SuntingPengguna() {
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <div>
+                    <CardAddVoucherToUser userId={userId} />
                 </div>
             </div>
         </>

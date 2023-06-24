@@ -55,7 +55,7 @@ export default function DetailProduct() {
                                     </Link>
                                 </div> : user === 'pembeli' ?
                                     <div className='w-full flex justify-center mt-4'>
-                                        <Link to={`/pembeli/pesanan/${product?.name}/${product.id}`}>
+                                        <Link to={`/pembeli/pesanan/${product?.name}/${product?.id}`}>
                                             <button className='h-[52px] w-[292px] rounded-md border border-[#0089FF] bg-[#2D9CDB] text-[24px] text-[#FFFFFF]'>
                                                 Pesan
                                             </button>

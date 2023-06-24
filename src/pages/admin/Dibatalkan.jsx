@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import ModalDeleteProduct from '../../components/admin/ModalDeleteProduct';
 import { Link } from 'react-router-dom';
-import formatRupiah from '../../helper/formatRupiah';
 import { getAllOrders } from '../../services/orders';
 import { getAllProducts } from '../../services/product';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
 export default function Dibatalkan() {
     const [value,] = useState(5);
@@ -14,7 +13,7 @@ export default function Dibatalkan() {
     // const [searchValue, setSearchValue] = useState('');
     const searchResults = useSelector((state) => state.product.searchProduct)
     const Product = useSelector((state) => state.product.products)
-    // const order = useSelector((state) => state.orders)
+    const order = useSelector((state) => state.orders.orders)
 
     const selectedData = (item) => {
         setCount(item)
@@ -42,17 +41,19 @@ export default function Dibatalkan() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : Product;
+    const filteredData = searchResults.length != 0 ? searchResults : order;
     const tHead = [
-        { name: 'Nama Produk', span: 2, },
-        { name: 'Harga', span: 2, },
-        { name: 'Stock', span: 2, },
-        { name: 'Visibilitas', span: 2, },
+        { name: 'Tanggal Pesan', span: 2, },
+        { name: 'Waktu Ambil', span: 2, },
+        { name: 'Produk', span: 2, },
+        { name: 'Jumlah', span: 2, },
+        { name: 'Pembeli', span: 2, },
         { name: 'Aksi', span: 2, },
     ]
     useEffect(() => {
         dispatch(getAllOrders())
     }, [])
+    console.log("orders", order);
     return (
         <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
             <div className=''>
@@ -62,43 +63,48 @@ export default function Dibatalkan() {
                             <div className="w-full overflow-x-auto">
                                 <table className="w-full">
                                     <thead>
-                                        <tr className="text-left grid grid-cols-10 h-[57px] text-[#000000BF] text-[20px] ">
+                                        <tr className="text-left grid grid-cols-12 h-[57px] text-[#000000BF] text-[20px] ">
                                             {tHead.map((item, idx) => (
                                                 <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                             ))}
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white">
-                                        {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
-                                            <tr key={idx} className="grid grid-cols-10 text-gray-700 h-[48px]">
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.name}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{formatRupiah(item?.harga)}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.stock}</p>
-                                                </td>
-                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                    <p>{item?.stock}</p>
-                                                </td>
-                                                <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
-                                                    <div className='flex flex-row justify-center items-center gap-4'>
-                                                        <Link to={`/admin/sunting/${item?.name}/${item?.id}`} >
-                                                            <button
-                                                                className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                            >
+                                    {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
+                                        <tbody key={idx} className="bg-white">
+                                            {item?.status === 'selesai' ?
+                                                <tr className="grid grid-cols-12 text-gray-700 ">
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex flex-col items-start">
+                                                        <p>{item?.tanggal_ambil}</p>
+                                                        <p>{item?.jam_ambil}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.product?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.banyak}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.user?.name}</p>
+                                                    </td>
+                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                        <div className='flex flex-row justify-center items-center gap-4'>
+                                                            <Link to={`/admin/detail-pesanan/${item?.id}`} >
+                                                                <button
+                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                >
 
-                                                                <p>Edit</p>
-                                                            </button>
-                                                        </Link>
-                                                        <ModalDeleteProduct productId={item?.id} />
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
+                                                                    <p>Detail</p>
+                                                                </button>
+                                                            </Link>
+                                                        </div>
+                                                    </td>
+                                                </tr> : ''}
+
+                                        </tbody>
+                                    ))}
                                 </table>
                             </div>
                         </div>

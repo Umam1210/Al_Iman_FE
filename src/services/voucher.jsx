@@ -11,11 +11,27 @@ export const getVoucherById = createAsyncThunk('vouchers/getVoucherById', async 
     return response.data;
 });
 
+export const getVoucherByIdUser = createAsyncThunk(
+    'vouchers/getVoucherByIdUser',
+    async (userId) => {
+        try {
+            const response = await API.get(`userVoucher/${userId}`);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.errorMessage);
+        }
+    }
+);
+
 export const deleteVoucher = createAsyncThunk('vouchers/deleteVoucher', async (voucherId) => {
     await API.delete(`deleteVoucher/${voucherId}`);
     return voucherId;
 });
 
+export const deleteVoucherUserById = createAsyncThunk('vouchers/deleteVoucher', async (voucherId) => {
+    await API.delete(`deleteVoucherUsage/${voucherId}`);
+    return voucherId;
+});
 export const addVoucher = createAsyncThunk('vouchers/addVoucher', async (voucher) => {
     const response = await API.post('createVoucher', voucher);
     return response.data;
@@ -34,6 +50,18 @@ export const searchVoucher = createAsyncThunk(
             return response.data;
         } catch (error) {
             throw new Error('Terjadi kesalahan pada server');
+        }
+    }
+);
+
+export const giveVoucher = createAsyncThunk(
+    'vouchers/giveVoucher',
+    async (voucherData) => {
+        try {
+            const response = await API.post('giveVoucher', voucherData);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.errorMessage);
         }
     }
 );

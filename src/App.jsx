@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './index.css';
 import Home from './pages/guest/HomePage';
 import Layout from './components/layout/Layout';
@@ -32,35 +32,43 @@ import PesananPelapak from './pages/Pelapak/PesananPelapak';
 import DetailPesananPelapak from './pages/Pelapak/DetailPesananPelapak';
 import DaftarProductByIdPelapak from './pages/pembeli/DaftarProductByIdPelapak';
 import { useCookies } from 'react-cookie';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useAuthEffect } from './routes/useAuthEffect';
-import { useAccessControl } from './routes/useAccessControl';
+// import { useAccessControl } from './routes/useAccessControl';
 import Dikonfirmasi from './pages/admin/Dikonfirmasi';
 import MenungguKonfirmasi from './pages/admin/MenungguKonfirmasi';
 import Dibatalkan from './pages/admin/Dibatalkan';
 import Selesai from './pages/admin/Selesai';
+import PembeliDikonfirmasi from './pages/pembeli/PembeliDikonfirmasi';
+import PemebeliMenungguKonfirmasi from './pages/pembeli/PemebeliMenungguKonfirmasi';
+import PemebeliDibatalkan from './pages/pembeli/PemebeliDibatalkan';
+import PembeliSelesai from './pages/pembeli/PembeliSelesai';
+import SuntingProductPelapak from './pages/Pelapak/SuntingProductPelapak';
+import PelapakDikonfirmasi from './pages/Pelapak/PelapakDikonfirmasi';
+import PelapakSelesai from './pages/Pelapak/PelapakSelesai';
+import { ProtectedRoute } from './routes/ProtectedRoute';
 
 
 function App() {
   const [cookies] = useCookies(['refreshToken']);
   const [id] = useCookies(['userId']);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
   const refresh = useSelector((state) => state.me)
   const navigate = useNavigate();
-  const location = useLocation();
-  const userData = JSON.parse(localStorage.getItem('userData'));
-  const data = userData?.[0]?.role;
+  // const location = useLocation();
+  // const userData = JSON.parse(localStorage.getItem('userData'));
+  // const data = userData?.[0]?.role;
   const lastVisitedPage = localStorage.getItem('lastVisitedPage');
 
   useAuthEffect(user, id, cookies, refresh);
-  useAccessControl(user, data, cookies, navigate, location, dispatch);
+  // useAccessControl(user, data, cookies, navigate, location, dispatch);
 
   useEffect(() => {
     if (lastVisitedPage && !user.isLogin) {
       navigate(lastVisitedPage);
     }
-  }, [lastVisitedPage, user.isLogin, navigate]);
+  }, [lastVisitedPage, user?.isLogin, navigate]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -70,6 +78,7 @@ function App() {
 
 
   console.log("user", user?.isLogin);
+  // console.log("userData", userData[0]?.role);
 
   return (
     <>
@@ -78,14 +87,45 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/detail/:title' element={<DetailHomePage />} />
           {/*Route Admin */}
-          <Route path='/admin/katalog' element={<AdminHomePage />} />
-          <Route path='/admin/detail/:title' element={<DetailProductAdmin />} />
-          <Route path='/admin/sunting/:title/:id' element={<SuntingProduct />} />
-          <Route path='/admin/tambah-product' element={<TambahProduct />} />
-          <Route path='/admin/dashboard' element={<Dashboard />} />
-          <Route path='/admin/list-pengguna' element={<ListPengguna />} />
-          <Route path='/admin/tambah-pengguna' element={<TambahPengguna />} />
-          <Route path='/admin/sunting-pengguna/:id' element={<SuntingPengguna />} />
+          <Route path='/admin/katalog' element={
+            <ProtectedRoute userRole={'admin'} >
+              <AdminHomePage />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/detail/:title' element={
+            <ProtectedRoute userRole={'admin'} >
+              <DetailProductAdmin />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/sunting/:title/:id' element={
+            <ProtectedRoute userRole={'admin'} >
+              <SuntingProduct />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/tambah-product' element={
+            <ProtectedRoute userRole={'admin'} >
+              <TambahProduct />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/dashboard' element={
+            <ProtectedRoute userRole={'admin'} >
+              <Dashboard />
+            </ProtectedRoute>} />
+          <Route path='/admin/list-pengguna' element={
+            <ProtectedRoute userRole={'admin'} >
+              <ListPengguna />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/tambah-pengguna' element={
+            <ProtectedRoute userRole={'admin'} >
+              <TambahPengguna />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/sunting-pengguna/:id' element={
+            <ProtectedRoute userRole={'admin'} >
+              <SuntingPengguna />
+            </ProtectedRoute>
+          } />
           <Route path='/admin/products' element={<Product />} />
           <Route path='/admin/pesanan/' element={<Pesanan />}>
             <Route path='dikonfirmasi' element={<Dikonfirmasi />} />
@@ -100,19 +140,36 @@ function App() {
 
           {/* Route Pembeli */}
           <Route path='/pembeli/katalog' element={<PembeliKatalog />} />
-          <Route path='/pembeli/detail/:title' element={<DetailPesananPembeli />} />
-          <Route path='/pembeli/dashboard' element={<DashboardPembeli />} />
+          <Route path='/pembeli/detail/:title' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <DetailPesananPembeli />
+            </ProtectedRoute>
+          } />
+          <Route path='/pembeli/dashboard' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <DashboardPembeli />
+            </ProtectedRoute>
+          } />
           <Route path='/pembeli/list-pelapak' element={<Pelapak />} />
-          <Route path='/pembeli/pesanan-saya' element={<PesananSaya />} />
+          <Route path='/pembeli/pesanan-saya/' element={<PesananSaya />} >
+            <Route path='dikonfirmasi' element={<PembeliDikonfirmasi />} />
+            <Route path='menunggu-konfirmasi' element={<PemebeliMenungguKonfirmasi />} />
+            <Route path='dibatalkan' element={<PemebeliDibatalkan />} />
+            <Route path='selesai' element={<PembeliSelesai />} />
+          </Route>
           <Route path='/pembeli/voucher-saya' element={<VoucherSaya />} />
           <Route path='/pembeli/pesanan/:title/:id' element={<FormPesanan />} />
           <Route path='/pembeli/pelapak-produk/:id' element={<DaftarProductByIdPelapak />} />
 
           {/* Route Pelapak */}
           <Route path='/pelapak/product-saya' element={<ProductSaya />} />
-          <Route path='/pelapak/pesanan' element={<PesananPelapak />} />
+          <Route path='/pelapak/pesanan/' element={<PesananPelapak />} >
+            <Route path='dikonfirmasi' element={<PelapakDikonfirmasi />} />
+            <Route path='selesai' element={<PelapakSelesai />} />
+          </Route>
           <Route path='/pelapak/detail-pesanan/:id' element={<DetailPesananPelapak />} />
           <Route path='/pelapak/tambah-produk' element={<TambahProductPelapak />} />
+          <Route path='/pelapak/sunting-produk/:id' element={<SuntingProductPelapak />} />
         </Routes>
       </Layout>
     </>

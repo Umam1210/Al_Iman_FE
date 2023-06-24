@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllVouchers, searchVoucher } from '../../services/voucher';
-import formatRupiah from '../../helper/formatRupiah';
 import { Link } from 'react-router-dom';
-import ModalDeleteVoucher from './ModalDeleteVoucher';
+import { getAllVouchers, searchVoucher } from '../../services/voucher';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function DaftarVoucher() {
+export default function DaftarPelapak() {
     const [value,] = useState(5);
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
@@ -45,7 +43,6 @@ export default function DaftarVoucher() {
     const filteredData = searchResults.length != 0 ? searchResults : voucher;
     const tHead = [
         { name: 'Nama', span: 2 },
-        { name: 'Jumlah', span: 2 },
         { name: 'Aksi', span: 2 },
     ]
 
@@ -64,13 +61,13 @@ export default function DaftarVoucher() {
         <>
             <div className='w-full h-full border border-[#00000040] px-[35px]'>
                 <div className='mt-7 flex flex-row justify-between'>
-                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Voucher</p>
+                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Pelapak</p>
                     <div className='flex flex-row'>
                         <input
                             type="text"
                             name=""
                             id=""
-                            placeholder='Cari voucher...'
+                            placeholder='Cari pelapak...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
@@ -90,7 +87,7 @@ export default function DaftarVoucher() {
                                 <div className="w-full overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
-                                            <tr className="text-left grid grid-cols-6 h-[57px] text-[#000000BF] text-[20px] ">
+                                            <tr className="text-left grid grid-cols-4 h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (
                                                     <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                                 ))}
@@ -98,12 +95,9 @@ export default function DaftarVoucher() {
                                         </thead>
                                         <tbody className="bg-white">
                                             {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
+                                                <tr key={idx} className="grid grid-cols-4 text-gray-700 h-[48px]">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
                                                         <p>{item?.name}</p>
-                                                    </td>
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{formatRupiah(item?.jumlah)}</p>
                                                     </td>
                                                     <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
@@ -112,10 +106,9 @@ export default function DaftarVoucher() {
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >
 
-                                                                    <p>Edit</p>
+                                                                    <p>Lihat Produk</p>
                                                                 </button>
                                                             </Link>
-                                                            <ModalDeleteVoucher voucherId={item?.id} />
                                                         </div>
                                                     </td>
                                                 </tr>

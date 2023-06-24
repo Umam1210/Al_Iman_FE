@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllVouchers, searchVoucher } from '../../services/voucher';
-import formatRupiah from '../../helper/formatRupiah';
+import ModalDeleteProduct from '../admin/ModalDeleteProduct';
 import { Link } from 'react-router-dom';
-import ModalDeleteVoucher from './ModalDeleteVoucher';
+import formatRupiah from '../../helper/formatRupiah';
+import { getAllProducts, searchProduct } from '../../services/product';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function DaftarVoucher() {
+export default function DaftarProductPelapak() {
     const [value,] = useState(5);
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
     const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.voucher.searchVoucher)
-    const voucher = useSelector((state) => state.voucher.vouchers)
-    // const handleSearch = () => {
-    //     dispatch(searchVoucher(searchValue));
-    // };
+    const searchResults = useSelector((state) => state.product.searchProduct)
+    const Product = useSelector((state) => state.product.products)
+    const handleSearch = () => {
+        dispatch(searchProduct(searchValue));
+    };
     const selectedData = (item) => {
         setCount(item)
     }
     useEffect(() => {
-        dispatch(getAllVouchers());
+        dispatch(getAllProducts());
     }, [dispatch]);
 
-    const length = Math.ceil(voucher?.length / value);
+    const length = Math.ceil(Product?.length / value);
     let pages = [];
     for (var z = 0; z <= length; z++) {
         pages.push(z);
@@ -42,46 +42,35 @@ export default function DaftarVoucher() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    const filteredData = searchResults.length != 0 ? searchResults : Product;
     const tHead = [
-        { name: 'Nama', span: 2 },
-        { name: 'Jumlah', span: 2 },
-        { name: 'Aksi', span: 2 },
+        { name: 'Nama Produk', span: 2, },
+        { name: 'Harga', span: 2, },
+        { name: 'Stock', span: 2, },
+        { name: 'Visibilitas', span: 2, },
+        { name: 'Aksi', span: 2, },
     ]
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(searchVoucher(searchValue));
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            handleSubmit(e);
-        }
-    };
-
     return (
         <>
             <div className='w-full h-full border border-[#00000040] px-[35px]'>
                 <div className='mt-7 flex flex-row justify-between'>
-                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Voucher</p>
+                    <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Produk</p>
                     <div className='flex flex-row'>
                         <input
                             type="text"
                             name=""
                             id=""
-                            placeholder='Cari voucher...'
+                            placeholder='Cari Produk...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
                             value={searchValue}
                             onChange={(e) => setSearchValue(e.target.value)}
-                            onKeyPress={handleKeyPress}
                         />
-                        <button onClick={handleSubmit} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
+                        <button onClick={handleSearch} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
                             Cari
                         </button>
                     </div>
                 </div>
-                {voucher?.length === 0 ? <div>
+                {Product?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
                     <div className='w-full h-full pt-6'>
@@ -90,24 +79,30 @@ export default function DaftarVoucher() {
                                 <div className="w-full overflow-x-auto">
                                     <table className="w-full">
                                         <thead>
-                                            <tr className="text-left grid grid-cols-6 h-[57px] text-[#000000BF] text-[20px] ">
+                                            <tr className="text-left grid grid-cols-10 h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (
                                                     <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                                 ))}
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
+                                            {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
+                                                <tr key={idx} className="grid grid-cols-10 text-gray-700 h-[48px]">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
                                                         <p>{item?.name}</p>
                                                     </td>
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{formatRupiah(item?.jumlah)}</p>
+                                                        <p>{formatRupiah(item?.harga)}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.stock}</p>
+                                                    </td>
+                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                        <p>{item?.stock}</p>
                                                     </td>
                                                     <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
+                                                            <Link to={`/pelapak/sunting-produk/${item?.id}`} state={{ id: item?.id }} >
                                                                 <button
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >
@@ -115,7 +110,7 @@ export default function DaftarVoucher() {
                                                                     <p>Edit</p>
                                                                 </button>
                                                             </Link>
-                                                            <ModalDeleteVoucher voucherId={item?.id} />
+                                                            <ModalDeleteProduct productId={item?.id} />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -126,7 +121,7 @@ export default function DaftarVoucher() {
                             </div>
                         </section>
                     </div>
-                    {filteredData.length >= 5 ? <div className='w-full flex justify-center mt-6'>
+                    {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
                         <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                             <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

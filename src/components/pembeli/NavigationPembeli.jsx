@@ -6,7 +6,7 @@ export default function NavigationPembeli() {
         { name: 'Katalog', href: 'katalog' },
         { name: 'Dashboard', href: 'dashboard' },
         { name: 'Daftar Pelapak', href: 'list-pelapak' },
-        { name: 'Pesanan Saya', href: 'pesanan-saya' },
+        { name: 'Pesanan Saya', href: 'pesanan-saya/menunggu-konfirmasi' },
         { name: 'Voucher Saya', href: 'voucher-saya' },
     ]
 

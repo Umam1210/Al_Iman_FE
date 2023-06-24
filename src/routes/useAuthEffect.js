@@ -19,7 +19,6 @@ export const useAuthEffect = (user, id, cookies, refresh) => {
 
   useEffect(() => {
     if (cookies.refreshToken === refresh.token) {
-      // Lakukan tindakan yang sesuai, seperti mengatur token atau status login
       dispatch(setLoginStatus(true));
     } else {
       dispatch(setLoginStatus(false));

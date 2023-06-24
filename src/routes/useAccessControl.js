@@ -23,7 +23,11 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
           '/pembeli/katalog',
           '/pembeli/dashboard',
           '/pembeli/list-pelapak',
-          '/pembeli/pesanan-saya',
+          // '/pembeli/pesanan-saya',
+          '/pembeli/pesanan-saya/dikonfirmasi',
+          '/pembeli/pesanan-saya/menunggu-konfirmasi',
+          '/pembeli/pesanan-saya/dibatalkan',
+          '/pembeli/pesanan-saya/selesai',
           '/pembeli/voucher-saya',
           '/pembeli/detail/:title',
           '/pembeli/pesanan/:id/:status',
@@ -53,7 +57,7 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
           '/admin/detail/:title',
           '/admin/sunting/:title/:id',
           '/admin/products',
-          '/admin/pesanan',
+          // '/admin/pesanan',
           '/admin/pesanan/dikonfirmasi',
           '/admin/pesanan/menunggu-konfirmasi',
           '/admin/pesanan/dibatalkan',
@@ -81,13 +85,17 @@ export const useAccessControl = (user, data, cookies, navigate, location, dispat
         const currentPath = location.pathname;
         const allowedPaths = [
           '/pelapak/product-saya',
-          '/pelapak/pesanan',
+          '/pelapak/pesanan/dikonfirmasi',
+          '/pelapak/pesanan/selesai',
           '/pelapak/detail-pesanan/:id',
-          '/pelapak/tambah-produk'
+          '/pelapak/tambah-produk',
+          '/pelapak/sunting-produk/:id'
         ];
 
         const isAllowedPath = allowedPaths.some((path) => {
-          const regex = new RegExp('^' + path.replace(/:\w+/g, '\\w+').replace(/\//g, '\\/') + '$');
+          const regex = new RegExp(
+            '^' + path.replace(/:[\w\s]+/g, '\\S+').replace(/\//g, '\\/') + '$'
+          );
           return regex.test(currentPath);
         });
 

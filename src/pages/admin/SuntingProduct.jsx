@@ -1,7 +1,36 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
+import { getProductById } from '../../services/product'
 
 export default function SuntingProduct() {
+    const id = useLocation()
+    const idProduct = id?.state?.id
+    const dispatch = useDispatch()
+    const product = useSelector((state) => state.product.selectedProduct)
+    const [productName, setProductName] = useState('');
+    const [price, setPrice] = useState('');
+    const [stock, setStock] = useState('');
+    const [description, setDescription] = useState('');
+    const [pelapak, setPelapak] = useState('');
+
+
+
+    useEffect(() => {
+        dispatch(getProductById(idProduct))
+    }, [])
+    useEffect(() => {
+        if (product) {
+            setProductName(product.name);
+            setPrice(product.price);
+            setStock(product.stock);
+            setDescription(product.description);
+            setPelapak(product.pelapak);
+        }
+    }, [product]);
+
+    console.log("pro", product);
+    console.log("pro", productName);
     return (
         <>
             <div className='px-[98px] '>
@@ -20,6 +49,8 @@ export default function SuntingProduct() {
                                         type="text"
                                         name=""
                                         id=""
+                                        value={productName}
+                                        onChange={(e) => setProductName(e.target.value)}
                                         className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
                                         required
                                     />

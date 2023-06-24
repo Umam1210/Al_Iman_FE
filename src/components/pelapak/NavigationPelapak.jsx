@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 export default function NavigationPelapak() {
     const navigate = [
         { name: 'Product Saya', href: 'product-saya' },
-        { name: 'Pesanan', href: 'pesanan' },
+        { name: 'Pesanan', href: 'pesanan/dikonfirmasi' },
     ]
 
     return (

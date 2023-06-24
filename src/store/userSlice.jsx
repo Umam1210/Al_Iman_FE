@@ -71,12 +71,14 @@ const userSlice = createSlice({
             })
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload;
+                state.user = action.payload.User; // Akses data user dari action.payload.User
+                console.log(action.payload.message);
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload.error;
             })
+
             .addCase(searchUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { login } from '../../services/login'; import { getUserById } from '../../services/user';
-;
-;
+import { useNavigate } from 'react-router-dom';
+
 
 export default function CardLogin() {
     const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ export default function CardLogin() {
     const [error, setError] = useState(false)
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData?.[1]?.role;
+    const navigate = useNavigate()
     // const userId = userData?.[1]?.access;
 
     const Auth = async (e) => {
@@ -18,8 +19,16 @@ export default function CardLogin() {
 
         try {
             const response = await dispatch(login({ email, password }));
-            if (response && response.success) {
+            if (response.type === 'auth/login/fulfilled') {
                 await dispatch(getUserById(userId));
+                if (response?.payload?.userRole === 'admin') {
+                    navigate('/admin/katalog')
+                } else if (response?.payload?.userRole === 'pembeli') {
+                    navigate('/pembeli/katalog')
+                } else if (response?.payload?.userRole === 'pelapak') {
+                    navigate('/pelapak/product-saya')
+                }
+                console.log("respons", response?.payload?.userRole);
             } else {
                 setError(true)
             }
