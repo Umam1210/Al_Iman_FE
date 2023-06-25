@@ -18,7 +18,7 @@ export const useAuthEffect = (user, id, cookies, refresh) => {
   }, [dispatch, id.userId]);
 
   useEffect(() => {
-    if (cookies.refreshToken === refresh.token) {
+    if (id?.refreshToken === refresh?.token) {
       dispatch(setLoginStatus(true));
     } else {
       dispatch(setLoginStatus(false));

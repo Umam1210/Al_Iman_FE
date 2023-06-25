@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteUserById, editUserById, getAllUsers, getUserById, registerUser, searchUser } from "../services/user";
+import { deleteUserById, editUserById, getAllUsers, getPelapak, getUserById, registerUser, searchPelapak, searchUser } from "../services/user";
 
 
 const initialState = {
     users: [],
     user: null,
+    pelapak: [],
     searchUser: [],
+    searchPelapak: [],
     loading: false,
     error: null
 };
@@ -25,6 +27,19 @@ const userSlice = createSlice({
                 state.users = action.payload;
             })
             .addCase(getAllUsers.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            .addCase(getPelapak.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getPelapak.fulfilled, (state, action) => {
+                state.loading = false;
+                state.pelapak = action.payload;
+            })
+            .addCase(getPelapak.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })
@@ -88,6 +103,19 @@ const userSlice = createSlice({
                 state.searchUser = action.payload;
             })
             .addCase(searchUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+
+            .addCase(searchPelapak.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(searchPelapak.fulfilled, (state, action) => {
+                state.loading = false;
+                state.searchPelapak = action.payload;
+            })
+            .addCase(searchPelapak.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

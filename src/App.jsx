@@ -52,12 +52,11 @@ import { ProtectedRoute } from './routes/ProtectedRoute';
 function App() {
   const [cookies] = useCookies(['refreshToken']);
   const [id] = useCookies(['userId']);
-  // const dispatch = useDispatch();
   const user = useSelector((state) => state.auth);
   const refresh = useSelector((state) => state.me)
   const navigate = useNavigate();
   // const location = useLocation();
-  // const userData = JSON.parse(localStorage.getItem('userData'));
+  const userData = JSON.parse(localStorage.getItem('userData'));
   // const data = userData?.[0]?.role;
   const lastVisitedPage = localStorage.getItem('lastVisitedPage');
 
@@ -78,7 +77,8 @@ function App() {
 
 
   console.log("user", user?.isLogin);
-  // console.log("userData", userData[0]?.role);
+  console.log("userData", userData?.[3]?.isLogin);
+
 
   return (
     <>
@@ -126,17 +126,57 @@ function App() {
               <SuntingPengguna />
             </ProtectedRoute>
           } />
-          <Route path='/admin/products' element={<Product />} />
-          <Route path='/admin/pesanan/' element={<Pesanan />}>
-            <Route path='dikonfirmasi' element={<Dikonfirmasi />} />
-            <Route path='menunggu-konfirmasi' element={<MenungguKonfirmasi />} />
-            <Route path='dibatalkan' element={<Dibatalkan />} />
-            <Route path='selesai' element={<Selesai />} />
+          <Route path='/admin/products' element={
+            <ProtectedRoute userRole={'admin'} >
+              <Product />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/pesanan/' element={
+            <ProtectedRoute userRole={'admin'} >
+              <Pesanan />
+            </ProtectedRoute>
+          }>
+            <Route path='dikonfirmasi' element={
+              <ProtectedRoute userRole={'admin'} >
+                <Dikonfirmasi />
+              </ProtectedRoute>
+            } />
+            <Route path='menunggu-konfirmasi' element={
+              <ProtectedRoute userRole={'admin'} >
+                <MenungguKonfirmasi />
+              </ProtectedRoute>
+            } />
+            <Route path='dibatalkan' element={
+              <ProtectedRoute userRole={'admin'} >
+                <Dibatalkan />
+              </ProtectedRoute>
+            } />
+            <Route path='selesai' element={
+              <ProtectedRoute userRole={'admin'} >
+                <Selesai />
+              </ProtectedRoute>
+            } />
           </Route>
-          <Route path='/admin/detail-pesanan/:id' element={<DetailPesanan />} />
-          <Route path='/admin/voucher' element={<Voucher />} />
-          <Route path='/admin/tambah-voucher' element={<TambahVoucher />} />
-          <Route path='/admin/sunting-voucher/:id' element={<SuntingVoucher />} />
+          <Route path='/admin/detail-pesanan/:id' element={
+            <ProtectedRoute userRole={'admin'} >
+              <DetailPesanan />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/voucher' element={
+            <ProtectedRoute userRole={'admin'} >
+              <Voucher />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/tambah-voucher' element={
+            <ProtectedRoute userRole={'admin'} >
+              <TambahVoucher />
+            </ProtectedRoute>
+          } />
+          <Route path='/admin/sunting-voucher/:id' element={
+            <ProtectedRoute userRole={'admin'} >
+              <SuntingVoucher />
+            </ProtectedRoute>
+          } />
 
           {/* Route Pembeli */}
           <Route path='/pembeli/katalog' element={<PembeliKatalog />} />
@@ -150,26 +190,90 @@ function App() {
               <DashboardPembeli />
             </ProtectedRoute>
           } />
-          <Route path='/pembeli/list-pelapak' element={<Pelapak />} />
-          <Route path='/pembeli/pesanan-saya/' element={<PesananSaya />} >
-            <Route path='dikonfirmasi' element={<PembeliDikonfirmasi />} />
-            <Route path='menunggu-konfirmasi' element={<PemebeliMenungguKonfirmasi />} />
-            <Route path='dibatalkan' element={<PemebeliDibatalkan />} />
-            <Route path='selesai' element={<PembeliSelesai />} />
-          </Route>
-          <Route path='/pembeli/voucher-saya' element={<VoucherSaya />} />
-          <Route path='/pembeli/pesanan/:title/:id' element={<FormPesanan />} />
-          <Route path='/pembeli/pelapak-produk/:id' element={<DaftarProductByIdPelapak />} />
+          <Route path='/pembeli/list-pelapak' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <Pelapak />
+            </ProtectedRoute>
+          } />
+          <Route path='/pembeli/daftar-produk-pelapak/:id' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <DaftarProductByIdPelapak />
+            </ProtectedRoute>
+          } />
 
-          {/* Route Pelapak */}
-          <Route path='/pelapak/product-saya' element={<ProductSaya />} />
-          <Route path='/pelapak/pesanan/' element={<PesananPelapak />} >
-            <Route path='dikonfirmasi' element={<PelapakDikonfirmasi />} />
-            <Route path='selesai' element={<PelapakSelesai />} />
+          <Route path='/pembeli/pesanan-saya/' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <PesananSaya />
+            </ProtectedRoute>
+          } >
+            <Route path='dikonfirmasi' element={
+              <ProtectedRoute userRole={'pembeli'} >
+                <PembeliDikonfirmasi />
+              </ProtectedRoute>
+            } />
+            <Route path='menunggu-konfirmasi' element={
+              <ProtectedRoute userRole={'pembeli'} >
+                <PemebeliMenungguKonfirmasi />
+              </ProtectedRoute>
+            } />
+            <Route path='dibatalkan' element={
+              <ProtectedRoute userRole={'pembeli'} >
+                <PemebeliDibatalkan />
+              </ProtectedRoute>
+            } />
+            <Route path='selesai' element={
+              <ProtectedRoute userRole={'pembeli'} >
+                <PembeliSelesai />
+              </ProtectedRoute>
+            } />
           </Route>
-          <Route path='/pelapak/detail-pesanan/:id' element={<DetailPesananPelapak />} />
-          <Route path='/pelapak/tambah-produk' element={<TambahProductPelapak />} />
-          <Route path='/pelapak/sunting-produk/:id' element={<SuntingProductPelapak />} />
+          <Route path='/pembeli/voucher-saya' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <VoucherSaya />
+            </ProtectedRoute>
+          } />
+          <Route path='/pembeli/pesanan/:title/:id' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <FormPesanan />
+            </ProtectedRoute>
+          } />
+          {/* Route Pelapak */}
+          <Route path='/pelapak/product-saya' element={
+            <ProtectedRoute userRole={'pelapak'} >
+              <ProductSaya />
+            </ProtectedRoute>
+          } />
+          <Route path='/pelapak/pesanan/' element={
+            <ProtectedRoute userRole={'pelapak'} >
+              <PesananPelapak />
+            </ProtectedRoute>
+          } >
+            <Route path='dikonfirmasi' element={
+              <ProtectedRoute userRole={'pelapak'} >
+                <PelapakDikonfirmasi />
+              </ProtectedRoute>
+            } />
+            <Route path='selesai' element={
+              <ProtectedRoute userRole={'pelapak'} >
+                <PelapakSelesai />
+              </ProtectedRoute>
+            } />
+          </Route>
+          <Route path='/pelapak/detail-pesanan/:id' element={
+            <ProtectedRoute userRole={'pelapak'} >
+              <DetailPesananPelapak />
+            </ProtectedRoute>
+          } />
+          <Route path='/pelapak/tambah-produk' element={
+            <ProtectedRoute userRole={'pelapak'} >
+              <TambahProductPelapak />
+            </ProtectedRoute>
+          } />
+          <Route path='/pelapak/sunting-produk/:id' element={
+            <ProtectedRoute userRole={'pelapak'} >
+              <SuntingProductPelapak />
+            </ProtectedRoute>
+          } />
         </Routes>
       </Layout>
     </>

@@ -6,6 +6,11 @@ export const getAllUsers = createAsyncThunk("user/getAllUsers", async () => {
     return response.data;
 });
 
+export const getPelapak = createAsyncThunk('pelapak/getPelapak', async () => {
+    const response = await API.get('pelapak')
+    return response.data
+})
+
 export const getUserById = createAsyncThunk("user/getUserById", async (userId) => {
     const response = await API.get(`getUser/${userId}`);
     return response.data;
@@ -40,6 +45,18 @@ export const searchUser = createAsyncThunk(
     async (searchTerm) => {
         try {
             const response = await API.get(`/searchUser?userName=${searchTerm}`);
+            return response.data;
+        } catch (error) {
+            throw new Error('Terjadi kesalahan pada server');
+        }
+    }
+);
+
+export const searchPelapak = createAsyncThunk(
+    'pelapak/searchPelapak',
+    async (searchTerm) => {
+        try {
+            const response = await API.get(`pelapak/search?name=${searchTerm}`);
             return response.data;
         } catch (error) {
             throw new Error('Terjadi kesalahan pada server');

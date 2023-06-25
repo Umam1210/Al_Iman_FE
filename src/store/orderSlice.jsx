@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addOrder, deleteOrder, getAllOrders, getOrderById, updateOrder } from "../services/orders";
+import { addOrder, deleteOrder, getAllOrders, getOrderById, getOrderByIdUser, updateOrder } from "../services/orders";
 
 
 const initialState = {
     orders: [],
+    orderUser: [],
+    order: null,
     loading: false,
     error: null
 };
@@ -26,6 +28,20 @@ const ordersSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
+
+        builder.addCase(getOrderByIdUser.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getOrderByIdUser.fulfilled, (state, action) => {
+            state.orderUser = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(getOrderByIdUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        });
+
 
         // Get order by ID
         builder.addCase(getOrderById.pending, (state) => {

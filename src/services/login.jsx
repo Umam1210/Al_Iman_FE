@@ -7,7 +7,7 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
         const response = await API.post('login', user);
         const data = response.data[0];
 
-        const userArray = [{ role: data.userRole }, { access: data.userId }, { name: data.userName }];
+        const userArray = [{ role: data.userRole }, { access: data.userId }, { name: data.userName }, { isLogin: true }];
         localStorage.setItem('userData', JSON.stringify(userArray));
 
         return data;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { getAllVouchers, searchVoucher } from '../../services/voucher';
 import { useDispatch, useSelector } from 'react-redux';
+import { getPelapak, searchPelapak } from '../../services/user';
 
 export default function DaftarPelapak() {
     const [value,] = useState(5);
@@ -9,19 +9,17 @@ export default function DaftarPelapak() {
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
     const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.voucher.searchVoucher)
-    const voucher = useSelector((state) => state.voucher.vouchers)
-    // const handleSearch = () => {
-    //     dispatch(searchVoucher(searchValue));
-    // };
+    const searchResults = useSelector((state) => state.user?.searchPelapak)
+    const user = useSelector((state) => state.user?.pelapak)
+
     const selectedData = (item) => {
         setCount(item)
     }
     useEffect(() => {
-        dispatch(getAllVouchers());
+        dispatch(getPelapak())
     }, [dispatch]);
 
-    const length = Math.ceil(voucher?.length / value);
+    const length = Math.ceil(user?.length / value);
     let pages = [];
     for (var z = 0; z <= length; z++) {
         pages.push(z);
@@ -40,7 +38,7 @@ export default function DaftarPelapak() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    const filteredData = searchResults.length != 0 ? searchResults : user;
     const tHead = [
         { name: 'Nama', span: 2 },
         { name: 'Aksi', span: 2 },
@@ -48,7 +46,7 @@ export default function DaftarPelapak() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(searchVoucher(searchValue));
+        dispatch(searchPelapak(searchValue));
     };
 
     const handleKeyPress = (e) => {
@@ -56,6 +54,8 @@ export default function DaftarPelapak() {
             handleSubmit(e);
         }
     };
+
+    console.log("search", searchResults);
 
     return (
         <>
@@ -78,10 +78,10 @@ export default function DaftarPelapak() {
                         </button>
                     </div>
                 </div>
-                {voucher?.length === 0 ? <div>
+                {user?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
-                    <div className='w-full h-full pt-6'>
+                    <div className='w-full h-full py-6'>
                         <section className="container mx-auto">
                             <div className="w-full overflow-hidden ">
                                 <div className="w-full overflow-x-auto">
@@ -101,7 +101,7 @@ export default function DaftarPelapak() {
                                                     </td>
                                                     <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
+                                                            <Link to={`/pembeli/daftar-produk-pelapak/${item?.id}`} state={{ name: item?.name }}>
                                                                 <button
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >

@@ -1,4 +1,5 @@
 import React from 'react'
+import formatRupiah from '../../helper/formatRupiah'
 
 export default function CardVoucherSaya({ voucher }) {
     const tHead = [
@@ -6,7 +7,7 @@ export default function CardVoucherSaya({ voucher }) {
         { name: 'Jumlah' },
     ]
     return (
-        <div className='w-full h-full border border-[#00000040] p'>
+        <div className='w-full h-full border border-[#00000040] pb-5'>
             <div className='pl-8 mt-7 text-[#000000BF] text-[28px]'>
                 <p>Voucher</p>
             </div>
@@ -27,7 +28,7 @@ export default function CardVoucherSaya({ voucher }) {
                                         {voucher?.map((item, idx) => (
                                             <tr key={idx} className="text-gray-700 h-[48px]">
                                                 <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.name}</td>
-                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">22</td>
+                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">{formatRupiah(item?.jumlah)}</td>
                                             </tr>
                                         ))}
                                     </tbody>

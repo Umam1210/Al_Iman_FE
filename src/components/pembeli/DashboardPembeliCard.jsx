@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUsers } from '../../services/user';
 import { Link } from 'react-router-dom';
+import { getAllOrders, getOrderByIdUser } from '../../services/orders';
+import { formatDate, formatTime } from '../../helper/formatDay';
 
 export default function DashboardPembeliCard() {
-    const [value,] = useState(5);
+    const value = 5;
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-    const searchResults = useSelector((state) => state.user.searchUser)
+
     const User = useSelector((state) => state.user.users)
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userId = userData?.[1]?.access
+
+    const order = useSelector((state) => state.orders.orderUser)
+
+
     const selectedData = (item) => {
         setCount(item)
     }
 
     useEffect(() => {
-        dispatch(getAllUsers());
+        dispatch(getOrderByIdUser(userId));
+        dispatch(getAllOrders())
     }, [dispatch]);
 
     const tHead = [
-        { name: 'Name', span: 1 },
-        { name: 'Email', span: 2 },
-        { name: 'Role', span: 1 },
+        { name: 'Nama Produk', span: 1 },
+        { name: 'Waktu Ambil', span: 2 },
+        { name: 'Status', span: 1 },
         { name: 'Aksi', span: 1 },
     ]
 
@@ -47,13 +55,16 @@ export default function DashboardPembeliCard() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : User;
+    const filteredData = order;
+
+    console.log("us", order);
+    console.log("id", userId);
 
     return (
         <>
             <div className='w-full h-full '>
                 <p className='text-2xl font-normal'>Pesanan dalam proses</p>
-                {User?.length === 0 ? <div>
+                {order?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
                     <div className='w-full h-full pt-6'>
@@ -74,13 +85,13 @@ export default function DashboardPembeliCard() {
                                             {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
                                                 <tr key={idx} className="grid grid-cols-5 text-gray-700 h-[48px]">
                                                     <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
+                                                        <p>{item?.product?.name}</p>
                                                     </td>
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.email}</p>
+                                                        <p>{formatDate(item?.tanggal_ambil)} pukul {formatTime(item?.jam_ambil)}</p>
                                                     </td>
                                                     <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.role}</p>
+                                                        <p>{item?.status}</p>
                                                     </td>
                                                     <td className="col-span-1 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
