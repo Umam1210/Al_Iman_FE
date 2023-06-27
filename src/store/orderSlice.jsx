@@ -29,6 +29,7 @@ const ordersSlice = createSlice({
             state.error = action.error.message;
         });
 
+
         builder.addCase(getOrderByIdUser.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -48,15 +49,15 @@ const ordersSlice = createSlice({
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(getOrderById.fulfilled, (state) => {
-            // Handle getting order by ID
-            // Modify state accordingly
+        builder.addCase(getOrderById.fulfilled, (state, action) => {
+            state.order = action.payload
             state.loading = false;
         });
         builder.addCase(getOrderById.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });
+
 
         // Add order
         builder.addCase(addOrder.pending, (state) => {

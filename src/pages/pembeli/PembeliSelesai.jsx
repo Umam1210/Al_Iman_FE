@@ -1,47 +1,18 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import { getAllOrders } from '../../services/orders';
-import { getAllProducts } from '../../services/product';
+import { getOrderByIdUser } from '../../services/orders';;
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function PembeliSelesai() {
-    const [value,] = useState(5);
-    const [count, setCount] = useState(1);
-    const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-    // const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.product.searchProduct)
-    const Product = useSelector((state) => state.product.products)
-    const order = useSelector((state) => state.orders.orders)
+    const order = useSelector((state) => state.orders.orderUser)
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const userId = userData?.[1]?.access
 
-    const selectedData = (item) => {
-        setCount(item)
-    }
     useEffect(() => {
-        dispatch(getAllProducts());
-    }, [dispatch]);
-
-    const length = Math.ceil(Product?.length / value);
-    let pages = [];
-    for (var z = 0; z <= length; z++) {
-        pages.push(z);
-    }
-    const btnRight = () => {
-        if (number + 1 > length) {
-            setNumber(length);
-        } else {
-            setNumber(number + 1);
-        }
-    };
-    const btnLeft = () => {
-        if (number - 1 < 1) {
-            setNumber(1);
-        } else {
-            setNumber(number - 1);
-        }
-    };
-    const filteredData = searchResults.length != 0 ? searchResults : order;
+        dispatch(getOrderByIdUser(userId));
+    }, []);
     const tHead = [
         { name: 'Tanggal Pesan', span: 2, },
         { name: 'Waktu Ambil', span: 2, },
@@ -50,10 +21,9 @@ export default function PembeliSelesai() {
         { name: 'Pembeli', span: 2, },
         { name: 'Aksi', span: 2, },
     ]
-    useEffect(() => {
-        dispatch(getAllOrders())
-    }, [])
-    console.log("orders", order);
+
+    console.log("or", order);
+
     return (
         <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
             <div className=''>
@@ -69,9 +39,9 @@ export default function PembeliSelesai() {
                                             ))}
                                         </tr>
                                     </thead>
-                                    {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
+                                    {order.map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
-                                            {item?.status === 'dikonfirmasi' ?
+                                            {item?.status === 'selesai' ?
                                                 <tr className="grid grid-cols-12 text-gray-700">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
                                                         <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
@@ -91,7 +61,7 @@ export default function PembeliSelesai() {
                                                     </td>
                                                     <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/detail-pesanan/${item?.id}`} >
+                                                            <Link to={`/pembeli/detail-pesanan/${item?.id}`} state={{ id: item?.id }} >
                                                                 <button
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >
@@ -110,35 +80,6 @@ export default function PembeliSelesai() {
                         </div>
                     </section>
                 </div>
-                {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
-                    <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
-                        <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                        </div>
-                        {number <= length ? (
-                            <div onClick={() => {
-                                selectedData(number)
-                            }} className={`col-span-1 h-full w-full border-l-2 border-[#348FDD40] grid place-items-center ${count === number ? 'bg-[#2D9CDBAB] text-[#FFFFFF]' : ''}`}>
-                                <button>{number}</button>
-                            </div>
-                        ) : null}
-                        {number + 1 <= length ? (
-                            <div onClick={() => {
-                                selectedData(number + 1)
-                            }} className={`col-span-1 h-full w-full border-l-2 border-[#348FDD40] grid place-items-center ${count === number + 1 ? 'bg-[#2D9CDBAB] text-[#FFFFFF]' : ''}`}>
-                                <button>{number + 1}</button>
-                            </div>
-                        ) : null}
-                        <div className='col-span-1 border-l-2 border-[#348FDD40] w-full h-full grid place-items-center ' onClick={() => btnRight()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                            </svg>
-                        </div>
-                    </nav>
-                </div> : ''}
-
             </div>
         </div>
     )

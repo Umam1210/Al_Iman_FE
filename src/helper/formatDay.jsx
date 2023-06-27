@@ -17,8 +17,12 @@ export const formatDate = (dateString) => {
 };
 
 export const formatTime = (timeString) => {
-    const [hour, minute] = timeString.split(':');
-    const formattedTime = `${hour}:${minute}`;
+    if (timeString) {
+        const [hour, minute] = timeString.split(':');
+        const formattedTime = `${hour}:${minute}`;
 
-    return formattedTime;
+        return formattedTime;
+    }
+
+    return '';
 };

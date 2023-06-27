@@ -47,6 +47,7 @@ import SuntingProductPelapak from './pages/Pelapak/SuntingProductPelapak';
 import PelapakDikonfirmasi from './pages/Pelapak/PelapakDikonfirmasi';
 import PelapakSelesai from './pages/Pelapak/PelapakSelesai';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import DetailPesananItem from './pages/pembeli/DetailPesananItem';
 
 
 function App() {
@@ -237,6 +238,13 @@ function App() {
               <FormPesanan />
             </ProtectedRoute>
           } />
+          <Route path='/pembeli/detail-pesanan/:id' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <DetailPesananItem />
+            </ProtectedRoute>
+          } />
+
+
           {/* Route Pelapak */}
           <Route path='/pelapak/product-saya' element={
             <ProtectedRoute userRole={'pelapak'} >

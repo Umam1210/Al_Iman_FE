@@ -7,7 +7,7 @@ export const getAllOrders = createAsyncThunk('orders/getAllOrders', async () => 
 });
 
 export const getOrderById = createAsyncThunk('orders/getOrderById', async (orderId) => {
-    const response = await API.get(`orders/${orderId}`);
+    const response = await API.get(`order/${orderId}`);
     return response.data;
 });
 

@@ -75,7 +75,6 @@ export default function TambahPengguna() {
         setIsOpen(false);
     };
 
-    console.log(formData);
 
     return (
         <>

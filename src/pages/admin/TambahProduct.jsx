@@ -1,16 +1,28 @@
 
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { addProduct } from '../../services/product';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { Listbox, Transition } from '@headlessui/react';
+import { useEffect } from 'react';
+import { getPelapak } from '../../services/user';
+
+const listPelapak = [
+    { name: 'pembeli' },
+    { name: 'pelapak' },
+    { name: 'admin' },
+]
 
 export default function TambahProduct() {
+    const [pelapak, setPelapak] = useState(listPelapak[0]);
+    const Pelapak = useSelector((state) => state.user?.pelapak)
+
     const dispatch = useDispatch();
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
     const [description, setDescription] = useState('');
-    const [pelapak, setPelapak] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
     const [selectedImage1, setSelectedImage1] = useState(null);
     const [selectedImage2, setSelectedImage2] = useState(null);
@@ -78,7 +90,7 @@ export default function TambahProduct() {
         product.append('harga', price);
         product.append('stock', stock);
         product.append('deskripsi', description);
-        product.append('pelapakId', pelapak);
+        product.append('pelapakId', pelapak?.id);
 
         // Tambahkan gambar yang dipilih ke FormData
         if (selectedImage) {
@@ -114,9 +126,30 @@ export default function TambahProduct() {
                 setSelectedImage4(null);
             })
             .catch((error) => {
-                console.log('Error:', error.message); 
+                console.log('Error:', error.message);
             });
     };
+
+    useEffect(() => {
+        dispatch(getPelapak())
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (Pelapak.length > 0) {
+            const updatedListVoucher = Pelapak.map((item) => ({
+                name: item.name,
+                id: item.id
+            }));
+            setPelapak(updatedListVoucher[0]);
+            setListVoucher(updatedListVoucher);
+        }
+    }, [Pelapak]);
+
+    const setListVoucher = (vouchers) => {
+        listPelapak.splice(0, listPelapak.length, ...vouchers);
+    };
+
+    console.log("pelapak", listPelapak);
 
     return (
         <>
@@ -180,16 +213,54 @@ export default function TambahProduct() {
                                 </div>
                                 <div className='flex flex-col gap-3 pr-[70px]'>
                                     <p>Pilih Pelapak</p>
-                                    <input
-                                        type="text"
-                                        name="pelapak"
-                                        id="pelapak"
-                                        value={pelapak}
-                                        onChange={(event) => setPelapak(event.target.value)}
-                                        className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                        required
-                                    />
-
+                                    <Listbox value={pelapak} onChange={setPelapak}>
+                                        <div className="relative mt-1">
+                                            <Listbox.Button className="relative w-full h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md text-left pl-4">
+                                                <span className="block truncate ">{pelapak?.name}</span>
+                                                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                                    <ChevronUpDownIcon
+                                                        className="h-5 w-5 text-gray-400"
+                                                        aria-hidden="true"
+                                                    />
+                                                </span>
+                                            </Listbox.Button>
+                                            <Transition
+                                                as={Fragment}
+                                                leave="transition ease-in duration-100"
+                                                leaveFrom="opacity-100"
+                                                leaveTo="opacity-0"
+                                            >
+                                                <Listbox.Options className="absolute mt-1 w-full bg-[#E8F0FD] rounded-md border border-[#00000040]">
+                                                    {listPelapak.map((person, personIdx) => (
+                                                        <Listbox.Option
+                                                            key={personIdx}
+                                                            className={({ active }) =>
+                                                                `relative rounded-md cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-[#FFFFFF] text-[#54a7f0]' : 'text-[#000000]'
+                                                                }`
+                                                            }
+                                                            value={person}
+                                                        >
+                                                            {({ selected }) => (
+                                                                <>
+                                                                    <span
+                                                                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                                            }`}
+                                                                    >
+                                                                        {person.name}
+                                                                    </span>
+                                                                    {selected ? (
+                                                                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                                                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                                                        </span>
+                                                                    ) : null}
+                                                                </>
+                                                            )}
+                                                        </Listbox.Option>
+                                                    ))}
+                                                </Listbox.Options>
+                                            </Transition>
+                                        </div>
+                                    </Listbox>
                                 </div>
                                 <div>
                                     <div className='flex flex-row'>

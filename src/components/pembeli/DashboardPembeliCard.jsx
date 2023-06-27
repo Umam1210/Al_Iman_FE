@@ -5,7 +5,7 @@ import { getAllOrders, getOrderByIdUser } from '../../services/orders';
 import { formatDate, formatTime } from '../../helper/formatDay';
 
 export default function DashboardPembeliCard() {
-    const value = 5;
+    const value = 6;
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
@@ -57,8 +57,7 @@ export default function DashboardPembeliCard() {
     };
     const filteredData = order;
 
-    console.log("us", order);
-    console.log("id", userId);
+    console.log("datas", filteredData);
 
     return (
         <>
@@ -95,7 +94,7 @@ export default function DashboardPembeliCard() {
                                                     </td>
                                                     <td className="col-span-1 flex items-center justify-center px-4  border border-[#00000040]">
                                                         <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-pengguna/${item?.id}`} state={{ id: item?.id }} >
+                                                            <Link to={`/pembeli/detail-pesanan/${item?.id}`} state={{ id: item?.id }} >
                                                                 <button
                                                                     className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
                                                                 >

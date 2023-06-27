@@ -13,8 +13,6 @@ export default function VoucherSaya() {
         dispatch(getVoucherByIdUser(userId));
     }, [dispatch]);
 
-    console.log("id", id?.userId);
-    console.log(voucher);
     return (
         <>
             <div className='pl-[98px]'>

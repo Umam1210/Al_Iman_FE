@@ -54,16 +54,6 @@ export default function TambahProductPelapak() {
                                         required
                                     />
                                 </div>
-                                <div className='flex flex-col gap-3 pr-[70px]'>
-                                    <p>Pilih Pelapak</p>
-                                    <input
-                                        type="password"
-                                        name=""
-                                        id=""
-                                        className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                        required
-                                    />
-                                </div>
                                 <div className="flex flex-col gap-3 pr-[70px]">
                                     <p>Upload Gambar</p>
                                     <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
