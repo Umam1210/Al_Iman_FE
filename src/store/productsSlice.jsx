@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addProduct, deleteProduct, editProduct, getAllProducts, getProductById, getProductByIdUser, searchProduct } from "../services/product";
+import { addProduct, deleteProduct, editProductById, getAllProducts, getProductById, getProductByIdUser, searchProduct, searchProductPelapak } from "../services/product";
 
 const initialState = {
     products: [],
@@ -76,19 +76,15 @@ const productsSlice = createSlice({
                 state.isLoading = false;
                 state.error = action.error.message;
             })
-            .addCase(editProduct.pending, (state) => {
+            .addCase(editProductById.pending, (state) => {
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(editProduct.fulfilled, (state, action) => {
+            .addCase(editProductById.fulfilled, (state, action) => {
                 state.isLoading = false;
-                const { productId, updatedProduct } = action.payload;
-                const index = state.products.findIndex((product) => product.id === productId);
-                if (index !== -1) {
-                    state.products[index] = updatedProduct;
-                }
+                state.products = action.payload
             })
-            .addCase(editProduct.rejected, (state, action) => {
+            .addCase(editProductById.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
             })
@@ -101,6 +97,19 @@ const productsSlice = createSlice({
                 state.searchProduct = action.payload;
             })
             .addCase(searchProduct.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message;
+            })
+
+            .addCase(searchProductPelapak.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(searchProductPelapak.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.searchProduct = action.payload;
+            })
+            .addCase(searchProductPelapak.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.error.message;
             })

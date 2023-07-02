@@ -9,8 +9,6 @@ export default function CardLogin() {
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
     const [error, setError] = useState(false)
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const userId = userData?.[1]?.role;
     const navigate = useNavigate()
     // const userId = userData?.[1]?.access;
 
@@ -20,22 +18,24 @@ export default function CardLogin() {
         try {
             const response = await dispatch(login({ email, password }));
             if (response.type === 'auth/login/fulfilled') {
-                await dispatch(getUserById(userId));
-                if (response?.payload?.userRole === 'admin') {
-                    navigate('/admin/katalog')
-                } else if (response?.payload?.userRole === 'pembeli') {
-                    navigate('/pembeli/katalog')
-                } else if (response?.payload?.userRole === 'pelapak') {
-                    navigate('/pelapak/product-saya')
+                const userRole = response.payload.user.userRole; // Perubahan di sini
+                await dispatch(getUserById(response.payload.user.userId)); // Menggunakan response.payload.user.userId
+                if (userRole === 'admin') {
+                    navigate('/admin/katalog');
+                } else if (userRole === 'pembeli') {
+                    navigate('/pembeli/katalog');
+                } else if (userRole === 'pelapak') {
+                    navigate('/pelapak/product-saya');
                 }
-                console.log("respons", response?.payload?.userRole);
+                console.log("respons", userRole);
             } else {
-                setError(true)
+                setError(true);
             }
         } catch (error) {
             // console.log(error);
         }
     };
+
 
 
 

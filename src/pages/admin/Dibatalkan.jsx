@@ -6,14 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
 export default function Dibatalkan() {
-    const [value,] = useState(5);
+    const value = 5
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-    // const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.product.searchProduct)
-    const Product = useSelector((state) => state.product.products)
-    const order = useSelector((state) => state.orders.orders)
+    const searchResults = useSelector((state) => state?.product?.searchProduct)
+    const Product = useSelector((state) => state?.product?.products)
+    const order = useSelector((state) => state?.orders?.orders)
 
     const selectedData = (item) => {
         setCount(item)
@@ -42,6 +41,7 @@ export default function Dibatalkan() {
         }
     };
     const filteredData = searchResults.length != 0 ? searchResults : order;
+    const dataFiltered = filteredData.filter((item) => item?.status === 'dibatalkan');
     const tHead = [
         { name: 'Tanggal Pesan', span: 2, },
         { name: 'Waktu Ambil', span: 2, },
@@ -53,9 +53,9 @@ export default function Dibatalkan() {
     useEffect(() => {
         dispatch(getAllOrders())
     }, [])
-    console.log("orders", order);
+
     return (
-        <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
+        <div className=' h-[503px] w-[968px] mt-6'>
             <div className=''>
                 <div className='w-full h-full'>
                     <section className="container mx-auto">
@@ -69,9 +69,9 @@ export default function Dibatalkan() {
                                             ))}
                                         </tr>
                                     </thead>
-                                    {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
+                                    {dataFiltered?.slice((count - 1) * value, count * value).map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
-                                            {item?.status === 'selesai' ?
+                                            {item?.status === 'dibatalkan' ?
                                                 <tr className="grid grid-cols-12 text-gray-700 ">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
                                                         <p>{dayjs(item?.tanggal_pesan).format('DD-MM-YYYY')}</p>
@@ -110,7 +110,7 @@ export default function Dibatalkan() {
                         </div>
                     </section>
                 </div>
-                {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
+                {dataFiltered.length > 5 ? <div className='w-full flex justify-center mt-6'>
                     <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                         <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

@@ -1,11 +1,26 @@
 import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getMonthlySales } from '../../services/voucher'
+import formatRupiah from '../../helper/formatRupiah'
 
 export default function CardRingkasan() {
+    const dispatch = useDispatch()
+    const sales = useSelector((state) => state?.orders?.sales)
+    useEffect(() => {
+        dispatch(getMonthlySales())
+    }, [])
+
     const tHead = [
         { name: 'Bulan' },
         { name: 'Jumlah Terjual' },
         { name: 'Nominal' },
     ]
+
+    const totalSales = sales?.sales?.reduce((total, item) => total + item.penghasilan, 0);
+    console.log(totalSales);
+    console.log(totalSales);
+
     return (
         <>
             <div className='w-full h-full border border-[#00000040] p'>
@@ -26,15 +41,17 @@ export default function CardRingkasan() {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
+                                            {sales?.sales?.map((item, idx) => (
+                                                <tr key={idx} className="text-gray-700 h-[48px]">
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.bulan}</td>
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.jumlahPesanan}</td>
+                                                    <td className="px-4 text-sm border border-[#00000040]">{formatRupiah(item?.penghasilan)}</td>
+                                                </tr>
+                                            ))}
                                             <tr className="text-gray-700 h-[48px]">
-                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">22</td>
-                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">22</td>
-                                                <td className="px-4 text-sm border border-[#00000040]">6/4/2000</td>
-                                            </tr>
-                                            <tr className="text-gray-700 h-[48px]">
-                                                <td className="px-4 text-md font-semibold border border-[#00000040]">27</td>
-                                                <td className="px-4 text-md font-semibold border border-[#00000040]">27</td>
-                                                <td className="px-4 text-sm border border-[#00000040]">6/10/2020</td>
+                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">total</td>
+                                                <td className="px-4 text-ms font-semibold border border-[#00000040]"></td>
+                                                <td className="px-4 text-sm border border-[#00000040]">{formatRupiah(totalSales)}</td>
                                             </tr>
                                         </tbody>
                                     </table>

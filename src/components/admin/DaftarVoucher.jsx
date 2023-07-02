@@ -10,6 +10,7 @@ export default function DaftarVoucher() {
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
+    const [tempSearchValue, setTempSearchValue] = useState('');
     const [searchValue, setSearchValue] = useState('');
     const searchResults = useSelector((state) => state.voucher.searchVoucher)
     const voucher = useSelector((state) => state.voucher.vouchers)
@@ -42,16 +43,18 @@ export default function DaftarVoucher() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    // const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    const filteredData = searchValue !== '' ? searchResults : voucher;
+
     const tHead = [
         { name: 'Nama', span: 2 },
         { name: 'Jumlah', span: 2 },
         { name: 'Aksi', span: 2 },
     ]
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(searchVoucher(searchValue));
+        setSearchValue(tempSearchValue);
+        dispatch(searchVoucher(tempSearchValue));
     };
 
     const handleKeyPress = (e) => {
@@ -59,6 +62,8 @@ export default function DaftarVoucher() {
             handleSubmit(e);
         }
     };
+
+    console.log(filteredData.length, "banyak");
 
     return (
         <>
@@ -72,8 +77,8 @@ export default function DaftarVoucher() {
                             id=""
                             placeholder='Cari voucher...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            value={tempSearchValue}
+                            onChange={(e) => setTempSearchValue(e.target.value)}
                             onKeyPress={handleKeyPress}
                         />
                         <button onClick={handleSubmit} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
@@ -97,29 +102,33 @@ export default function DaftarVoucher() {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
-                                                    </td>
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{formatRupiah(item?.jumlah)}</p>
-                                                    </td>
-                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
-                                                        <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
-                                                                <button
-                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                                >
+                                            {filteredData.length == 0 ? <p>
+                                                Tidak ada dengan nama {searchValue}
+                                            </p> : <>
+                                                {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
+                                                    <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
+                                                        <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                            <p>{item?.name}</p>
+                                                        </td>
+                                                        <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                            <p>{formatRupiah(item?.jumlah)}</p>
+                                                        </td>
+                                                        <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                            <div className='flex flex-row justify-center items-center gap-4'>
+                                                                <Link to={`/admin/sunting-voucher/${item?.id}`} state={{ idVoucher: item?.id }} >
+                                                                    <button
+                                                                        className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                    >
 
-                                                                    <p>Edit</p>
-                                                                </button>
-                                                            </Link>
-                                                            <ModalDeleteVoucher voucherId={item?.id} />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                                                        <p>Edit</p>
+                                                                    </button>
+                                                                </Link>
+                                                                <ModalDeleteVoucher voucherId={item?.id} />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </>}
                                         </tbody>
                                     </table>
                                 </div>

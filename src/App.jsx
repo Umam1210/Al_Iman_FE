@@ -48,6 +48,7 @@ import PelapakDikonfirmasi from './pages/Pelapak/PelapakDikonfirmasi';
 import PelapakSelesai from './pages/Pelapak/PelapakSelesai';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import DetailPesananItem from './pages/pembeli/DetailPesananItem';
+import { setAuthToken } from './services/API';
 
 
 function App() {
@@ -57,7 +58,7 @@ function App() {
   const refresh = useSelector((state) => state.me)
   const navigate = useNavigate();
   // const location = useLocation();
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  // const userData = JSON.parse(localStorage.getItem('userData'));
   // const data = userData?.[0]?.role;
   const lastVisitedPage = localStorage.getItem('lastVisitedPage');
 
@@ -76,9 +77,13 @@ function App() {
     }, 24 * 60 * 60 * 100);
   }, []);
 
+  const Access = JSON.parse(localStorage.getItem('userData'))
+  const token = Access?.[4]?.key
+  setAuthToken(token)
 
-  console.log("user", user?.isLogin);
-  console.log("userData", userData?.[3]?.isLogin);
+
+  // console.log("user", user?.isLogin);
+  // console.log("userData", userData?.[4].key);
 
 
   return (

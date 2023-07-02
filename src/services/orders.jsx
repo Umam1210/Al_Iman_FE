@@ -16,6 +16,11 @@ export const getOrderByIdUser = createAsyncThunk('orderUser/getOrderByIdUser', a
     return response.data;
 });
 
+export const getOrderByIdPelapak = createAsyncThunk('orderUser/getOrderByIdUser', async (pelapakId) => {
+    const response = await API.get(`orderPelapak/${pelapakId}`);
+    return response.data;
+});
+
 export const addOrder = createAsyncThunk('orders/addOrder', async (order) => {
     try {
         const response = await API.post('orders', order);
@@ -25,8 +30,8 @@ export const addOrder = createAsyncThunk('orders/addOrder', async (order) => {
     }
 });
 
-export const updateOrder = createAsyncThunk('orders/updateOrder', async ({ orderId, updatedOrder }) => {
-    const response = await API.put(`orders/${orderId}`, updatedOrder);
+export const updateOrder = createAsyncThunk('orders/updateOrder', async ({ orderId, data }) => {
+    const response = await API.put(`editOrder/${orderId}`, data);
     return response.data;
 });
 

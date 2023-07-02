@@ -1,105 +1,497 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { getPelapak } from '../../services/user';
+import { editProductById, getProductById } from '../../services/product';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function SuntingProductPelapak() {
+    const param = useParams()
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const product = useSelector((state) => state?.product?.selectedProduct)
+    const productId = product?.id
+    const Pelapak = useSelector((state) => state.user?.pelapak)
+    const [productName, setProductName] = useState('');
+    const [price, setPrice] = useState('');
+    const [stock, setStock] = useState('');
+    const [description, setDescription] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
+    const [imagesGroup, setImagesGroup] = useState(null)
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage1, setSelectedImage1] = useState(null);
+    const [selectedImage2, setSelectedImage2] = useState(null);
+    const [selectedImage3, setSelectedImage3] = useState(null);
+    const [selectedImage4, setSelectedImage4] = useState(null);
+    const [openImage, setOpenImage] = useState(false)
+    const [openImage1, setOpenImage1] = useState(false)
+    const [openImage2, setOpenImage2] = useState(false)
+    const [openImage3, setOpenImage3] = useState(false)
+    const userId = JSON.parse(localStorage.getItem('userData'))
+
+    const handleFileUpload = (event, index) => {
+        const file = event.target.files[0];
+
+        // Setel gambar terpilih sesuai dengan indeks yang tersedia
+        switch (index) {
+            case 0:
+                setSelectedImage(file);
+                break;
+            case 1:
+                setSelectedImage1(file);
+                break;
+            case 2:
+                setSelectedImage2(file);
+                break;
+            case 3:
+                setSelectedImage3(file);
+                break;
+            case 4:
+                setSelectedImage4(file);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleImageRemove = (index) => {
+        // Hapus gambar terpilih sesuai dengan indeks yang tersedia
+        switch (index) {
+            case 0:
+                setSelectedImage(null);
+                break;
+            case 1:
+                setSelectedImage1(null);
+                break;
+            case 2:
+                setSelectedImage2(null);
+                break;
+            case 3:
+                setSelectedImage3(null);
+                break;
+            case 4:
+                setSelectedImage4(null);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        const product = new FormData();
+        product.append('name', productName);
+        product.append('harga', price);
+        product.append('stock', stock);
+        product.append('deskripsi', description);
+        product.append('pelapakId', userId[1].access);
+        product.append('visibility', isChecked)
+
+        // Tambahkan gambar yang dipilih ke FormData
+        if (selectedImage) {
+            product.append('image', selectedImage);
+        }
+        if (selectedImage1) {
+            product.append('image', selectedImage1);
+        }
+        if (selectedImage2) {
+            product.append('image', selectedImage2);
+        }
+        if (selectedImage3) {
+            product.append('image', selectedImage3);
+        }
+        if (selectedImage4) {
+            product.append('image', selectedImage4);
+        }
+        try {
+            dispatch(editProductById({ productId: productId, updatedProduct: product }))
+                .then((response) => {
+                    setProductName('');
+                    setPrice('');
+                    setStock('');
+                    setDescription('');
+                    setIsChecked(true)
+                    setSelectedImage(null);
+                    setSelectedImage1(null);
+                    setSelectedImage2(null);
+                    setSelectedImage3(null);
+                    setSelectedImage4(null);
+
+                    if (response?.payload?.message === 'Produk berhasil diubah') {
+                        navigate('/pelapak/product-saya');
+                        window.location.reload()
+                    } else {
+                        // console.log('Gagal:', response);
+                    }
+                })
+                .catch(() => {
+                    // console.log('Error:', error.message);
+                });
+        } catch (error) {
+            // console.log('Error:', error.message);
+        }
+    }
+
+    useEffect(() => {
+        dispatch(getProductById(param.id))
+        dispatch(getPelapak())
+    }, [])
+    useEffect(() => {
+        if (product) {
+            setProductName(product.name);
+            setPrice(product.harga);
+            setStock(product.stock);
+            setDescription(product.deskripsi);
+            setImagesGroup(product.images)
+            setIsChecked(product.visibility)
+        }
+    }, [product, Pelapak]);
+
+
+
     return (
         <>
-            <>
-                <div className='px-[98px] '>
-                    <p className='text-[32px] font-bold mt-12'>Ubah Produk</p>
-                    <div className='mt-8'>
-                        <form action="" method="post">
+            <div className='px-[98px] '>
+                <p className='text-[32px] font-bold mt-12'>Ubah Produk</p>
+                <div className='mt-8'>
+                    <form action="" onSubmit={handleSubmit} method="post">
 
-                            <div className='h-auto w-[892px] pb-5 border border-[#E9E9E9]'>
-                                <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
-                                    <p>Data Produk</p>
+                        <div className='h-auto w-[892px] pb-5 border border-[#E9E9E9]'>
+                            <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
+                                <p>Data Produk</p>
+                            </div>
+                            <div className='pl-[70px] mt-6 flex flex-col gap-9 text-[24px] text-[#000000B2]'>
+                                <div className='flex flex-col gap-3 pr-[70px]'>
+                                    <p>Nama</p>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        value={productName}
+                                        onChange={(e) => setProductName(e.target.value)}
+                                        className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
+                                        required
+                                    />
                                 </div>
-                                <div className='pl-[70px] mt-6 flex flex-col gap-9 text-[24px]'>
-                                    <div className='flex flex-col gap-3 pr-[70px]'>
-                                        <p>Nama</p>
-                                        <input
-                                            type="text"
-                                            name=""
-                                            id=""
-                                            className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                            required
-                                        />
-                                    </div>
-                                    <div className='flex flex-col gap-3 pr-[70px]'>
-                                        <p>Harga</p>
-                                        <input
-                                            type="text"
-                                            name=""
-                                            id=""
-                                            className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                            required
-                                        />
-                                    </div>
-                                    <div className='flex flex-col gap-3 pr-[70px]'>
-                                        <p>Stock</p>
-                                        <input
-                                            type="number"
-                                            name=""
-                                            id=""
-                                            className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                            required
-                                        />
-                                    </div>
-                                    <div className='flex flex-col gap-3 pr-[70px]'>
-                                        <p>Deskripsi</p>
-                                        <textarea
-                                            rows={4}
-                                            name=""
-                                            id=""
-                                            className='h-[127px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md p-2'
-                                            required
-                                        />
-                                    </div>
-                                    <div className='flex flex-col gap-3 pr-[70px]'>
-                                        <p>Pilih Pelapak</p>
-                                        <input
-                                            type="password"
-                                            name=""
-                                            id=""
-                                            className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
-                                            required
-                                        />
-                                    </div>
-                                    <div className="flex flex-col gap-3 pr-[70px]">
-                                        <p>Upload Gambar</p>
-                                        <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
-                                            <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                <p>Pilih File</p>
-                                                <input
-                                                    type="file"
-                                                    id="uploadInput"
-                                                    className="hidden"
-                                                    // onChange={handleFileUpload}
-                                                    required
+                                <div className='flex flex-col gap-3 pr-[70px]'>
+                                    <p>Harga</p>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        id="price"
+                                        value={price}
+                                        onChange={(e) => setPrice(e.target.value)}
+                                        className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
+                                        required
+                                    />
+                                </div>
+                                <div className='flex flex-col gap-3 pr-[70px]'>
+                                    <p>Stock</p>
+                                    <input
+                                        type="number"
+                                        name="stock"
+                                        id="stock"
+                                        value={stock}
+                                        onChange={(e) => setStock(e.target.value)}
+                                        className='h-[52px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md px-2'
+                                        required
+                                    />
+                                </div>
+                                <div className='flex flex-col gap-3 pr-[70px]'>
+                                    <p>Deskripsi</p>
+                                    <textarea
+                                        rows={4}
+                                        name="deskripsi"
+                                        id="deskripsi"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        className='h-[127px] outline-none border border-[#00000040] bg-[#E8F0FD] rounded-md p-2'
+                                        required
+                                    />
+                                </div>
+
+                                {imagesGroup != null ? <div className="flex flex-col items-start gap-3 pr-[70px]">
+                                    <div className='h-[165px] w-[170px]'>
+                                        <Carousel
+                                            autoPlay={true}
+                                            infiniteLoop={true}
+                                            showThumbs={false}
+                                            showStatus={false}
+                                            interval={2000}>
+                                            {imagesGroup?.map((url, idx) => (
+                                                <img
+                                                    key={idx}
+                                                    src={url?.url}
+                                                    alt={product?.filename}
+                                                    className="h-[165px] w-[309px] xs object-cover object-center "
                                                 />
+                                            ))}
+                                        </Carousel>
+                                    </div>
+                                    <button type='button' onClick={() => setImagesGroup(null)} className='text-[#DD3434] text-[18px] ml-4'>
+                                        Hapus
+                                    </button>
+                                </div> : ''}
+
+                                {imagesGroup === null ? <div>
+                                    <div className='flex flex-row'>
+                                        <div className='flex flex-row ' >
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput"
+                                                            className="hidden"
+                                                            name='image'
+                                                            onChange={(event) => handleFileUpload(event, 0)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => handleImageRemove(0)}
+                                                >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                            <button type='button' className='text-[#DD3434] text-[18px] ml-4'>
-                                                Hapus
+                                            <div className='h-40 w-40'>
+                                                {selectedImage && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={`${openImage ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage(true)}
+                                            >
+                                                Tambah Gambar
                                             </button>
-                                        </label>
+                                        </div>
                                     </div>
-                                    <div className='w-full flex justify-end pr-[70px] text-[21px]'>
-                                        <button type='button' className='h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md'>
-                                            Tambah Gambar
-                                        </button>
+                                    <div className={`${openImage ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput1" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput1"
+                                                            className="hidden"
+                                                            name='image1'
+                                                            onChange={(event) => handleFileUpload(event, 1)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(1)
+                                                        setOpenImage(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                            <div className="h-40 w-40">
+                                                {selectedImage1 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage1)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={`${openImage1 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage1(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
-                                    <Link to={'/pelapak/product-saya'}>
-                                        <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
-                                    </Link>
-                                    <button type='submit' className='h-[47px] w-[211px] border border-[#0089FF] bg-[#2D9CDB] rounded-md text-[#FFFFFF]'>Simpan</button>
+                                    <div className={`${openImage1 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput2" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput2"
+                                                            className="hidden"
+                                                            name='image2'
+                                                            onChange={(event) => handleFileUpload(event, 2)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(2)
+                                                        setOpenImage1(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                            <div className="h-40 w-40">
+                                                {selectedImage2 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage2)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={`${openImage2 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage2(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={`${openImage2 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput3" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput3"
+                                                            className="hidden"
+                                                            name='image3'
+                                                            onChange={(event) => handleFileUpload(event, 3)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(3)
+                                                        setOpenImage2(false)
+                                                    }}                                              >
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                            <div className='w-40 h-40'>
+                                                {selectedImage3 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage3)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={`${openImage3 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage3(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={`${openImage3 ? '' : 'hidden'} flex flex-row mt-10`}>
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput4" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput4"
+                                                            className="hidden"
+                                                            name='image4'
+                                                            onChange={(event) => handleFileUpload(event, 4)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(4)
+                                                        setOpenImage3(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </div>
+                                            <div className='w-40 h-40'>
+                                                {selectedImage4 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage4)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className={`w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
+                                            <button
+                                                type="button"
+                                                className="h-[47px] w-[211px] text-[#1D8B2F] border border-[#1D8B2F] rounded-md"
+                                                onClick={() => setOpenImage2(true)}
+                                            >
+                                                Tambah Gambar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div> : ''}
+                                <div className='flex flex-row items-center gap-2'>
+                                    <input
+                                        type="checkbox"
+                                        className="h-5 w-5"
+                                        checked={isChecked}
+                                        onChange={(e) => setIsChecked(e.target.checked)}
+                                    />
+
+                                    <p>
+                                        Sembunyikan Produk
+                                    </p>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
+                                <Link to={'/admin/list-pengguna'}>
+                                    <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
+                                </Link>
+                                <button type='submit' className='h-[47px] w-[211px] border border-[#0089FF] bg-[#2D9CDB] rounded-md text-[#FFFFFF]'>Simpan</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </>
+            </div>
         </>
     )
 }

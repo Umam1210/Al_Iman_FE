@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addOrder, deleteOrder, getAllOrders, getOrderById, getOrderByIdUser, updateOrder } from "../services/orders";
+import { addOrder, deleteOrder, getAllOrders, getOrderById, getOrderByIdPelapak, getOrderByIdUser, updateOrder } from "../services/orders";
+import { getMonthlySales } from "../services/voucher";
 
 
 const initialState = {
     orders: [],
     orderUser: [],
+    sales: [],
     order: null,
     loading: false,
     error: null
@@ -45,18 +47,21 @@ const ordersSlice = createSlice({
 
 
         // Get order by ID
-        builder.addCase(getOrderById.pending, (state) => {
+        builder.addCase(getOrderById.pending, getOrderByIdPelapak.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(getOrderById.fulfilled, (state, action) => {
-            state.order = action.payload
+
+        builder.addCase(getOrderById.fulfilled, getOrderByIdPelapak.fulfilled, (state, action) => {
+            state.order = action.payload;
             state.loading = false;
         });
-        builder.addCase(getOrderById.rejected, (state, action) => {
+
+        builder.addCase(getOrderById.rejected, getOrderByIdPelapak.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });
+
 
 
         // Add order
@@ -73,16 +78,13 @@ const ordersSlice = createSlice({
             state.loading = false;
             state.error = action.error.message;
         });
-
-        // Update order
         builder.addCase(updateOrder.pending, (state) => {
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(updateOrder.fulfilled, (state) => {
-            // Handle updating order
-            // Modify state accordingly
+        builder.addCase(updateOrder.fulfilled, (state, action) => {
             state.loading = false;
+            state.order = action.payload
         });
         builder.addCase(updateOrder.rejected, (state, action) => {
             state.loading = false;
@@ -100,6 +102,18 @@ const ordersSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(deleteOrder.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        })
+        builder.addCase(getMonthlySales.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getMonthlySales.fulfilled, (state, action) => {
+            state.sales = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(getMonthlySales.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         });

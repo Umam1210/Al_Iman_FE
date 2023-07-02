@@ -5,6 +5,7 @@ import productsSlice from './productsSlice';
 import userSlice from './userSlice';
 import voucherSlice from './voucherSlice';
 import orderSlice from './orderSlice';
+import orderUserSlice from './orderUserSlice';
 
 
 
@@ -15,6 +16,7 @@ export const store = configureStore({
     product: productsSlice,
     user: userSlice,
     voucher: voucherSlice,
-    orders: orderSlice
+    orders: orderSlice,
+    orderUser: orderUserSlice
   }
 });

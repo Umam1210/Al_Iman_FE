@@ -34,7 +34,6 @@ export default function Pesanan() {
         }
     }, [location])
 
-    console.log("href", href);
     return (
         <>
             <div className='pl-[98px]'>

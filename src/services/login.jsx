@@ -1,13 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API } from "./API";
-// import axios from "axios";
 
 export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
     try {
         const response = await API.post('login', user);
         const data = response.data[0];
 
-        const userArray = [{ role: data.userRole }, { access: data.userId }, { name: data.userName }, { isLogin: true }];
+        const userArray = [
+            { role: data.user.userRole },
+            { access: data.user.userId },
+            { name: data.user.userName },
+            { isLogin: true },
+            { key: data.token }
+        ];
         localStorage.setItem('userData', JSON.stringify(userArray));
 
         return data;

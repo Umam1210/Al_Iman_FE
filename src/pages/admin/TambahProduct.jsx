@@ -108,12 +108,9 @@ export default function TambahProduct() {
         if (selectedImage4) {
             product.append('image', selectedImage4);
         }
-
-        // Kirim aksi addProduct menggunakan Redux Toolkit
         dispatch(addProduct(product))
             .unwrap()
             .then(() => {
-                // Reset form setelah pengiriman berhasil
                 setProductName('');
                 setPrice('');
                 setStock('');
@@ -125,8 +122,8 @@ export default function TambahProduct() {
                 setSelectedImage3(null);
                 setSelectedImage4(null);
             })
-            .catch((error) => {
-                console.log('Error:', error.message);
+            .catch(() => {
+                // console.log('Error:', error.message);
             });
     };
 
@@ -148,8 +145,6 @@ export default function TambahProduct() {
     const setListVoucher = (vouchers) => {
         listPelapak.splice(0, listPelapak.length, ...vouchers);
     };
-
-    console.log("pelapak", listPelapak);
 
     return (
         <>
@@ -264,38 +259,39 @@ export default function TambahProduct() {
                                 </div>
                                 <div>
                                     <div className='flex flex-row'>
-                                        <div className="flex flex-col gap-3 pr-[70px]">
-                                            <p>Upload Gambar</p>
-                                            <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
-                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                    <p>Pilih File</p>
-                                                    <input
-                                                        type="file"
-                                                        id="uploadInput"
-                                                        className="hidden"
-                                                        name='image'
-                                                        onChange={(event) => handleFileUpload(event, 0)}
-                                                    />
-                                                </div>
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="text-[#DD3434] text-[18px] ml-4"
-                                                onClick={() => handleImageRemove(0)}
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        {selectedImage && (
-                                            <div>
-                                                <p>Preview Gambar 1:</p>
-                                                <img
-                                                    src={URL.createObjectURL(selectedImage)}
-                                                    alt="Preview Gambar 1"
-                                                    className="h-40 w-40"
-                                                />
+                                        <div className='flex flex-row ' >
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput"
+                                                            className="hidden"
+                                                            name='image'
+                                                            onChange={(event) => handleFileUpload(event, 0)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => handleImageRemove(0)}
+                                                >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                        )}
+                                            <div className='h-40 w-40'>
+                                                {selectedImage && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className={`${openImage ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
                                             <button
                                                 type="button"
@@ -307,38 +303,42 @@ export default function TambahProduct() {
                                         </div>
                                     </div>
                                     <div className={`${openImage ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className="flex flex-col gap-3 pr-[70px]">
-                                            <p>Upload Gambar</p>
-                                            <label htmlFor="uploadInput1" className="cursor-pointer h-[47px] w-[211px]">
-                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                    <p>Pilih File</p>
-                                                    <input
-                                                        type="file"
-                                                        id="uploadInput1"
-                                                        className="hidden"
-                                                        name='image1'
-                                                        onChange={(event) => handleFileUpload(event, 1)}
-                                                    />
-                                                </div>
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="text-[#DD3434] text-[18px] ml-4"
-                                                onClick={() => handleImageRemove(1)}
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        {selectedImage1 && (
-                                            <div>
-                                                <p>Preview Gambar 2:</p>
-                                                <img
-                                                    src={URL.createObjectURL(selectedImage1)}
-                                                    alt="Preview Gambar 1"
-                                                    className="h-40 w-40"
-                                                />
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput1" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput1"
+                                                            className="hidden"
+                                                            name='image1'
+                                                            onChange={(event) => handleFileUpload(event, 1)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(1)
+                                                        setOpenImage(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                        )}
+                                            <div className="h-40 w-40">
+                                                {selectedImage1 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage1)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className={`${openImage1 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
                                             <button
                                                 type="button"
@@ -350,38 +350,43 @@ export default function TambahProduct() {
                                         </div>
                                     </div>
                                     <div className={`${openImage1 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className="flex flex-col gap-3 pr-[70px]">
-                                            <p>Upload Gambar</p>
-                                            <label htmlFor="uploadInput2" className="cursor-pointer h-[47px] w-[211px]">
-                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                    <p>Pilih File</p>
-                                                    <input
-                                                        type="file"
-                                                        id="uploadInput2"
-                                                        className="hidden"
-                                                        name='image2'
-                                                        onChange={(event) => handleFileUpload(event, 2)}
-                                                    />
-                                                </div>
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="text-[#DD3434] text-[18px] ml-4"
-                                                onClick={() => handleImageRemove(2)}
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        {selectedImage2 && (
-                                            <div>
-                                                <p>Preview Gambar 3:</p>
-                                                <img
-                                                    src={URL.createObjectURL(selectedImage2)}
-                                                    alt="Preview Gambar 1"
-                                                    className="h-40 w-40"
-                                                />
+                                        <div className='flex flex-row'>
+
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput2" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput2"
+                                                            className="hidden"
+                                                            name='image2'
+                                                            onChange={(event) => handleFileUpload(event, 2)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(2)
+                                                        setOpenImage1(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                        )}
+                                            <div className="h-40 w-40">
+                                                {selectedImage2 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage2)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className={`${openImage2 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
                                             <button
                                                 type="button"
@@ -393,38 +398,41 @@ export default function TambahProduct() {
                                         </div>
                                     </div>
                                     <div className={`${openImage2 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className="flex flex-col gap-3 pr-[70px]">
-                                            <p>Upload Gambar</p>
-                                            <label htmlFor="uploadInput3" className="cursor-pointer h-[47px] w-[211px]">
-                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                    <p>Pilih File</p>
-                                                    <input
-                                                        type="file"
-                                                        id="uploadInput3"
-                                                        className="hidden"
-                                                        name='image3'
-                                                        onChange={(event) => handleFileUpload(event, 3)}
-                                                    />
-                                                </div>
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="text-[#DD3434] text-[18px] ml-4"
-                                                onClick={() => handleImageRemove(3)}
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        {selectedImage3 && (
-                                            <div>
-                                                <p>Preview Gambar 4:</p>
-                                                <img
-                                                    src={URL.createObjectURL(selectedImage3)}
-                                                    alt="Preview Gambar 1"
-                                                    className="h-40 w-40"
-                                                />
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput3" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput3"
+                                                            className="hidden"
+                                                            name='image3'
+                                                            onChange={(event) => handleFileUpload(event, 3)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(3)
+                                                        setOpenImage2(false)
+                                                    }}                                              >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                        )}
+                                            <div className='w-40 h-40'>
+                                                {selectedImage3 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage3)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className={`${openImage3 ? 'hidden' : ''} w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
                                             <button
                                                 type="button"
@@ -436,38 +444,42 @@ export default function TambahProduct() {
                                         </div>
                                     </div>
                                     <div className={`${openImage3 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className="flex flex-col gap-3 pr-[70px]">
-                                            <p>Upload Gambar</p>
-                                            <label htmlFor="uploadInput4" className="cursor-pointer h-[47px] w-[211px]">
-                                                <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
-                                                    <p>Pilih File</p>
-                                                    <input
-                                                        type="file"
-                                                        id="uploadInput4"
-                                                        className="hidden"
-                                                        name='image4'
-                                                        onChange={(event) => handleFileUpload(event, 4)}
-                                                    />
-                                                </div>
-                                            </label>
-                                            <button
-                                                type="button"
-                                                className="text-[#DD3434] text-[18px] ml-4"
-                                                onClick={() => handleImageRemove(4)}
-                                            >
-                                                Hapus
-                                            </button>
-                                        </div>
-                                        {selectedImage4 && (
-                                            <div>
-                                                <p>Preview Gambar 5:</p>
-                                                <img
-                                                    src={URL.createObjectURL(selectedImage4)}
-                                                    alt="Preview Gambar 1"
-                                                    className="h-40 w-40"
-                                                />
+                                        <div className='flex flex-row'>
+                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                                <p>Upload Gambar</p>
+                                                <label htmlFor="uploadInput4" className="cursor-pointer h-[47px] w-[211px]">
+                                                    <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
+                                                        <p>Pilih File</p>
+                                                        <input
+                                                            type="file"
+                                                            id="uploadInput4"
+                                                            className="hidden"
+                                                            name='image4'
+                                                            onChange={(event) => handleFileUpload(event, 4)}
+                                                        />
+                                                    </div>
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className="text-[#DD3434] text-[18px] ml-4"
+                                                    onClick={() => {
+                                                        handleImageRemove(4)
+                                                        setOpenImage3(false)
+                                                    }}
+                                                >
+                                                    Hapus
+                                                </button>
                                             </div>
-                                        )}
+                                            <div className='w-40 h-40'>
+                                                {selectedImage4 && (
+                                                    <img
+                                                        src={URL.createObjectURL(selectedImage4)}
+                                                        alt="Preview Gambar 1"
+                                                        className="h-40 w-40"
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
                                         <div className={`w-full flex justify-end pr-[70px] mt-20 text-[21px]`}>
                                             <button
                                                 type="button"

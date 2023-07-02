@@ -11,8 +11,8 @@ import { getAllVouchers } from '../../services/voucher'
 export default function Dashboard() {
     const dispatch = useDispatch()
     const user = useSelector((state) => state?.user?.users)
-    const product = useSelector((state) => state.product.products)
-    const voucher = useSelector((state) => state.voucher.vouchers)
+    const product = useSelector((state) => state?.product?.products)
+    const voucher = useSelector((state) => state?.voucher?.vouchers)
     useEffect(() => {
         dispatch(getAllUsers());
         dispatch(getAllProducts());

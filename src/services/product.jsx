@@ -31,8 +31,8 @@ export const addProduct = createAsyncThunk('product/addProduct', async (product)
   }
 });
 
-export const editProduct = createAsyncThunk('editProduct', async ({ productId, updatedProduct }) => {
-  const response = await API.put(`editProduct/${productId}`, updatedProduct);
+export const editProductById = createAsyncThunk('editProduct', async ({ productId, updatedProduct }) => {
+  const response = await API.patch(`editProduct/${productId}`, updatedProduct);
   return response.data;
 });
 
@@ -41,6 +41,19 @@ export const searchProduct = createAsyncThunk(
   async (searchTerm) => {
     try {
       const response = await API.get(`searchProduct?productName=${searchTerm}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Terjadi kesalahan pada server');
+    }
+  }
+);
+
+
+export const searchProductPelapak = createAsyncThunk(
+  'product/searchProductPelapak',
+  async ({ pelapakId, searchTerm }) => {
+    try {
+      const response = await API.get(`searchProductPelapak/${pelapakId}?productName=${searchTerm}`);
       return response.data;
     } catch (error) {
       throw new Error('Terjadi kesalahan pada server');

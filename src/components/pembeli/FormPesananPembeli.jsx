@@ -95,7 +95,7 @@ export default function FormPesananPembeli({ productId }) {
             const listWithEmptyData = [
                 {
                     name: '',
-                    id: '22',
+                    id: '',
                     jumlah: 0,
                     isUsed: false
                 },
@@ -113,6 +113,7 @@ export default function FormPesananPembeli({ productId }) {
     };
 
     const total = form?.banyak * product?.selectedProduct?.harga - voucher?.jumlah
+
 
     return (
         <>

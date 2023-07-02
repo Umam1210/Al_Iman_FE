@@ -9,14 +9,10 @@ export default function DaftarPengguna() {
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
+    const [tempSearchValue, setTempSearchValue] = useState('');
     const [searchValue, setSearchValue] = useState('');
-    const searchResults = useSelector((state) => state.user.searchUser)
-    const User = useSelector((state) => state.user.users)
-
-    const handleSearch = () => {
-        dispatch(searchUser(searchValue));
-    };
-
+    const searchResults = useSelector((state) => state?.user?.searchUser)
+    const User = useSelector((state) => state?.user?.users)
     const selectedData = (item) => {
         setCount(item)
     }
@@ -54,7 +50,22 @@ export default function DaftarPengguna() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : User;
+    // const filteredData = searchResults.length != 0 ? searchResults : User;
+
+    const filteredData1 = searchValue !== '' ? searchResults : User;
+    const dataToShow = filteredData1.length !== 0 ? filteredData1 : [];
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setSearchValue(tempSearchValue);
+        dispatch(searchUser(tempSearchValue));
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSubmit(e);
+        }
+    };
 
     return (
         <>
@@ -68,10 +79,11 @@ export default function DaftarPengguna() {
                             id=""
                             placeholder='Cari Pengguna...'
                             className='h-[49px] w-[149.51px] border-y border-l border-[#00000040] rounded-none outline-none px-2'
-                            value={searchValue}
-                            onChange={(e) => setSearchValue(e.target.value)}
+                            value={tempSearchValue}
+                            onChange={(e) => setTempSearchValue(e.target.value)}
+                            onKeyPress={handleKeyPress}
                         />
-                        <button onClick={handleSearch} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
+                        <button onClick={handleSubmit} className='h-[49px] w-[60px] text-[21px] text-[#535353] border border-[#00000040] rounded-r-md'>
                             Cari
                         </button>
                     </div>
@@ -94,39 +106,41 @@ export default function DaftarPengguna() {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-5 text-gray-700 h-[48px]">
-                                                    <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
-                                                    </td>
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.email}</p>
-                                                    </td>
-                                                    <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.role}</p>
-                                                    </td>
-                                                    <td className="col-span-1 flex items-center justify-center px-4  border border-[#00000040]">
-                                                        <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/admin/sunting-pengguna/${item?.id}`} state={{ id: item?.id }} >
-                                                                <button
-                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                                >
+                                            {dataToShow.length === 0 ? <p>Tidak ada data dengan nama {searchValue}</p> : <>
+                                                {dataToShow?.slice((count - 1) * value, count * value)?.map((item, idx) => (
+                                                    <tr key={idx} className="grid grid-cols-5 text-gray-700 h-[48px]">
+                                                        <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
+                                                            <p>{item?.name}</p>
+                                                        </td>
+                                                        <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                            <p>{item?.email}</p>
+                                                        </td>
+                                                        <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
+                                                            <p>{item?.role}</p>
+                                                        </td>
+                                                        <td className="col-span-1 flex items-center justify-center px-4  border border-[#00000040]">
+                                                            <div className='flex flex-row justify-center items-center gap-4'>
+                                                                <Link to={`/admin/sunting-pengguna/${item?.id}`} state={{ id: item?.id }} >
+                                                                    <button
+                                                                        className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                                    >
 
-                                                                    <p>Edit</p>
-                                                                </button>
-                                                            </Link>
-                                                            <ModalDeleteDataUser userId={item?.id} />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                                                        <p>Edit</p>
+                                                                    </button>
+                                                                </Link>
+                                                                <ModalDeleteDataUser userId={item?.id} />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </>}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </section>
                     </div>
-                    {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
+                    {filteredData1.length > 5 ? <div className='w-full flex justify-center mt-6'>
                         <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                             <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

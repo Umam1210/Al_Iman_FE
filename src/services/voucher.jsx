@@ -65,3 +65,9 @@ export const giveVoucher = createAsyncThunk(
         }
     }
 );
+
+
+export const getMonthlySales = createAsyncThunk('montly/sales', async () => {
+    const response = await API.get('getMountly')
+    return response.data
+})
