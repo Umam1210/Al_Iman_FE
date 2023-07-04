@@ -5,9 +5,8 @@ import { useLocation, useParams } from 'react-router-dom'
 import { getProductByIdUser } from '../../services/product'
 
 export default function DaftarProductByIdPelapak() {
-
     const dispatch = useDispatch()
-    const product = useSelector((state) => state.product)
+    const product = useSelector((state) => state?.product)
     const name = useLocation()
     const user = useParams()
     const userId = user?.id
@@ -15,7 +14,6 @@ export default function DaftarProductByIdPelapak() {
         dispatch(getProductByIdUser(userId));
     }, [dispatch]);
 
-    console.log("product", product?.userProducts.length);
     return (
         <div className='pl-[98px]'>
             <p className='text-[32px] font-bold mt-12'>Daftar Produk Lapak {name?.state?.name}</p>

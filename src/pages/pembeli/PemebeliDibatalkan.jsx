@@ -6,7 +6,7 @@ import { getOrderByIdUser } from '../../services/orders';
 
 export default function PemebeliDibatalkan() {
     const dispatch = useDispatch();
-    const order = useSelector((state) => state.orders.orderUser)
+    const order = useSelector((state) => state?.orders?.orderUser)
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData?.[1]?.access
 
@@ -22,8 +22,6 @@ export default function PemebeliDibatalkan() {
         { name: 'Aksi', span: 2, },
     ]
 
-    console.log("or", order);
-    console.log("or", userId);
     return (
         <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
             <div className=''>
@@ -39,7 +37,7 @@ export default function PemebeliDibatalkan() {
                                             ))}
                                         </tr>
                                     </thead>
-                                    {order.map((item, idx) => (
+                                    {order?.map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
                                             {item?.status === 'dibatalkan' ?
                                                 <tr className="grid grid-cols-12 text-gray-700">

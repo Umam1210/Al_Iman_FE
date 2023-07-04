@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 
 export default function VoucherSaya() {
     const dispatch = useDispatch()
-    const voucher = useSelector((state) => state.voucher.voucherUser)
+    const voucher = useSelector((state) => state?.voucher?.voucherUser)
     const [id] = useCookies(['userId']);
     const userId = id?.userId
     useEffect(() => {

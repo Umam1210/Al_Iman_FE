@@ -6,7 +6,7 @@ import { getUserById } from '../../services/user';
 ;
 export default function CardDetailProductPemesanan({ order }) {
     const dispatch = useDispatch()
-    const pelapak = useSelector((state) => state.user.user)
+    const pelapak = useSelector((state) => state?.user?.user)
     const userId = order?.product?.pelapakId
     useEffect(() => {
         dispatch(getUserById(userId))

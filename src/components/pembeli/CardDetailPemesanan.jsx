@@ -1,23 +1,31 @@
 import React from 'react'
 import formatRupiah from '../../helper/formatRupiah'
 import { Carousel } from 'react-responsive-carousel'
-import { getProductById } from '../../services/product'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { getOrderById } from '../../services/orders'
+import { getUserById } from '../../services/user'
 
-export default function CardDetailPemesanan({ param }) {
+export default function CardDetailPemesanan() {
+    const params = useParams()
+    const param = params?.id
     const dispatch = useDispatch()
-    const id = param
-    const product = useSelector((state) => state?.product?.selectedProduct)
+    const order = useSelector((state) => state?.orderUser?.orderUser)
+    const userId = order?.product?.pelapakId
+    const pelapak = useSelector((state) => state?.user?.user)
+
     useEffect(() => {
-        dispatch(getProductById(id))
+        dispatch(getOrderById(param))
+        dispatch(getUserById(userId))
     }, [])
 
-    console.log("produ", product);
-    console.log("produ", param);
+    useEffect(() => {
 
+    }, [])
 
-
+    // console.log("orderss", pelapak);
+    // console.log("orderss", userId);
     return (
         <>
             <div className="w-[344px] h-[555px] bg-white border border-[#8181813D]" >
@@ -32,11 +40,11 @@ export default function CardDetailPemesanan({ param }) {
                             showThumbs={false}
                             showStatus={false}
                             interval={2000}>
-                            {product?.images?.map((url, idx) => (
+                            {order?.product?.images?.map((url, idx) => (
                                 <img
                                     key={idx}
                                     src={url?.url}
-                                    alt={product?.filename}
+                                    alt={order?.product?.filename}
                                     className="h-[165px] w-[309px] xs object-cover object-center "
                                 />
                             ))}
@@ -45,19 +53,19 @@ export default function CardDetailPemesanan({ param }) {
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Nama</p>
-                    <p className='text-[20px] font-normal'>{product?.name}</p>
+                    <p className='text-[20px] font-normal'>{order?.product?.name}</p>
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Harga</p>
-                    <p className='text-[20px] font-normal'>{formatRupiah(product?.harga)}</p>
+                    <p className='text-[20px] font-normal'>{formatRupiah(order?.product?.harga)}</p>
                 </div>
                 <div className='flex flex-col pt-4 items-start h-[104px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Deskripsi</p>
-                    <p className='text-[20px] font-normal'>{product?.deskripsi}</p>
+                    <p className='text-[20px] font-normal'>{order?.product?.deskripsi}</p>
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Pelapak</p>
-                    <p className='text-[20px] font-normal'>{product?.user?.name}</p>
+                    <p className='text-[20px] font-normal'>{pelapak?.name}</p>
                 </div>
 
             </div>

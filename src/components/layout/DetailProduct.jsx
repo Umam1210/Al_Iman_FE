@@ -10,7 +10,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 export default function DetailProduct() {
     const location = useLocation()
     const id = location?.state?.id
-    const product = useSelector((state) => state.product.selectedProduct)
+    const product = useSelector((state) => state?.product?.selectedProduct)
     const dispatch = useDispatch()
     const userData = JSON.parse(localStorage.getItem('userData'));
     const user = userData?.[0]?.role;

@@ -1,22 +1,10 @@
 import React from 'react'
 import CardDetailPemesanan from '../../components/pembeli/CardDetailPemesanan'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { getOrderById } from '../../services/orders'
 import CardDetailPemesan from '../../components/pembeli/CardDetailPemesan'
 import CardDetailPesanan from '../../components/pembeli/CardDetailPesanan'
 
 export default function DetailPesananItem() {
-    const params = useParams()
-    const param = params?.id
-    const dispatch = useDispatch()
-    const order = useSelector((state) => state?.orders?.order?.productId)
-    useEffect(() => {
-        dispatch(getOrderById(param))
-    }, [])
 
-    console.log(order);
 
     return (
         <div className='pl-[98px]'>
@@ -28,7 +16,7 @@ export default function DetailPesananItem() {
                             <CardDetailPemesan />
                         </div>
                         <div>
-                            <CardDetailPemesanan param={order} />
+                            <CardDetailPemesanan />
                         </div>
                     </div>
                     <div>

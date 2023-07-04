@@ -14,8 +14,6 @@ export default function CardDetailPemesan() {
         dispatch(getUserById(userId))
     }, [])
 
-    console.log("userdata", userData?.[1]?.access);
-    console.log("user", user);
     return (
         <>
             <div className="w-[344px] bg-white border border-[#8181813D]" >

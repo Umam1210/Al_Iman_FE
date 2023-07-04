@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 
 export default function PembeliDikonfirmasi() {
     const dispatch = useDispatch();
-    const order = useSelector((state) => state.orders.orderUser)
+    const order = useSelector((state) => state?.orders?.orderUser)
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData?.[1]?.access
 
@@ -22,7 +22,6 @@ export default function PembeliDikonfirmasi() {
         { name: 'Aksi', span: 2, },
     ]
 
-    console.log("or", order);
     return (
         <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
             <div className=''>
@@ -38,7 +37,7 @@ export default function PembeliDikonfirmasi() {
                                             ))}
                                         </tr>
                                     </thead>
-                                    {order.map((item, idx) => (
+                                    {order?.map((item, idx) => (
                                         <tbody key={idx} className="bg-white">
                                             {item?.status === 'dikonfirmasi' ?
                                                 <tr className="grid grid-cols-12 text-gray-700">
