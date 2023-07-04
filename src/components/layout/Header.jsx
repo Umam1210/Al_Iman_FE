@@ -1,14 +1,13 @@
 import { Menu, Transition } from '@headlessui/react'
 import React from 'react'
 import { Fragment } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { logout } from '../../services/login'
 import { useNavigate } from 'react-router-dom'
-// import { logout } from '../../services/login'
 
 export default function Header({ href }) {
-    const auth = useSelector((state) => state.auth)
     const userData = JSON.parse(localStorage.getItem('userData'));
+    const auth = userData?.[3]?.isLogin
     const guest = userData?.[0]?.role;
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -26,7 +25,7 @@ export default function Header({ href }) {
                     <span className="text-[26px] font-bold text-[#FFFFFF]">Al-Iman Boga</span>
 
                 </div>
-                {auth.isLogin === false ? <div className="flex flex-1 justify-end">
+                {auth === undefined ? <div className="flex flex-1 justify-end">
                     <p className="text-[26px] font-normal text-[#FFFFFF]">
                         Login
                     </p>

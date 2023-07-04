@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addVoucher, deleteVoucher, editVoucher, getAllVouchers, getVoucherById, getVoucherByIdUser, giveVoucher, searchVoucher } from "../services/voucher";
+import { addVoucher, deleteVoucher, editVoucher, getAllVouchers, getAllVouchersUsage, getVoucherById, getVoucherByIdUser, giveVoucher, searchVoucher } from "../services/voucher";
 
 
 const initialState = {
     vouchers: [],
     voucher: null,
     voucherUser: [],
+    vouchersUsage: [],
     searchVoucher: [],
     loading: false,
     error: null
@@ -117,7 +118,20 @@ const voucherSlice = createSlice({
             .addCase(giveVoucher.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            });
+            })
+
+            .addCase(getAllVouchersUsage.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getAllVouchersUsage.fulfilled, (state, action) => {
+                state.loading = false;
+                state.vouchersUsage = action.payload;
+            })
+            .addCase(getAllVouchersUsage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
     }
 });
 

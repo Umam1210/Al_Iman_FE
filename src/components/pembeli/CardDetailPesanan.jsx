@@ -7,14 +7,15 @@ import { formatDate, formatTime } from '../../helper/formatDay'
 
 export default function CardDetailPesanan() {
     const dispatch = useDispatch()
-    const order = useSelector((state) => state?.orders?.order)
+    // const order = useSelector((state) => state?.orders?.order)
+    const order = useSelector((state) => state?.orderUser?.orderUser)
     const param = useParams()
     const orderId = param?.id
     useEffect(() => {
         dispatch(getOrderById(orderId))
     }, [])
 
-    console.log("params", order);
+    // console.log("params", order);
     return (
         <div className='w-[655px] border border-[#8181813D] text-[#000000B2]'>
             <div className='h-[74px] flex items-center pl-[51px] bg-[#E9E9E9]'>

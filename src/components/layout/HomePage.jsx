@@ -2,12 +2,13 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getAllProducts } from '../../services/product'
+import formatRupiah from '../../helper/formatRupiah'
 
 export default function HomePage() {
     const dispatch = useDispatch()
     const product = useSelector((state) => state?.product)
-    const auth = useSelector((state) => state?.auth)
     const userData = JSON.parse(localStorage.getItem('userData'));
+    const auth = userData?.[3]?.isLogin
     const user = userData?.[0]?.role;
     useEffect(() => {
         dispatch(getAllProducts());
@@ -47,9 +48,9 @@ export default function HomePage() {
                                                 </div>
                                                 <div className='flex flex-row justify-between'>
                                                     <p>Harga</p>
-                                                    <p>Rp.{product?.harga}</p>
+                                                    <p>{formatRupiah(product?.harga)}</p>
                                                 </div>
-                                                {auth.isLogin == false ?
+                                                {auth == undefined ?
                                                     <Link to={`/detail/${product?.name}`} state={{ id: product?.id }}>
                                                         <button className='text-[#2D9CDB] border border-[#2D9CDB] rounded px-4 py-1 mt-3' >
                                                             Lihat

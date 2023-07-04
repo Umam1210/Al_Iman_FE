@@ -69,15 +69,16 @@ const ordersSlice = createSlice({
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(addOrder.fulfilled, (state) => {
+        builder.addCase(addOrder.fulfilled, (state, action) => {
             // Handle adding order
-            // Modify state accordingly
+            state.order = action.payload;
             state.loading = false;
         });
         builder.addCase(addOrder.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
-        });
+        })
+
         builder.addCase(updateOrder.pending, (state) => {
             state.loading = true;
             state.error = null;

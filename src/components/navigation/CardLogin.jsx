@@ -27,7 +27,8 @@ export default function CardLogin() {
                 } else if (userRole === 'pelapak') {
                     navigate('/pelapak/product-saya');
                 }
-                console.log("respons", userRole);
+                window.location.reload()
+                // console.log("respons", userRole);
             } else {
                 setError(true);
             }

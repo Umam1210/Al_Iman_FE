@@ -11,7 +11,7 @@ export const ProtectedRoute = ({ userRole, children }) => {
     }
 
     if (userData?.[0]?.role !== userRole) {
-        return <Navigate to="/pembeli/katalog" replace={true} />;
+        return <Navigate to="/" replace={true} />;
     }
 
     return children;

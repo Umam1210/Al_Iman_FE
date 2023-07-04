@@ -16,7 +16,7 @@ const Role = [
 export default function SuntingPengguna() {
     const [role, setRole] = useState(Role[0])
     const dispatch = useDispatch()
-    const user = useSelector((state) => state.user.user)
+    const user = useSelector((state) => state?.user?.user)
     const navigate = useNavigate()
     const iduser = useLocation()
     const userId = iduser?.state?.id
@@ -76,12 +76,13 @@ export default function SuntingPengguna() {
                 password: "",
             });
 
-            const selectedRole = Role.find((r) => r.name === user.role);
+            const selectedRole = Role?.find((r) => r?.name === user?.role);
             if (selectedRole) {
                 setRole(selectedRole);
             }
         }
     }, [user]);
+
 
     return (
         <>
@@ -226,10 +227,9 @@ export default function SuntingPengguna() {
                         </div>
                     </form>
                 </div>
-
-                <div>
+                {role?.name === 'pembeli' ? <div>
                     <CardAddVoucherToUser userId={userId} />
-                </div>
+                </div> : ''}
             </div>
         </>
     )

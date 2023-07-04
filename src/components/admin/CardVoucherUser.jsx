@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { getVoucherByIdUser, } from '../../services/voucher';
+import { getAllVouchersUsage, getVoucherByIdUser, } from '../../services/voucher';
 import { useDispatch, useSelector } from 'react-redux';
 import ModalDeleteVoucherUser from './ModalDeleteVoucherUser';
 
 export default function CardVoucherUser({ userId }) {
-    const [value,] = useState(5);
+    const value = 5
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-    const searchResults = useSelector((state) => state.voucher.searchVoucher)
-    const voucher = useSelector((state) => state.voucher.voucherUser)
+    const searchResults = useSelector((state) => state?.voucher?.searchVoucher)
+    // const voucher = useSelector((state) => state?.voucher?.voucherUser)
+    const vUsage = useSelector((state) => state?.voucher?.vouchersUsage)
     const user = userId
     useEffect(() => {
         dispatch(getVoucherByIdUser(user));
+        dispatch(getAllVouchersUsage())
     }, [dispatch]);
 
     const selectedData = (item) => {
         setCount(item)
     }
-    const length = Math.ceil(voucher?.length / value);
+    const length = Math.ceil(vUsage?.length / value);
     let pages = [];
     for (var z = 0; z <= length; z++) {
         pages.push(z);
@@ -37,18 +39,17 @@ export default function CardVoucherUser({ userId }) {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : voucher;
+    const filteredData = searchResults.length != 0 ? searchResults : vUsage;
     const tHead = [
         { name: 'Nama', span: 2 },
         { name: 'Status', span: 2 },
         { name: 'Aksi', span: 2 },
     ]
 
-    console.log("vvv", voucher);
     return (
         <>
             <div className='px-16'>
-                {voucher?.length === 0 ? <div>
+                {vUsage?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
                     <div className='w-full h-full pt-6'>
@@ -64,15 +65,15 @@ export default function CardVoucherUser({ userId }) {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
+                                            {filteredData?.slice((count - 1) * value, count * value)?.map((item, idx) => (
                                                 <tr key={idx} className="grid grid-cols-6 text-gray-700 h-[48px]">
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
+                                                        <p>{item?.voucher?.name}</p>
                                                     </td>
                                                     <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        {item?.voucher_usages[0]?.isUsed === true ? 'Digunakan' : 'Belum digunakan'}
+                                                        {item?.isUsed === true ? 'Digunakan' : 'Belum digunakan'}
                                                     </td>
-                                                    {item?.voucher_usages[0]?.isUsed === true ?
+                                                    {item?.isUsed === true ?
                                                         <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
 
                                                         </td> : <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">

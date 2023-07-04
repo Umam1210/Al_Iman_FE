@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './index.css';
 import Home from './pages/guest/HomePage';
 import Layout from './components/layout/Layout';
@@ -31,10 +31,6 @@ import TambahProductPelapak from './pages/Pelapak/TambahProductPelapak';
 import PesananPelapak from './pages/Pelapak/PesananPelapak';
 import DetailPesananPelapak from './pages/Pelapak/DetailPesananPelapak';
 import DaftarProductByIdPelapak from './pages/pembeli/DaftarProductByIdPelapak';
-import { useCookies } from 'react-cookie';
-import { useSelector } from 'react-redux';
-import { useAuthEffect } from './routes/useAuthEffect';
-// import { useAccessControl } from './routes/useAccessControl';
 import Dikonfirmasi from './pages/admin/Dikonfirmasi';
 import MenungguKonfirmasi from './pages/admin/MenungguKonfirmasi';
 import Dibatalkan from './pages/admin/Dibatalkan';
@@ -52,24 +48,24 @@ import { setAuthToken } from './services/API';
 
 
 function App() {
-  const [cookies] = useCookies(['refreshToken']);
-  const [id] = useCookies(['userId']);
-  const user = useSelector((state) => state.auth);
-  const refresh = useSelector((state) => state.me)
-  const navigate = useNavigate();
-  // const location = useLocation();
-  // const userData = JSON.parse(localStorage.getItem('userData'));
-  // const data = userData?.[0]?.role;
-  const lastVisitedPage = localStorage.getItem('lastVisitedPage');
+  // const [cookies] = useCookies(['refreshToken']);
+  // const [id] = useCookies(['userId']);
+  // const user = useSelector((state) => state.auth);
+  // const refresh = useSelector((state) => state.me)
+  // const navigate = useNavigate();
+  // // const location = useLocation();
+  // // const userData = JSON.parse(localStorage.getItem('userData'));
+  // // const data = userData?.[0]?.role;
+  // const lastVisitedPage = localStorage.getItem('lastVisitedPage');
 
-  useAuthEffect(user, id, cookies, refresh);
-  // useAccessControl(user, data, cookies, navigate, location, dispatch);
+  // useAuthEffect(user, id, cookies, refresh);
+  // // useAccessControl(user, data, cookies, navigate, location, dispatch);
 
-  useEffect(() => {
-    if (lastVisitedPage && !user.isLogin) {
-      navigate(lastVisitedPage);
-    }
-  }, [lastVisitedPage, user?.isLogin, navigate]);
+  // useEffect(() => {
+  //   if (lastVisitedPage && !user.isLogin) {
+  //     navigate(lastVisitedPage);
+  //   }
+  // }, [lastVisitedPage, user?.isLogin, navigate]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -185,7 +181,11 @@ function App() {
           } />
 
           {/* Route Pembeli */}
-          <Route path='/pembeli/katalog' element={<PembeliKatalog />} />
+          <Route path='/pembeli/katalog' element={
+            <ProtectedRoute userRole={'pembeli'} >
+              <PembeliKatalog />
+            </ProtectedRoute>
+          } />
           <Route path='/pembeli/detail/:title' element={
             <ProtectedRoute userRole={'pembeli'} >
               <DetailPesananPembeli />

@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCookies } from 'react-cookie'
 import { useEffect } from 'react'
-import { getVoucherByIdUser } from '../../services/voucher'
+import { getAllVouchersUsage, getVoucherByIdUser } from '../../services/voucher'
 import { addOrder } from '../../services/orders'
 import { useNavigate } from 'react-router-dom'
 import { getProductById } from '../../services/product'
@@ -17,6 +17,7 @@ export default function FormPesananPembeli({ productId }) {
     const dispatch = useDispatch()
     const [voucher, setVoucher] = useState(listVoucher?.[0])
     const Voucher = useSelector((state) => state?.voucher?.voucherUser)
+    const vUsage = useSelector((state) => state?.voucher?.vouchersUsage)
     const product = useSelector((state) => state?.product)
     const [id] = useCookies(['userId']);
     const userId = id?.userId
@@ -28,7 +29,7 @@ export default function FormPesananPembeli({ productId }) {
         status: '',
         tanggal_ambil: '',
         jam_ambil: '',
-        voucherId: '',
+        voucherUsageId: '',
         catatan: ''
     })
 
@@ -49,7 +50,7 @@ export default function FormPesananPembeli({ productId }) {
             status: 'menunggu konfirmasi',
             tanggal_ambil: form.tanggal_ambil,
             jam_ambil: form.jam_ambil,
-            voucherId: voucher?.id,
+            voucherUsageId: voucher?.id,
             catatan: form.catatan
         };
 
@@ -63,41 +64,55 @@ export default function FormPesananPembeli({ productId }) {
                     status: '',
                     tanggal_ambil: '',
                     jam_ambil: '',
-                    voucherId: '',
+                    voucherUsageId: '',
                     catatan: ''
                 });
                 navigate('/pembeli/dashboard');
             } else {
-                console.log("Gagal :", response?.payload?.error);
+                // console.log("Gagal :", response?.payload?.error);
             }
         } catch (error) {
-            console.log('General Error:', error);
+            // console.log('General Error:', error);
         }
     };
+
 
     useEffect(() => {
         dispatch(getVoucherByIdUser(userId));
         getProductById(productId)
+        dispatch(getAllVouchersUsage())
     }, [dispatch]);
 
     useEffect(() => {
-        if (Voucher.length > 0) {
-            const updatedListVoucher = Voucher
-                .map((item) => ({
-                    name: item.name,
+        if (vUsage.length > 0) {
+            const updatedListVoucher = vUsage.map((item) => {
+                const voucherUsage = {
                     id: item.id,
-                    jumlah: item.jumlah,
-                    isUsed: item?.voucher_usages?.[0]?.isUsed
-                }))
-                .filter((item) => item.isUsed === false);
+                    voucherId: item.voucherId,
+                    userId: item.userId,
+                    isUsed: item.isUsed,
+                    usedAt: item.usedAt,
+                    createdAt: item.createdAt,
+                    updatedAt: item.updatedAt,
+                    voucher: item.voucher
+                };
 
-            // Menambahkan data kosong ke index pertama
+                return {
+                    name: item.voucher.name,
+                    id: item.id,
+                    jumlah: item.voucher.jumlah,
+                    isUsed: item.isUsed,
+                    voucherUsage: voucherUsage
+                };
+            }).filter((item) => item.isUsed === false);
+
             const listWithEmptyData = [
                 {
                     name: '',
                     id: '',
                     jumlah: 0,
-                    isUsed: false
+                    isUsed: false,
+                    voucherUsage: null
                 },
                 ...updatedListVoucher
             ];
@@ -108,13 +123,18 @@ export default function FormPesananPembeli({ productId }) {
     }, [Voucher]);
 
 
+
     const setListVoucher = (vouchers) => {
         listVoucher.splice(0, listVoucher.length, ...vouchers);
     };
 
     const total = form?.banyak * product?.selectedProduct?.harga - voucher?.jumlah
 
+    // const dataFiltered = vUsage?.filter((item) => item.isUsed === false);
 
+    console.log("Vou", product?.selectedProduct?.harga);
+    console.log("foucher", total);
+    console.log("foucher", voucher?.jumlah);
     return (
         <>
             <div className='w-[655px] pb-6 border border-[#8181813D]'>
@@ -135,7 +155,7 @@ export default function FormPesananPembeli({ productId }) {
                                     onChange={handleChange}
                                     required
                                 />
-                                <p className='text-[16px] font-normal italic -mt-3'>total harga : {formatRupiah(total)}</p>
+                                <p className='text-[16px] font-normal italic -mt-3'>total harga : {total <= 0 ? 0 : formatRupiah(total)}</p>
 
                             </div>
                             <div className='flex flex-col gap-3 '>
@@ -158,23 +178,29 @@ export default function FormPesananPembeli({ productId }) {
                                             leaveTo="opacity-0"
                                         >
                                             <Listbox.Options className="absolute mt-1 w-full bg-[#E8F0FD] rounded-md border border-[#00000040]">
-                                                {listVoucher.map((person, personIdx) => (
+                                                {listVoucher.map((value, personIdx) => (
                                                     <Listbox.Option
                                                         key={personIdx}
                                                         className={({ active }) =>
                                                             `relative rounded-md cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-[#FFFFFF] text-[#54a7f0]' : 'text-[#000000]'
                                                             }`
                                                         }
-                                                        value={person}
+                                                        value={value}
                                                     >
                                                         {({ selected }) => (
                                                             <>
-                                                                <span
-                                                                    className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                                                        }`}
-                                                                >
-                                                                    {person.name}
-                                                                </span>
+                                                                <div className='flex flex-row items-center justify-between'>
+                                                                    <p
+                                                                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                                                            }`}
+                                                                    >
+                                                                        {value?.name}
+                                                                    </p>
+                                                                    {value?.jumlah > 0 ? <p>
+                                                                        {formatRupiah(value?.jumlah)}
+                                                                    </p> : ''}
+
+                                                                </div>
                                                                 {selected ? (
                                                                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                                                                         <CheckIcon className="h-5 w-5" aria-hidden="true" />

@@ -6,9 +6,7 @@ import { getAllVouchers, giveVoucher } from '../../services/voucher'
 import CardVoucherUser from './CardVoucherUser'
 import { useNavigate } from 'react-router-dom'
 
-const listVoucher = [
-
-]
+const listVoucher = []
 export default function CardAddVoucherToUser({ userId }) {
     const [voucher, setVoucher] = useState(listVoucher?.[0])
     const dispatch = useDispatch()
@@ -44,12 +42,12 @@ export default function CardAddVoucherToUser({ userId }) {
                 });
                 navigate('/admin/list-pengguna');
             } else {
-                console.log("Gagal melakukan register:", response.payload.error);
+                // console.log("Gagal melakukan register:", response.payload.error);
                 // setError(response.payload.error);
                 // setIsOpen(true);
             }
         } catch (error) {
-            console.log('General Error:', error);
+            // console.log('General Error:', error);
         }
     };
 

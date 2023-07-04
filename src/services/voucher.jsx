@@ -71,3 +71,9 @@ export const getMonthlySales = createAsyncThunk('montly/sales', async () => {
     const response = await API.get('getMountly')
     return response.data
 })
+
+
+export const getAllVouchersUsage = createAsyncThunk('vouchersUsage/getAllVouchersUsage', async () => {
+    const response = await API.get('getAllvoucherUsage');
+    return response.data;
+});

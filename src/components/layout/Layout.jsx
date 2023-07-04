@@ -4,11 +4,10 @@ import CardLogin from '../navigation/CardLogin'
 import NavigationAdmin from '../admin/NavigationAdmin'
 import NavigationPembeli from '../pembeli/NavigationPembeli'
 import NavigationPelapak from '../pelapak/NavigationPelapak'
-import { useSelector } from 'react-redux'
 
 export default function Layout({ children }) {
-    const auth = useSelector((state) => state.auth)
     const userData = JSON.parse(localStorage.getItem('userData'));
+    const auth = userData?.[3]?.isLogin
     const guest = userData?.[0]?.role;
     const href = userData?.[2]?.name
 
@@ -24,7 +23,7 @@ export default function Layout({ children }) {
                     </div>
                     <div className='col-span-3 h-full mt-14'>
                         <div className='sticky top-32 sm:flex sm:justify-center sm:items-center xs:flex xs:justify-center xs:items-center s:flex s:justify-center s:items-center md:flex md:justify-center md:items-center lg:flex lg:justify-center lg:items-center'>
-                            {auth.isLogin === false ? <CardLogin /> :
+                            {auth === undefined ? <CardLogin /> :
                                 guest === 'admin' ? <NavigationAdmin /> :
                                     guest === 'pembeli' ? <NavigationPembeli /> :
                                         guest === 'pelapak' ? <NavigationPelapak /> : ''}
