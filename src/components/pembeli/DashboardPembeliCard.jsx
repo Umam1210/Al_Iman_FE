@@ -5,12 +5,10 @@ import { getAllOrders, getOrderByIdUser } from '../../services/orders';
 import { formatDate, formatTime } from '../../helper/formatDay';
 
 export default function DashboardPembeliCard() {
-    const value = 6;
+    const value = 5;
     const [count, setCount] = useState(1);
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
-
-    const User = useSelector((state) => state?.user?.users)
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData?.[1]?.access
 
@@ -33,7 +31,7 @@ export default function DashboardPembeliCard() {
         { name: 'Aksi', span: 1 },
     ]
 
-    const length = Math.ceil(User?.length / value);
+    const length = Math.ceil(order?.length / value);
     let pages = [];
 
     for (var z = 0; z <= length; z++) {
@@ -55,7 +53,9 @@ export default function DashboardPembeliCard() {
             setNumber(number - 1);
         }
     };
-    const filteredData = order;
+    const filteredData = order.filter((order) => {
+        return order.status === 'menunggu konfirmasi' || order.status === 'dikonfirmasi'
+    });
 
     return (
         <>
@@ -102,7 +102,7 @@ export default function DashboardPembeliCard() {
                                                             </Link>
                                                         </div>
                                                     </td>
-                                                </tr>
+                                                </tr >
                                             ))}
                                         </tbody>
                                     </table>

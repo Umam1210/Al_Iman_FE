@@ -23,7 +23,7 @@ export default function PembeliDikonfirmasi() {
     ]
 
     return (
-        <div className=' h-[503px] w-[968px] border border-[#00000040] mt-6'>
+        <div className='min-h-[503px] w-[968px] mt-6'>
             <div className=''>
                 <div className='w-full h-full'>
                     <section className="container mx-auto">
