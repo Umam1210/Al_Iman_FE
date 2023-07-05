@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import ModalDeleteProduct from '../admin/ModalDeleteProduct';
 import { Link } from 'react-router-dom';
 import formatRupiah from '../../helper/formatRupiah';
 import { getProductByIdUser, searchProductPelapak } from '../../services/product';
 import { useDispatch, useSelector } from 'react-redux';
+import ModalDeleteProductPelapak from './ModalDeleteProductPelapak';
 
 export default function DaftarProductPelapak() {
     const value = 5;
@@ -140,7 +140,7 @@ export default function DaftarProductPelapak() {
                                                                         <p>Edit</p>
                                                                     </button>
                                                                 </Link>
-                                                                <ModalDeleteProduct productId={item?.id} />
+                                                                <ModalDeleteProductPelapak productId={item?.id} />
                                                             </div>
                                                         </td>
                                                     </tr>
