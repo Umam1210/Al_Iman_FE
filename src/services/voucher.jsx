@@ -88,3 +88,8 @@ export const getAllVouchersUsageByUserId = createAsyncThunk('vouchersUsageUser/g
     const response = await API.get(`voucherUsageUser/${userId}`);
     return response.data;
 });
+
+export const countVoucherUsagePerMonth = createAsyncThunk('vouchers/countVoucherUsagePerMonth', async () => {
+    const response = await API.get('getVoucherPerMounth');
+    return response.data;
+});

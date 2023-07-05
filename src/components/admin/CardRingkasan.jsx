@@ -18,12 +18,10 @@ export default function CardRingkasan() {
     ]
 
     const totalSales = sales?.sales?.reduce((total, item) => total + item.penghasilan, 0);
-    console.log(totalSales);
-    console.log(totalSales);
 
     return (
         <>
-            <div className='w-full h-full border border-[#00000040] p'>
+            <div className='w-full h-full border border-[#00000040] pb-10 '>
                 <div className='pl-8 mt-7 text-[#000000BF] text-[28px]'>
                     <p>Ringkasan</p>
                 </div>

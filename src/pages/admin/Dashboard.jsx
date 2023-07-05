@@ -6,17 +6,17 @@ import CardVoucher from '../../components/admin/CardVoucher'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllUsers } from '../../services/user'
 import { getAllProducts } from '../../services/product'
-import { getAllVouchers } from '../../services/voucher'
+import { countVoucherUsagePerMonth } from '../../services/voucher'
 
 export default function Dashboard() {
     const dispatch = useDispatch()
     const user = useSelector((state) => state?.user?.users)
     const product = useSelector((state) => state?.product?.products)
-    const voucher = useSelector((state) => state?.voucher?.vouchers)
+    const voucher = useSelector((state) => state?.orderUser?.voucherUsagePerMounth)
     useEffect(() => {
         dispatch(getAllUsers());
         dispatch(getAllProducts());
-        dispatch(getAllVouchers());
+        dispatch(countVoucherUsagePerMonth())
     }, [dispatch]);
 
     return (
@@ -32,12 +32,12 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className='mt-14'>
-                    <div className='h-[436px]  w-full'>
+                    <div className='min-h-[436px]  w-full'>
                         <CardRingkasan />
                     </div>
                 </div>
                 <div className='mt-4'>
-                    <div className='h-[436px]  w-full'>
+                    <div className='min-h-[436px]  w-full'>
                         <CardVoucher voucher={voucher} />
                     </div>
                 </div>

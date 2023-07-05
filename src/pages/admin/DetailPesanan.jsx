@@ -22,8 +22,7 @@ export default function DetailPesanan() {
         dispatch(getVoucherById(voucherId))
     }, [])
 
-    console.log("orderId", order?.voucherId);
-    console.log("voucher", voucher?.name);
+
     return (
         <>
             <div className='pl-[98px] pb-40'>
