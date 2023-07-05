@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getVoucherByIdUser } from '../../services/voucher';
+import { getAllVouchersUsageByUserId } from '../../services/voucher';
 import CardVoucherSaya from '../../components/pembeli/CardVoucherSaya';
-import { useCookies } from 'react-cookie';
 
 export default function VoucherSaya() {
     const dispatch = useDispatch()
-    const voucher = useSelector((state) => state?.voucher?.voucherUser)
-    const [id] = useCookies(['userId']);
-    const userId = id?.userId
+    const voucherUser = useSelector((state) => state?.orderUser?.voucherUserList)
+    const Access = JSON.parse(localStorage.getItem('userData'))
+    const userId = Access?.[1].access
     useEffect(() => {
-        dispatch(getVoucherByIdUser(userId));
+        dispatch(getAllVouchersUsageByUserId(userId));
     }, [dispatch]);
 
     return (
@@ -19,7 +18,7 @@ export default function VoucherSaya() {
                 <p className='text-[32px] font-bold mt-12'>Voucher Saya</p>
                 <div className='mt-6'>
                     <div className='w-full'>
-                        <CardVoucherSaya voucher={voucher} />
+                        <CardVoucherSaya voucher={voucherUser} />
                     </div>
                 </div>
             </div>

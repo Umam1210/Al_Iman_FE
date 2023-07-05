@@ -5,9 +5,8 @@ import { Fragment } from 'react'
 import formatRupiah from '../../helper/formatRupiah'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useCookies } from 'react-cookie'
 import { useEffect } from 'react'
-import { getAllVouchersUsage, getVoucherByIdUser } from '../../services/voucher'
+import { getAllVouchersUsageByUserId, getVoucherByIdUser } from '../../services/voucher'
 import { addOrder } from '../../services/orders'
 import { useNavigate } from 'react-router-dom'
 import { getProductById } from '../../services/product'
@@ -17,10 +16,10 @@ export default function FormPesananPembeli({ productId }) {
     const dispatch = useDispatch()
     const [voucher, setVoucher] = useState(listVoucher?.[0])
     const Voucher = useSelector((state) => state?.voucher?.voucherUser)
-    const vUsage = useSelector((state) => state?.voucher?.vouchersUsage)
+    const voucherUser = useSelector((state) => state?.orderUser?.voucherUserList)
     const product = useSelector((state) => state?.product)
-    const [id] = useCookies(['userId']);
-    const userId = id?.userId
+    const Access = JSON.parse(localStorage.getItem('userData'))
+    const userId = Access?.[1].access
     const navigate = useNavigate()
     const [form, setForm] = useState({
         userId: '',
@@ -80,12 +79,12 @@ export default function FormPesananPembeli({ productId }) {
     useEffect(() => {
         dispatch(getVoucherByIdUser(userId));
         getProductById(productId)
-        dispatch(getAllVouchersUsage())
+        dispatch(getAllVouchersUsageByUserId(userId));
     }, [dispatch]);
 
     useEffect(() => {
-        if (vUsage.length > 0) {
-            const updatedListVoucher = vUsage.map((item) => {
+        if (voucherUser.length > 0) {
+            const updatedListVoucher = voucherUser.map((item) => {
                 const voucherUsage = {
                     id: item.id,
                     voucherId: item.voucherId,
@@ -132,9 +131,8 @@ export default function FormPesananPembeli({ productId }) {
 
     // const dataFiltered = vUsage?.filter((item) => item.isUsed === false);
 
-    console.log("Vou", product?.selectedProduct?.harga);
-    console.log("foucher", total);
-    console.log("foucher", voucher?.jumlah);
+    // console.log("Vou", voucherUser);
+
     return (
         <>
             <div className='w-[655px] pb-6 border border-[#8181813D]'>

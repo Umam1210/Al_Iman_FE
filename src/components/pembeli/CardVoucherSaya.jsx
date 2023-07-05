@@ -6,6 +6,7 @@ export default function CardVoucherSaya({ voucher }) {
         { name: 'Nama' },
         { name: 'Jumlah' },
     ]
+
     return (
         <div className='w-full h-full border border-[#00000040] pb-5'>
             <div className='pl-8 mt-7 text-[#000000BF] text-[28px]'>
@@ -26,10 +27,13 @@ export default function CardVoucherSaya({ voucher }) {
                                     </thead>
                                     <tbody className="bg-white">
                                         {voucher?.map((item, idx) => (
-                                            <tr key={idx} className="text-gray-700 h-[48px]">
-                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.name}</td>
-                                                <td className="px-4 text-ms font-semibold border border-[#00000040]">{formatRupiah(item?.jumlah)}</td>
-                                            </tr>
+                                            <>
+                                                {item?.isUsed === false ? <tr key={idx} className="text-gray-700 h-[48px]">
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{item?.voucher?.name}</td>
+                                                    <td className="px-4 text-ms font-semibold border border-[#00000040]">{formatRupiah(item?.voucher?.jumlah)}</td>
+                                                </tr> : ''}
+
+                                            </>
                                         ))}
                                     </tbody>
                                 </table>
