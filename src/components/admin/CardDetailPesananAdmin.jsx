@@ -1,19 +1,9 @@
 import React from 'react'
 import { formatDate, formatTime } from '../../helper/formatDay'
 import formatRupiah from '../../helper/formatRupiah'
-import { getOrderById } from '../../services/orders'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 
-export default function CardDetailPesananAdmin() {
-    const dispatch = useDispatch()
-    const order = useSelector((state) => state?.orderUser?.orderUser)
-    const param = useParams()
-    const orderId = param?.id
-    useEffect(() => {
-        dispatch(getOrderById(orderId))
-    }, [])
+export default function CardDetailPesananAdmin({ order, name }) {
+
     return (
         <div className='w-[655px] border border-[#8181813D] text-[#000000B2]'>
             <div className='h-[74px] flex items-center pl-[51px] bg-[#E9E9E9]'>
@@ -43,7 +33,7 @@ export default function CardDetailPesananAdmin() {
                 <div className='h-[60px] border-b border-[#8181813D] flex flex-row justify-between items-center px-6'>
                     <p className='text-[24px] font-bold'>Voucher</p>
                     {order?.usedVoucher === true ?
-                        <p className='text-[24px] font-normal'>{order?.voucher?.name}</p> :
+                        <p className='text-[24px] font-normal'>{name}</p> :
                         <p className='text-[24px] font-normal'>Pesanan Ini Tidak Memakai Voucher</p>}
                 </div>
                 <div className='h-[140px] border-b border-[#8181813D] flex flex-col justify-start px-6'>
