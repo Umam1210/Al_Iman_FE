@@ -32,6 +32,7 @@ export const deleteVoucherUserById = createAsyncThunk('vouchers/deleteVoucher', 
     await API.delete(`deleteVoucherUsage/${voucherId}`);
     return voucherId;
 });
+
 export const addVoucher = createAsyncThunk('vouchers/addVoucher', async (voucher) => {
     const response = await API.post('createVoucher', voucher);
     return response.data;
@@ -75,5 +76,15 @@ export const getMonthlySales = createAsyncThunk('montly/sales', async () => {
 
 export const getAllVouchersUsage = createAsyncThunk('vouchersUsage/getAllVouchersUsage', async () => {
     const response = await API.get('getAllvoucherUsage');
+    return response.data;
+});
+
+export const deleteVoucherUsegeUserById = createAsyncThunk('vouchers/deleteVoucher', async (id) => {
+    await API.delete(`deleteVoucherUser/${id}`);
+    return id;
+});
+
+export const getAllVouchersUsageByUserId = createAsyncThunk('vouchersUsageUser/getAllVouchersUsageByUserId', async (userId) => {
+    const response = await API.get(`voucherUsageUser/${userId}`);
     return response.data;
 });

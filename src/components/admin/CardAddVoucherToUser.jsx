@@ -17,14 +17,6 @@ export default function CardAddVoucherToUser({ userId }) {
         idVoucher: '',
     });
 
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user = {
@@ -35,12 +27,13 @@ export default function CardAddVoucherToUser({ userId }) {
 
         try {
             const response = await dispatch(giveVoucher(user));
-            if (response.payload.message == 'Registrasi berhasil') {
+            if (response?.payload?.message == 'Voucher berhasil diberikan kepada pengguna') {
                 setFormData({
                     idUser: '',
                     idVoucher: '',
                 });
                 navigate('/admin/list-pengguna');
+                // console.log("message", response?.payload?.message);
             } else {
                 // console.log("Gagal melakukan register:", response.payload.error);
                 // setError(response.payload.error);
@@ -75,9 +68,9 @@ export default function CardAddVoucherToUser({ userId }) {
 
     return (
         <>
-            <div className='mt-8 border border-[#E9E9E9]'>
+            <div className='mt-8 h-auto w-[892px] pb-5  border border-[#E9E9E9]'>
                 <form action="" onSubmit={handleSubmit} method="post">
-                    <div className='h-auto w-[892px] pb-5 '>
+                    <div className=''>
                         <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
                             <p>Voucher</p>
                         </div>

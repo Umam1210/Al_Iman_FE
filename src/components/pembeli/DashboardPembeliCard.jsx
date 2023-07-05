@@ -10,11 +10,11 @@ export default function DashboardPembeliCard() {
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
 
-    const User = useSelector((state) => state.user.users)
+    const User = useSelector((state) => state?.user?.users)
     const userData = JSON.parse(localStorage.getItem('userData'));
     const userId = userData?.[1]?.access
 
-    const order = useSelector((state) => state.orders.orderUser)
+    const order = useSelector((state) => state?.orders?.orderUser)
 
 
     const selectedData = (item) => {
@@ -57,8 +57,6 @@ export default function DashboardPembeliCard() {
     };
     const filteredData = order;
 
-    console.log("datas", filteredData);
-
     return (
         <>
             <div className='w-full h-full '>
@@ -81,7 +79,7 @@ export default function DashboardPembeliCard() {
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white">
-                                            {filteredData?.slice((count - 1) * value, count * value).map((item, idx) => (
+                                            {filteredData?.slice((count - 1) * value, count * value)?.map((item, idx) => (
                                                 <tr key={idx} className="grid grid-cols-5 text-gray-700 h-[48px]">
                                                     <td className="col-span-1 px-4 border border-[#00000040] flex items-center">
                                                         <p>{item?.product?.name}</p>
@@ -112,7 +110,7 @@ export default function DashboardPembeliCard() {
                             </div>
                         </section>
                     </div>
-                    {filteredData.length > 5 ? <div className='w-full flex justify-center mt-6'>
+                    {filteredData?.length > 5 ? <div className='w-full flex justify-center mt-6'>
                         <nav className={`${number + 1 <= length ? 'grid grid-cols-4 w-[214px]' : 'grid grid-cols-3 w-[150px]'}  place-items-center h-[46px] border-2 border-[#348FDD40] text-[24px]`} aria-label="Pagination">
                             <div className='col-span-1 w-full h-full grid place-items-center' onClick={() => btnLeft()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

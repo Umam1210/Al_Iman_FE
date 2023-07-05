@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { getAllVouchersUsage, getVoucherByIdUser, } from '../../services/voucher';
+import { getAllVouchersUsage, getAllVouchersUsageByUserId, getVoucherByIdUser, } from '../../services/voucher';
 import { useDispatch, useSelector } from 'react-redux';
-import ModalDeleteVoucherUser from './ModalDeleteVoucherUser';
+import ModalDeleteVoucherUsage from './ModalDeleteVoucherUsage';
 
 export default function CardVoucherUser({ userId }) {
     const value = 5
@@ -9,18 +9,18 @@ export default function CardVoucherUser({ userId }) {
     const [number, setNumber] = useState(1);
     const dispatch = useDispatch();
     const searchResults = useSelector((state) => state?.voucher?.searchVoucher)
-    // const voucher = useSelector((state) => state?.voucher?.voucherUser)
-    const vUsage = useSelector((state) => state?.voucher?.vouchersUsage)
+    const voucherUser = useSelector((state) => state?.orderUser?.voucherUserList)
     const user = userId
     useEffect(() => {
         dispatch(getVoucherByIdUser(user));
         dispatch(getAllVouchersUsage())
+        dispatch(getAllVouchersUsageByUserId(userId))
     }, [dispatch]);
 
     const selectedData = (item) => {
         setCount(item)
     }
-    const length = Math.ceil(vUsage?.length / value);
+    const length = Math.ceil(voucherUser?.length / value);
     let pages = [];
     for (var z = 0; z <= length; z++) {
         pages.push(z);
@@ -39,7 +39,7 @@ export default function CardVoucherUser({ userId }) {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : vUsage;
+    const filteredData = searchResults.length != 0 ? searchResults : voucherUser;
     const tHead = [
         { name: 'Nama', span: 2 },
         { name: 'Status', span: 2 },
@@ -49,7 +49,7 @@ export default function CardVoucherUser({ userId }) {
     return (
         <>
             <div className='px-16'>
-                {vUsage?.length === 0 ? <div>
+                {voucherUser?.length === 0 ? <div>
                     <p>Tidak ada data</p>
                 </div> : <div className=''>
                     <div className='w-full h-full pt-6'>
@@ -78,7 +78,7 @@ export default function CardVoucherUser({ userId }) {
 
                                                         </td> : <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
                                                             <div className='flex flex-row justify-center items-center gap-4'>
-                                                                <ModalDeleteVoucherUser voucherId={item?.voucher_usages?.[0].id} />
+                                                                <ModalDeleteVoucherUsage id={item?.id} />
                                                             </div>
                                                         </td>}
                                                 </tr>

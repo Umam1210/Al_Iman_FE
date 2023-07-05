@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { deleteVoucherUserById } from '../../services/voucher';
 
-export default function ModalDeleteVoucherUser({ voucherId }) {
+export default function ModalDeleteVoucherUsage({ id }) {
     const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch();
 
     const handleDeleteUser = () => {
-        dispatch(deleteVoucherUserById(voucherId));
+        dispatch(deleteVoucherUserById(id));
         setShowModal(false)
     };
 
