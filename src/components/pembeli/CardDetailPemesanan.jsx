@@ -1,31 +1,9 @@
 import React from 'react'
 import formatRupiah from '../../helper/formatRupiah'
 import { Carousel } from 'react-responsive-carousel'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { getOrderById } from '../../services/orders'
-import { getUserById } from '../../services/user'
 
-export default function CardDetailPemesanan() {
-    const params = useParams()
-    const param = params?.id
-    const dispatch = useDispatch()
-    const order = useSelector((state) => state?.orderUser?.orderUser)
-    const userId = order?.product?.pelapakId
-    const pelapak = useSelector((state) => state?.user?.user)
+export default function CardDetailPemesanan({ order, name }) {
 
-    useEffect(() => {
-        dispatch(getOrderById(param))
-        dispatch(getUserById(userId))
-    }, [])
-
-    useEffect(() => {
-
-    }, [])
-
-    // console.log("orderss", pelapak);
-    // console.log("orderss", userId);
     return (
         <>
             <div className="w-[344px] h-[555px] bg-white border border-[#8181813D]" >
@@ -65,7 +43,7 @@ export default function CardDetailPemesanan() {
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Pelapak</p>
-                    <p className='text-[20px] font-normal'>{pelapak?.name}</p>
+                    <p className='text-[20px] font-normal'>{name?.name}</p>
                 </div>
 
             </div>

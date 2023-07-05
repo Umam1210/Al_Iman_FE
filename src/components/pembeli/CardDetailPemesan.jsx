@@ -1,18 +1,6 @@
 import React from 'react'
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
-import { getUserById } from '../../services/user';
 
-
-export default function CardDetailPemesan() {
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const userId = userData?.[1]?.access
-    const dispatch = useDispatch()
-    const user = useSelector((state) => state?.user?.user)
-
-    useEffect(() => {
-        dispatch(getUserById(userId))
-    }, [])
+export default function CardDetailPemesan({ order }) {
 
     return (
         <>
@@ -22,15 +10,15 @@ export default function CardDetailPemesan() {
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Nama</p>
-                    <p className='text-[20px] font-normal'>{user?.name}</p>
+                    <p className='text-[20px] font-normal'>{order?.user?.name}</p>
                 </div>
                 <div className='flex flex-row justify-between items-center h-[64px] px-3 border-b border-[#8181813D] text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>kontak</p>
-                    <p className='text-[20px] font-normal'>{user?.kontak}</p>
+                    <p className='text-[20px] font-normal'>{order?.user?.kontak}</p>
                 </div>
                 <div className='flex flex-col pt-4 items-start h-[104px] px-3 text-[#000000B2]'>
                     <p className='text-[20px] font-bold'>Alamat</p>
-                    <p className='text-[20px] font-normal'>{user?.alamat}</p>
+                    <p className='text-[20px] font-normal'>{order?.user?.alamat}</p>
                 </div>
             </div>
         </>

@@ -53,8 +53,8 @@ export default function DashboardPembeliCard() {
             setNumber(number - 1);
         }
     };
-    const filteredData = order.filter((order) => {
-        return order.status === 'menunggu konfirmasi' || order.status === 'dikonfirmasi'
+    const filteredData = order?.filter((order) => {
+        return order?.status === 'menunggu konfirmasi' || order?.status === 'dikonfirmasi'
     });
 
     return (
