@@ -62,12 +62,12 @@ export default function TambahPengguna() {
                 });
                 navigate('/admin/list-pengguna');
             } else {
-                console.log("Gagal melakukan register:", response.payload.error);
+                // console.log("Gagal melakukan register:", response.payload.error);
                 setError(response.payload.error);
                 setIsOpen(true);
             }
         } catch (error) {
-            console.log('General Error:', error);
+            // console.log('General Error:', error);
         }
     };
 
@@ -78,7 +78,7 @@ export default function TambahPengguna() {
 
     return (
         <>
-            <div className='px-[98px] '>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <Transition appear show={isOpen} as={Fragment}>
                     <Dialog as="div" className="relative z-10" onClose={closeModal}>
                         <Transition.Child
@@ -136,7 +136,7 @@ export default function TambahPengguna() {
                 <p className='text-[32px] font-bold mt-12'>Tambah Pengguna</p>
                 <div className='mt-8'>
                     <form action="" onSubmit={handleSubmit} method="post">
-                        <div className='h-[1205px] w-[892px] border border-[#E9E9E9]'>
+                        <div className='h-auto xxl:w-[892px] xl:w-[892px] w-auto pb-5 border border-[#E9E9E9]'>
                             <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
                                 <p>Data Pengguna</p>
                             </div>
@@ -265,7 +265,7 @@ export default function TambahPengguna() {
                                     />
                                 </div>
                             </div>
-                            <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
+                            <div className='w-full flex xxl:justify-end xl:justify-end lg:justify-end md:justify-end items-center xxl:flex-row xl:flex-row lg:flex-row md:flex-col xs:flex-col s:flex-col gap-[30px] xxl:pr-[70px] xl:pr-[70px] lg:pr-[70px] md:pr-10 mt-10 text-[21px]'>
                                 <Link to={'/admin/list-pengguna'}>
                                     <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
                                 </Link>

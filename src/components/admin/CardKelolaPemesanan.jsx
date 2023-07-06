@@ -57,7 +57,7 @@ export default function CardKelolaPemesanan({ order }) {
 
 
     return (
-        <div className='w-[655px]  text-[#000000B2]'>
+        <div className='xxl:w-[655px] xl:w-[655px] w-auto  text-[#000000B2]'>
             <div className='h-[74px] border border-[#8181813D] flex items-center pl-[51px] bg-[#E9E9E9]'>
                 <p className='text-[24px] font-normal text-[#000000B2]'>Kelola Pesanan</p>
             </div>

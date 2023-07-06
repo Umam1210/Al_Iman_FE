@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { deleteVoucherUserById } from '../../services/voucher';
+import { useNavigate } from 'react-router-dom';
 
 export default function ModalDeleteVoucherUsage({ id }) {
     const [showModal, setShowModal] = useState(false)
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const handleDeleteUser = () => {
         dispatch(deleteVoucherUserById(id));
         setShowModal(false)
+        navigate('/admin/list-pengguna')
     };
 
     return (

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { editVoucher, getVoucherById } from '../../services/voucher'
+import Popup from '../../components/layout/Popup';
 
 export default function SuntingVoucher() {
     const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export default function SuntingVoucher() {
         jumlah: '',
     });
     const [showModal, setShowModal] = useState(false);
-
+    const title = 'Voucher berhasil di edit'
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
@@ -61,25 +62,21 @@ export default function SuntingVoucher() {
             const timeout = setTimeout(() => {
                 setShowModal(false);
                 navigate('/admin/voucher');
-            }, 300);
+            }, 1000);
 
             return () => clearTimeout(timeout);
         }
     }, [showModal, navigate]);
     return (
         <>
-            <div className='px-[98px] '>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Ubah Voucher</p>
-
                 {showModal && (
-                    <div className="modal">
-                        {/* Konten modal */}
-                        <h3>Voucher berhasil diubah!</h3>
-                    </div>
+                    <Popup showModal={showModal} setShowModal={setShowModal} title={title} />
                 )}
                 <div className='mt-8'>
                     <form action="" onSubmit={handleSubmit} method="post">
-                        <div className='h-auto w-[892px] pb-5 border border-[#E9E9E9]'>
+                        <div className='h-auto xxl:w-[892px] xl:w-[892px] w-auto pb-5 border border-[#E9E9E9]'>
                             <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
                                 <p>Data Voucher</p>
                             </div>
@@ -110,7 +107,7 @@ export default function SuntingVoucher() {
                                     <p className='-mt-3 text-[18px] text-[#707070] ml-3'>Isi nominal voucher</p>
                                 </div>
                             </div>
-                            <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
+                            <div className='w-full flex xxl:justify-end xl:justify-end lg:justify-end md:justify-end items-center xxl:flex-row xl:flex-row lg:flex-row md:flex-col xs:flex-col s:flex-col gap-[30px] xxl:pr-[70px] xl:pr-[70px] lg:pr-[70px] md:pr-10 mt-10 text-[21px]'>
                                 <Link to={'/admin/voucher'}>
                                     <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
                                 </Link>

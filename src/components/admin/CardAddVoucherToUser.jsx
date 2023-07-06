@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getAllVouchers, giveVoucher } from '../../services/voucher'
 import CardVoucherUser from './CardVoucherUser'
 import { useNavigate } from 'react-router-dom'
+// import Popup from '../layout/Popup'
 
 const listVoucher = []
 export default function CardAddVoucherToUser({ userId }) {
@@ -12,6 +13,8 @@ export default function CardAddVoucherToUser({ userId }) {
     const dispatch = useDispatch()
     const Voucher = useSelector((state) => state?.voucher?.vouchers)
     const navigate = useNavigate()
+    // const [showModal, setShowModal] = useState(false);
+    // const title = 'Voucher berhasil di edit'
     const [, setFormData] = useState({
         idUser: '',
         idVoucher: '',
@@ -33,6 +36,7 @@ export default function CardAddVoucherToUser({ userId }) {
                     idVoucher: '',
                 });
                 navigate('/admin/list-pengguna');
+                // setShowModal(true)
                 // console.log("message", response?.payload?.message);
             } else {
                 // console.log("Gagal melakukan register:", response.payload.error);
@@ -66,9 +70,23 @@ export default function CardAddVoucherToUser({ userId }) {
         listVoucher.splice(0, listVoucher.length, ...vouchers);
     };
 
+    // useEffect(() => {
+    //     if (showModal) {
+    //         const timeout = setTimeout(() => {
+    //             setShowModal(false);
+    //             // navigate('/admin/voucher');
+    //         }, 1000);
+
+    //         return () => clearTimeout(timeout);
+    //     }
+    // }, [showModal, navigate]);
+
     return (
         <>
-            <div className='mt-8 h-auto w-[892px] pb-5  border border-[#E9E9E9]'>
+            <div className='mt-8 h-auto xxl:w-[892px] xl:w-[892px] w-auto pb-5  border border-[#E9E9E9]'>
+                {/* {showModal && (
+                    <Popup showModal={showModal} setShowModal={setShowModal} title={title} />
+                )} */}
                 <form action="" onSubmit={handleSubmit} method="post">
                     <div className=''>
                         <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>

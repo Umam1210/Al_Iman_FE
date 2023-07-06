@@ -36,24 +36,24 @@ export default function Pesanan() {
 
     return (
         <>
-            <div className='pl-[98px]'>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Pesanan</p>
-                <div className='flex flex-row pr-24 pl-4 justify-between gap-4 mt-9'>
+                <div className='flex xxl:flex-row xl:flex-row lg:flex-row md:flex-col xs:flex-col s:flex-col  xxl:pr-24 xl:pr-24 pl-4 justify-between gap-4 mt-9'>
                     <Link to={'/admin/pesanan/menunggu-konfirmasi'}>
-                        <button className={`w-[215px] h-[37px] rounded-md border ${href === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Menunggu Konfirmasi</button>
+                        <button className={`xxl:w-[215px] xl:w-[215px] lg:w-[215px] w-full h-[37px] rounded-md border ${href === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Menunggu Konfirmasi</button>
                     </Link>
                     <Link to={'/admin/pesanan/dikonfirmasi'}>
-                        <button className={`w-[215px] h-[37px] rounded-md border ${href1 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Dikonfirmasi</button>
+                        <button className={`xxl:w-[215px] xl:w-[215px] lg:w-[215px] w-full h-[37px] rounded-md border ${href1 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Dikonfirmasi</button>
                     </Link>
                     <Link to={'/admin/pesanan/selesai'}>
-                        <button className={`w-[215px] h-[37px] rounded-md border ${href2 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Selesai</button>
+                        <button className={`xxl:w-[215px] xl:w-[215px] lg:w-[215px] w-full h-[37px] rounded-md border ${href2 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Selesai</button>
                     </Link>
                     <Link to={'/admin/pesanan/dibatalkan'}>
-                        <button className={`w-[215px] h-[37px] rounded-md border ${href3 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Dibatalkan</button>
+                        <button className={`xxl:w-[215px] xl:w-[215px] lg:w-[215px] w-full h-[37px] rounded-md border ${href3 === true ? 'bg-[#2D9CDB] text-white' : 'bg-white text-[#348FDD]'} border-[#0089FF]`}>Dibatalkan</button>
                     </Link>
                 </div>
             </div>
-            <div className='w-full ml-24'>
+            <div className='w-full xxl:ml-24 xl:ml-24 px-6'>
                 <Outlet />
             </div>
         </>

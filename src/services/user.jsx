@@ -63,3 +63,9 @@ export const searchPelapak = createAsyncThunk(
         }
     }
 );
+
+
+export const getPelapakById = createAsyncThunk("pelapak/getPelapakById", async (id) => {
+    const response = await API.get(`getPelapakById/${id}`);
+    return response.data;
+});

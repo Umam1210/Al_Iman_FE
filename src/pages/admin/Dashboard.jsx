@@ -21,9 +21,9 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className='pl-[98px]'>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-16 s:px-10 '>
                 <p className='text-[32px] font-bold mt-12'>Dashboard</p>
-                <div className='flex flex-row gap-8 mt-11 '>
+                <div className='flex xxl:flex-row xl:flex-row lg:flex-col md:flex-col sm:flex-col xs:flex-col s:flex-col gap-8 mt-11 '>
                     <div className='h-[284px] w-full'>
                         <CardPengguna user={user} />
                     </div>

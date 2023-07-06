@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getOrderById } from "../services/orders";
 import { countVoucherUsagePerMonth, deleteVoucherUsegeUserById, getAllVouchersUsageByUserId } from "../services/voucher";
+import { getPelapakById } from "../services/user";
 
 const initialState = {
     orderUser: [],
     voucherList: [],
     voucherUserList: [],
     voucherUsagePerMounth: [],
+    pelapak: null,
     order: null,
     loading: false,
     error: null
@@ -70,6 +72,20 @@ const orderUserSlice = createSlice({
             state.loading = false;
         });
         builder.addCase(countVoucherUsagePerMonth.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+        })
+
+
+        builder.addCase(getPelapakById.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        });
+        builder.addCase(getPelapakById.fulfilled, (state, action) => {
+            state.pelapak = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(getPelapakById.rejected, (state, action) => {
             state.loading = false;
             state.error = action.error.message;
         })

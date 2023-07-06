@@ -28,8 +28,8 @@ export default function DetailProduct() {
                         </p>
                     </div>
                     <div className='pt-8 pb-9 border-[#00000040] border mt-5  xxl:h-[411px] xxl:w-[906px] xl:h-[411px] xl:w-[906px] lg:h-[411px] lg:w-[906px] xxl:flex xxl:flex-row xxl:gap-5  xl:flex xl:flex-row xl:gap-5 lg:flex lg:flex-row lg:gap-5 s:w-[344px]'>
-                        <div className='md:ml-8 sm:ml-8 xs:ml-8 s:ml-8'>
-                            <div className='h-[269px] w-[382px]'>
+                        <div className='px-4'>
+                            <div className='h-[269px] xxl:w-[382px] xl:w-[382px] w-auto'>
                                 <Carousel
                                     autoPlay={true}
                                     infiniteLoop={true}
@@ -41,7 +41,7 @@ export default function DetailProduct() {
                                             key={idx}
                                             src={url?.url}
                                             alt={product?.filename}
-                                            className="h-[269px] w-[382px] xs object-cover object-center "
+                                            className="h-[269px] xxl:w-[382px] xl:w-[382px] w-auto object-cover object-center "
                                         />
                                     ))}
                                 </Carousel>
@@ -62,9 +62,9 @@ export default function DetailProduct() {
                                         </Link>
                                     </div> : ''}
                         </div>
-                        <div className='w-[445px]'>
-                            <p className='text-[#348FDD] text-[32px] font-normal'>{product?.name}</p>
-                            <div className='w-[445px] mr-6 flex flex-col mt-6 text-[24px] border border-[#00000040]'>
+                        <div className='xxl:w-[445px] xl:w-[455px] w-auto'>
+                            <p className='text-[#348FDD] px-6 text-[32px] font-normal'>{product?.name}</p>
+                            <div className='xxl:w-[445px] xl:w-[455px] w-auto px-6 flex flex-col mt-6 text-[24px] border border-[#00000040]'>
                                 <div className='h-[50px] border-b border-[#00000040] flex flex-row justify-between px-3 items-center'>
                                     <p className='text-[#404040B2]'>Harga</p>
                                     <p>Rp.{product?.harga}</p>
