@@ -1,13 +1,15 @@
 import React from 'react'
 import { formatDate, formatTime } from '../../helper/formatDay'
 import formatRupiah from '../../helper/formatRupiah'
+import DownloadPdf from '../pdf/DownloadPdf'
 
-export default function CardDetailPesananAdmin({ order, name }) {
+export default function CardDetailPesananAdmin({ order, voucher }) {
 
     return (
         <div className='xxl:w-[655px] xl:w-[655px] w-auto border border-[#8181813D] text-[#000000B2]'>
-            <div className='h-[74px] flex items-center pl-[51px] bg-[#E9E9E9]'>
+            <div className='h-[74px] flex items-center justify-between px-[51px] bg-[#E9E9E9]'>
                 <p className='text-[24px] font-normal text-[#000000B2]'>Detail Pesanan</p>
+                <DownloadPdf data={order} voucher={voucher} />
             </div>
             <div className='h-auto'>
                 <div className='h-[60px] border-b border-[#8181813D] flex flex-row justify-between items-center px-6'>
@@ -33,7 +35,7 @@ export default function CardDetailPesananAdmin({ order, name }) {
                 <div className='h-[60px] border-b border-[#8181813D] flex flex-row justify-between items-center px-6'>
                     <p className='text-[24px] font-bold'>Voucher</p>
                     {order?.usedVoucher === true ?
-                        <p className='text-[24px] font-normal'>{name}</p> :
+                        <p className='text-[24px] font-normal'>{voucher?.name}</p> :
                         <p className='text-[24px] font-normal'>Pesanan Ini Tidak Memakai Voucher</p>}
                 </div>
                 <div className='h-[140px] border-b border-[#8181813D] flex flex-col justify-start px-6'>

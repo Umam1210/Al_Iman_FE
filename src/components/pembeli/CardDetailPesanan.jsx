@@ -1,13 +1,15 @@
 import React from 'react'
 import { formatDate, formatTime } from '../../helper/formatDay'
 import formatRupiah from '../../helper/formatRupiah'
+import DownloadPdf from '../pdf/DownloadPdf'
 
 export default function CardDetailPesanan({ order, voucher }) {
 
     return (
         <div className='w-[655px] border border-[#8181813D] text-[#000000B2]'>
-            <div className='h-[74px] flex items-center pl-[51px] bg-[#E9E9E9]'>
+            <div className='h-[74px] flex items-center justify-between px-[51px] bg-[#E9E9E9]'>
                 <p className='text-[24px] font-normal text-[#000000B2]'>Detail Pesanan</p>
+                <DownloadPdf data={order} voucher={voucher} />
             </div>
             <div className='h-auto'>
                 <div className='h-[60px] border-b border-[#8181813D] flex flex-row justify-between items-center px-6'>

@@ -23,7 +23,7 @@ export default function DetailPesananItem() {
         dispatch(getOrderById(param))
         dispatch(getUserById(userId))
         dispatch(getVoucherById(voucherId))
-    }, [dispatch])
+    }, [dispatch, getOrderById, getUserById, getVoucherById])
 
     return (
         <div className='pl-[98px]'>

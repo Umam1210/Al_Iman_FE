@@ -15,13 +15,12 @@ export default function DetailPesanan() {
     const dispatch = useDispatch()
     const order = useSelector((state) => state?.orderUser?.orderUser)
     const voucher = useSelector((state) => state?.voucher?.voucher)
-
     const voucherId = order?.voucherId
+
     useEffect(() => {
         dispatch(getOrderById(orderId))
         dispatch(getVoucherById(voucherId))
-    }, [])
-
+    }, [dispatch])
 
     return (
         <>
@@ -39,7 +38,7 @@ export default function DetailPesanan() {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <div>
-                                <CardDetailPesananAdmin order={order} name={voucher?.name} />
+                                <CardDetailPesananAdmin order={order} voucher={voucher} />
                             </div>
                             <div>
                                 <CardKelolaPemesanan order={order} />

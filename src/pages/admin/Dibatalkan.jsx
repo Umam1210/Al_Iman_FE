@@ -40,8 +40,8 @@ export default function Dibatalkan() {
             setNumber(number - 1);
         }
     };
-    const filteredData = searchResults.length != 0 ? searchResults : order;
-    const dataFiltered = filteredData.filter((item) => item?.status === 'dibatalkan');
+    const filteredData = searchResults?.length != 0 ? searchResults : order;
+    const dataFiltered = filteredData?.filter((item) => item?.status === 'dibatalkan');
     const tHead = [
         { name: 'Tanggal Pesan', span: 2, },
         { name: 'Waktu Ambil', span: 2, },
