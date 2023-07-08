@@ -1,6 +1,6 @@
 
 import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { addProduct } from '../../services/product';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
@@ -17,7 +17,7 @@ const listPelapak = [
 export default function TambahProduct() {
     const [pelapak, setPelapak] = useState(listPelapak[0]);
     const Pelapak = useSelector((state) => state.user?.pelapak)
-
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState('');
@@ -110,7 +110,7 @@ export default function TambahProduct() {
         }
         dispatch(addProduct(product))
             .unwrap()
-            .then(() => {
+            .then((respone) => {
                 setProductName('');
                 setPrice('');
                 setStock('');
@@ -121,7 +121,11 @@ export default function TambahProduct() {
                 setSelectedImage2(null);
                 setSelectedImage3(null);
                 setSelectedImage4(null);
+                if (respone.message === 'Produk berhasil ditambahkan') {
+                    navigate('/admin/katalog')
+                }
             })
+
             .catch(() => {
                 // console.log('Error:', error.message);
             });

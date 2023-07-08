@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { login } from '../../services/login'; import { getUserById } from '../../services/user';
 import { useNavigate } from 'react-router-dom';
+import { XMarkIcon } from '@heroicons/react/20/solid';
 
 
 export default function CardLogin() {
@@ -10,27 +11,32 @@ export default function CardLogin() {
     const dispatch = useDispatch();
     const [error, setError] = useState(false)
     const navigate = useNavigate()
+    const [message, setMessage] = useState('')
     // const userId = userData?.[1]?.access;
 
     const Auth = async (e) => {
         e.preventDefault();
-
         try {
             const response = await dispatch(login({ email, password }));
             if (response.type === 'auth/login/fulfilled') {
-                const userRole = response.payload.user.userRole; // Perubahan di sini
+                const userRole = response.payload.user.userRole;
+
                 await dispatch(getUserById(response.payload.user.userId)); // Menggunakan response.payload.user.userId
                 if (userRole === 'admin') {
                     navigate('/admin/katalog');
+                    window.location.reload()
                 } else if (userRole === 'pembeli') {
                     navigate('/pembeli/katalog');
+                    window.location.reload()
                 } else if (userRole === 'pelapak') {
                     navigate('/pelapak/product-saya');
+                    window.location.reload()
                 }
-                window.location.reload()
-                // console.log("respons", userRole);
+
             } else {
                 setError(true);
+                // console.log("respons", response.payload);
+                setMessage(response.payload)
             }
         } catch (error) {
             // console.log(error);
@@ -44,8 +50,15 @@ export default function CardLogin() {
     return (
         <form action="" onSubmit={Auth}>
             {/* error response */}
-            {error ? <div className='bg-red-500 h-20 w-[344px]'>
-
+            {error ? <div className='h-20 w-[344px] flex flex-row justify-between items-center text-black text-opacity-70 text-[24px] font-normal'>
+                <p>{message}</p>
+                <button
+                    type="button"
+                    className=""
+                    onClick={() => setError(false)}
+                >
+                    <XMarkIcon className='h-10 w-10 text-red-500' />
+                </button>
             </div> : ''}
 
             <div className='h-[471px] w-[344px] border-2 border-[#8181813D] '>
