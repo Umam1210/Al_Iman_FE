@@ -68,7 +68,7 @@ export default function DaftarProductPelapak() {
     return (
         <>
             <div className='w-full h-full border border-[#00000040] px-[35px]'>
-                <div className='mt-7 flex flex-row justify-between'>
+                <div className='mt-7 flex xxl:flex-row xl:flex-row lg:flex-row xs:flex-col md:flex-col s:flex-col justify-between'>
                     <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Produk</p>
                     <div className='flex flex-row'>
                         <input
@@ -92,8 +92,8 @@ export default function DaftarProductPelapak() {
                     <div className='w-full h-full pt-6'>
                         <section className="container mx-auto">
                             <div className="w-full overflow-hidden ">
-                                <div className="w-full overflow-x-auto">
-                                    <table className="w-full">
+                                <div className="w-full overflow-auto">
+                                    <table className=" xxl:w-full xl:w-full lg:w-[800px] md:w-[800px] xs:w-[800px] s:w-[800px]">
                                         <thead>
                                             <tr className="text-left grid grid-cols-10 h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (

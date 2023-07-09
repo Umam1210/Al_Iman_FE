@@ -24,11 +24,9 @@ export default function DetailPesananPelapak() {
                     <div className='flex flex-row gap-5'>
                         <div className='flex flex-col gap-4'>
                             <div>
-                                {/* <CardDetailPemesananAdmin /> */}
                                 <CardDetailPemesanPelapak order={order} />
                             </div>
                             <div>
-                                {/* <CardDetailProductPemesanan /> */}
                                 <CardDetailProductPemesananPelapak order={order} />
                             </div>
                         </div>

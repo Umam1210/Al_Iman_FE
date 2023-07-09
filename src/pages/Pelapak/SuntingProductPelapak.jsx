@@ -13,7 +13,7 @@ export default function SuntingProductPelapak() {
     const navigate = useNavigate()
     const product = useSelector((state) => state?.product?.selectedProduct)
     const productId = product?.id
-    const Pelapak = useSelector((state) => state.user?.pelapak)
+    const Pelapak = useSelector((state) => state?.user?.pelapak)
     const [productName, setProductName] = useState('');
     const [price, setPrice] = useState('');
     const [stock, setStock] = useState('');
@@ -153,12 +153,11 @@ export default function SuntingProductPelapak() {
 
     return (
         <>
-            <div className='px-[98px] '>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Ubah Produk</p>
                 <div className='mt-8'>
                     <form action="" onSubmit={handleSubmit} method="post">
-
-                        <div className='h-auto w-[892px] pb-5 border border-[#E9E9E9]'>
+                        <div className='h-auto xxl:w-[892px] xl:w-[892px] w-auto pb-5 border border-[#E9E9E9]'>
                             <div className='h-[84.55px] w-full bg-[#E9E9E9] text-[24px] font-normal flex items-center pl-[70px] text-[#000000B2]'>
                                 <p>Data Produk</p>
                             </div>
@@ -236,9 +235,9 @@ export default function SuntingProductPelapak() {
                                 </div> : ''}
 
                                 {imagesGroup === null ? <div>
-                                    <div className='flex flex-row'>
-                                        <div className='flex flex-row ' >
-                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                    <div className='flex xxl:flex-row xl:flex-row flex-col'>
+                                        <div className='flex xxl:flex-row  xl:flex-row flex-col' >
+                                            <div className="flex flex-col gap-3 xxl:pr-[70px] xl:pr-[70px] w-[250px] ">
                                                 <p>Upload Gambar</p>
                                                 <label htmlFor="uploadInput" className="cursor-pointer h-[47px] w-[211px]">
                                                     <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
@@ -280,9 +279,9 @@ export default function SuntingProductPelapak() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className={`${openImage ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className='flex flex-row'>
-                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                    <div className={`${openImage ? '' : 'hidden'} flex xxl:flex-row xl:flex-row flex-col mt-10`}>
+                                        <div className='flex xxl:flex-row  xl:flex-row flex-col' >
+                                            <div className="flex flex-col gap-3 xxl:pr-[70px] xl:pr-[70px] w-[250px] ">
                                                 <p>Upload Gambar</p>
                                                 <label htmlFor="uploadInput1" className="cursor-pointer h-[47px] w-[211px]">
                                                     <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
@@ -327,9 +326,9 @@ export default function SuntingProductPelapak() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className={`${openImage1 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className='flex flex-row'>
-                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                    <div className={`${openImage1 ? '' : 'hidden'} flex xxl:flex-row xl:flex-row flex-col mt-10`}>
+                                        <div className='flex xxl:flex-row  xl:flex-row flex-col' >
+                                            <div className="flex flex-col gap-3 xxl:pr-[70px] xl:pr-[70px] w-[250px] ">
                                                 <p>Upload Gambar</p>
                                                 <label htmlFor="uploadInput2" className="cursor-pointer h-[47px] w-[211px]">
                                                     <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
@@ -374,9 +373,9 @@ export default function SuntingProductPelapak() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className={`${openImage2 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className='flex flex-row'>
-                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                    <div className={`${openImage2 ? '' : 'hidden'} flex xxl:flex-row xl:flex-row flex-col mt-10`}>
+                                        <div className='flex xxl:flex-row  xl:flex-row flex-col' >
+                                            <div className="flex flex-col gap-3 xxl:pr-[70px] xl:pr-[70px] w-[250px] ">
                                                 <p>Upload Gambar</p>
                                                 <label htmlFor="uploadInput3" className="cursor-pointer h-[47px] w-[211px]">
                                                     <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
@@ -420,9 +419,9 @@ export default function SuntingProductPelapak() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className={`${openImage3 ? '' : 'hidden'} flex flex-row mt-10`}>
-                                        <div className='flex flex-row'>
-                                            <div className="flex flex-col gap-3 pr-[70px]">
+                                    <div className={`${openImage3 ? '' : 'hidden'} flex xxl:flex-row xl:flex-row flex-col mt-10`}>
+                                        <div className='flex xxl:flex-row  xl:flex-row flex-col' >
+                                            <div className="flex flex-col gap-3 xxl:pr-[70px] xl:pr-[70px] w-[250px] ">
                                                 <p>Upload Gambar</p>
                                                 <label htmlFor="uploadInput4" className="cursor-pointer h-[47px] w-[211px]">
                                                     <div className="h-[47px] w-[211px] outline-none border border-[#000000] bg-[#C2C2C2] rounded-md px-2 text-[20px] flex items-center justify-center">
@@ -482,8 +481,8 @@ export default function SuntingProductPelapak() {
                                 </div>
                             </div>
 
-                            <div className='w-full flex justify-end gap-[30px] pr-[70px] mt-10 text-[21px]'>
-                                <Link to={'/admin/list-pengguna'}>
+                            <div className='w-full flex xxl:justify-end xl:justify-end lg:justify-end md:justify-end items-center xxl:flex-row xl:flex-row lg:flex-row md:flex-col xs:flex-col s:flex-col gap-[30px] xxl:pr-[70px] xl:pr-[70px] lg:pr-[70px] md:pr-10 mt-10 text-[21px]'>
+                                <Link to={'/pelapak/product-saya'}>
                                     <button type='button' className='h-[47px] w-[211px] border border-[#0089FF] rounded-md text-[#2D9CDB]'>Kembali</button>
                                 </Link>
                                 <button type='submit' className='h-[47px] w-[211px] border border-[#0089FF] bg-[#2D9CDB] rounded-md text-[#FFFFFF]'>Simpan</button>
