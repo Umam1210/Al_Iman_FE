@@ -8,10 +8,10 @@ export default function FormPesanan() {
     const productId = param?.id
 
     return (
-        <div className='pl-[98px]'>
+        <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-16 s:px-10'>
             <p className='text-[32px] font-bold mt-12'>Pesan {param?.title}</p>
             <div className='mt-6'>
-                <div className='flex flex-row gap-5'>
+                <div className='flex xxl:flex-row xl:flex-row flex-col gap-5'>
                     <div>
                         <DetailProductPesanan param={param} />
                     </div>

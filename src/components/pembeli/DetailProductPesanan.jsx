@@ -14,7 +14,7 @@ export default function DetailProductPesanan({ param }) {
 
     return (
         <>
-            <div className="w-[344px] h-[555px] bg-white border border-[#8181813D]" >
+            <div className="xxl:w-[344px] xl:w-[344px] w-auto h-[555px] bg-white border border-[#8181813D]" >
                 <div className="w-full flex items-center pl-7 h-[76.33px] text-[24px] font-normal bg-[#E9E9E9] text-[#000000B2]">
                     <p>Detail Produk</p>
                 </div>

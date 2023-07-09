@@ -135,7 +135,7 @@ export default function FormPesananPembeli({ productId }) {
 
     return (
         <>
-            <div className='w-[655px] pb-6 border border-[#8181813D]'>
+            <div className='xxl:w-[655px] xl:w-[655px] w-auto pb-6 border border-[#8181813D]'>
                 <div className='h-[84px] flex items-center pl-[51px] bg-[#E9E9E9]'>
                     <p className='text-[24px] font-normal text-[#000000B2]'>Data Pesanan</p>
                 </div>

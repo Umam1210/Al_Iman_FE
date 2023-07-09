@@ -26,10 +26,10 @@ export default function DetailPesananItem() {
     }, [dispatch, getOrderById, getUserById, getVoucherById])
 
     return (
-        <div className='pl-[98px]'>
+        <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-16 s:px-10 pb-40'>
             <p className='text-[32px] font-bold mt-12'>Detail Pesanan</p>
             <div className='mt-6'>
-                <div className='flex flex-row gap-5'>
+                <div className='flex xxl:flex-row xl:flex-row lg:flex-col md:flex-col xs:flex-col s:flex-col  gap-5'>
                     <div className='flex flex-col gap-4'>
                         <div>
                             <CardDetailPemesan order={order} />
