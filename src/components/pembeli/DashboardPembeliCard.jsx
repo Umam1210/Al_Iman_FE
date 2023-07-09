@@ -67,8 +67,8 @@ export default function DashboardPembeliCard() {
                     <div className='w-full h-full pt-6'>
                         <section className="container mx-auto">
                             <div className="w-full overflow-hidden ">
-                                <div className="w-full overflow-x-auto">
-                                    <table className="w-full">
+                                <div className="w-full overflow-auto">
+                                    <table className=" xxl:w-full xl:w-full lg:w-[800px] md:w-[800px] xs:w-[800px] s:w-[800px]">
                                         <thead>
                                             <tr className="grid grid-cols-5 text-left h-[57px] text-[#000000BF] text-[20px] ">
                                                 {tHead.map((item, idx) => (

@@ -55,12 +55,12 @@ export default function DaftarPelapak() {
         }
     };
 
-    console.log("search", searchResults);
+    // console.log("search", searchResults);
 
     return (
         <>
             <div className='w-full h-full border border-[#00000040] px-[35px]'>
-                <div className='mt-7 flex flex-row justify-between'>
+                <div className='mt-7 flex xxl:flex-row xl:flex-row lg:flex-row xs:flex-col md:flex-col s:flex-col justify-between'>
                     <p className='text-[28px] font-normal text-[#000000BF]'>Daftar Pelapak</p>
                     <div className='flex flex-row'>
                         <input
@@ -83,40 +83,40 @@ export default function DaftarPelapak() {
                 </div> : <div className=''>
                     <div className='w-full h-full py-6'>
                         <section className="container mx-auto">
-                            <div className="w-full overflow-hidden ">
-                                <div className="w-full overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead>
-                                            <tr className="text-left grid grid-cols-4 h-[57px] text-[#000000BF] text-[20px] ">
-                                                {tHead.map((item, idx) => (
-                                                    <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
-                                                ))}
-                                            </tr>
-                                        </thead>
-                                        <tbody className="bg-white">
-                                            {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
-                                                <tr key={idx} className="grid grid-cols-4 text-gray-700 h-[48px]">
-                                                    <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
-                                                        <p>{item?.name}</p>
-                                                    </td>
-                                                    <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
-                                                        <div className='flex flex-row justify-center items-center gap-4'>
-                                                            <Link to={`/pembeli/daftar-produk-pelapak/${item?.id}`} state={{ name: item?.name }}>
-                                                                <button
-                                                                    className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
-                                                                >
 
-                                                                    <p>Lihat Produk</p>
-                                                                </button>
-                                                            </Link>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                            <div className="w-full overflow-auto">
+                                <table className=" xxl:w-full xl:w-full lg:w-[800px] md:w-[800px] xs:w-[800px] s:w-[800px]">
+                                    <thead>
+                                        <tr className="text-left grid grid-cols-4 h-[57px] text-[#000000BF] text-[20px] ">
+                                            {tHead.map((item, idx) => (
+                                                <th key={idx} className={`col-span-${item?.span} border pl-4 border-[#00000040] flex items-center`}><p>{item?.name}</p></th>
                                             ))}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white">
+                                        {filteredData.slice((count - 1) * value, count * value)?.map((item, idx) => (
+                                            <tr key={idx} className="grid grid-cols-4 text-gray-700 h-[48px]">
+                                                <td className="col-span-2 px-4 border border-[#00000040] flex items-center">
+                                                    <p>{item?.name}</p>
+                                                </td>
+                                                <td className="col-span-2 flex items-center justify-center px-4  border border-[#00000040]">
+                                                    <div className='flex flex-row justify-center items-center gap-4'>
+                                                        <Link to={`/pembeli/daftar-produk-pelapak/${item?.id}`} state={{ name: item?.name }}>
+                                                            <button
+                                                                className="grid place-items-center rounded text-[21px] text-[#2D9CDB] border border-[#2D9CDB] px-3"
+                                                            >
+
+                                                                <p>Lihat Produk</p>
+                                                            </button>
+                                                        </Link>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
+
                         </section>
                     </div>
                     {filteredData.length >= 5 ? <div className='w-full flex justify-center mt-6'>

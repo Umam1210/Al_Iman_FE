@@ -14,7 +14,7 @@ export default function VoucherSaya() {
 
     return (
         <>
-            <div className='pl-[98px]'>
+            <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-16 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Voucher Saya</p>
                 <div className='mt-6'>
                     <div className='w-full'>
