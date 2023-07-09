@@ -83,7 +83,6 @@ export default function DaftarPelapak() {
                 </div> : <div className=''>
                     <div className='w-full h-full py-6'>
                         <section className="container mx-auto">
-
                             <div className="w-full overflow-auto">
                                 <table className=" xxl:w-full xl:w-full lg:w-[800px] md:w-[800px] xs:w-[800px] s:w-[800px]">
                                     <thead>
