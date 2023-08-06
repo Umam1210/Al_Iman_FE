@@ -33,6 +33,7 @@ export default function SuntingProduct() {
     const [openImage1, setOpenImage1] = useState(false)
     const [openImage2, setOpenImage2] = useState(false)
     const [openImage3, setOpenImage3] = useState(false)
+    const [showModal, setShowModal] = useState(false)
 
     const handleFileUpload = (event, index) => {
         const file = event.target.files[0];
@@ -109,6 +110,7 @@ export default function SuntingProduct() {
             product.append('image', selectedImage4);
         }
         try {
+            setShowModal(true)
             dispatch(editProductById({ productId: productId, updatedProduct: product }))
                 .then((response) => {
                     setProductName('');
@@ -126,6 +128,7 @@ export default function SuntingProduct() {
                     if (response?.payload?.message === 'Produk berhasil diubah') {
                         navigate('/admin/katalog');
                         window.location.reload()
+                        setShowModal(false)
                     } else {
                         // console.log('Gagal:', response);
                     }
@@ -176,6 +179,30 @@ export default function SuntingProduct() {
 
     return (
         <>
+            <>
+                {showModal ? (
+                    <>
+                        <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none">
+                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                <div className='h-[189px] w-[299px] bg-[#FFFFFF] border border-[#00000040] drop-shadow-lg rounded-lg'>
+                                    <div className='container'>
+                                        <div className='loader'>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--text'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+            </>
+
             <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Ubah Produk</p>
                 <div className='mt-8'>

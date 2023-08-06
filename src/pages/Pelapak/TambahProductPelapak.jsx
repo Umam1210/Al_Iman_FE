@@ -5,6 +5,7 @@ import { useDispatch, } from 'react-redux';
 import { addProduct } from '../../services/product';
 import { useEffect } from 'react';
 import { getPelapak } from '../../services/user';
+import './loading.css'
 
 export default function TambahProductPelapak() {
     const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function TambahProductPelapak() {
     const [openImage1, setOpenImage1] = useState(false)
     const [openImage2, setOpenImage2] = useState(false)
     const [openImage3, setOpenImage3] = useState(false)
+    const [showModal, setShowModal] = useState(false)
     const userId = JSON.parse(localStorage.getItem('userData'))
 
     const handleFileUpload = (event, index) => {
@@ -95,24 +97,35 @@ export default function TambahProductPelapak() {
         if (selectedImage4) {
             product.append('image', selectedImage4);
         }
-        dispatch(addProduct(product))
-            .unwrap()
-            .then(() => {
-                setProductName('');
-                setPrice('');
-                setStock('');
-                setDescription('');
-                setPelapak('');
-                setSelectedImage(null);
-                setSelectedImage1(null);
-                setSelectedImage2(null);
-                setSelectedImage3(null);
-                setSelectedImage4(null);
-            })
-            .catch(() => {
-                // console.log('Error:', error.message);
-            });
-        navigate('/pelapak/product-saya')
+        try {
+            setShowModal(true)
+            dispatch(addProduct(product))
+                .unwrap()
+                .then(() => {
+                    setProductName('');
+                    setPrice('');
+                    setStock('');
+                    setDescription('');
+                    setPelapak('');
+                    setSelectedImage(null);
+                    setSelectedImage1(null);
+                    setSelectedImage2(null);
+                    setSelectedImage3(null);
+                    setSelectedImage4(null);
+
+                    setShowModal(false)
+                    navigate('/pelapak/product-saya');
+
+                })
+                .catch(() => {
+                    // console.log('Error:', error.message);
+                });
+            // navigate('/pelapak/product-saya')
+        } catch (error) {
+            // console.log(error);
+
+        }
+
     };
     useEffect(() => {
         dispatch(getPelapak())
@@ -122,6 +135,30 @@ export default function TambahProductPelapak() {
 
     return (
         <>
+
+            <>
+                {showModal ? (
+                    <>
+                        <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-40 outline-none focus:outline-none">
+                            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                <div className='h-[189px] w-[299px] bg-[#FFFFFF] border border-[#00000040] drop-shadow-lg rounded-lg'>
+                                    <div className='container'>
+                                        <div className='loader'>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--dot'></div>
+                                            <div className='loader--text'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : null}
+            </>
             <div className='xxl:pl-[98px] xl:pl-[98px] lg:pl-32 xs:px-10 s:px-10'>
                 <p className='text-[32px] font-bold mt-12'>Tambah Produk</p>
                 <div className='mt-8'>

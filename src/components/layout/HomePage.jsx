@@ -14,6 +14,8 @@ export default function HomePage() {
         dispatch(getAllProducts());
     }, [dispatch]);
 
+
+    console.log(product);
     return (
         <>
             <div className="bg-white">
